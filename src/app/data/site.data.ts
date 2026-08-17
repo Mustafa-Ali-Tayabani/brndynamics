@@ -1,4 +1,5 @@
 import type { VisualKind } from '../ui/visual/visual';
+import type { AvatarFeatures } from '../ui/avatar/avatar';
 
 /**
  * Single source of truth for site content.
@@ -1240,5 +1241,138 @@ export const FAQ = [
   {
     q: 'Who owns the code and the designs?',
     a: 'You do, from the first commit. Repositories sit in your organisation and design files are yours. There is no proprietary layer that makes leaving us expensive.',
+  },
+];
+
+/* -------------------------------------------------------------------------- */
+/* Team                                                                        */
+/* -------------------------------------------------------------------------- */
+
+export interface TeamMember {
+  /** Short role code shown on the avatar and used as a stable key. */
+  code: string;
+  /** Named by expertise, deliberately not by person. */
+  title: string;
+  focus: string;
+  stack: string[];
+  office: 'Karachi' | 'Riyadh' | 'Geneva';
+  years: string;
+  visual: VisualKind;
+  /** Drawn character avatar. Ignored when `avatar` is set. */
+  face: AvatarFeatures;
+  /**
+   * Optional portrait or Memoji sticker, e.g. '/team/design-lead.png'. Drop
+   * files into public/team and set this; the image replaces the drawn avatar.
+   */
+  avatar?: string;
+}
+
+/**
+ * The delivery team, identified by discipline rather than by name.
+ *
+ * Anonymity is deliberate: it keeps the page accurate as people move between
+ * engagements, and it puts the emphasis on the capability you are buying. Real
+ * names and photographs can be added later via `avatar` without restructuring.
+ */
+export const TEAM: TeamMember[] = [
+  {
+    code: 'PD',
+    face: { skin: 1, hair: 'bun', hairColor: 0, beard: 'none', glasses: false, bg: 2 },
+    title: 'Lead Product Designer',
+    focus: 'Owns the design system and the interface language across every build.',
+    stack: ['Figma', 'Design systems', 'Prototyping'],
+    office: 'Karachi',
+    years: '11 yrs',
+    visual: 'dusk',
+  },
+  {
+    code: 'UX',
+    face: { skin: 0, hair: 'wave', hairColor: 2, beard: 'none', glasses: true, bg: 1 },
+    title: 'Senior UX Researcher',
+    focus: 'Runs discovery, usability testing and the accessibility standard we build to.',
+    stack: ['Research', 'WCAG 2.2', 'Analytics'],
+    office: 'Geneva',
+    years: '9 yrs',
+    visual: 'tide',
+  },
+  {
+    code: 'PE',
+    face: { skin: 2, hair: 'short', hairColor: 0, beard: 'full', glasses: true, bg: 0 },
+    title: 'Principal Engineer, Platform',
+    focus: 'Architecture, tenancy and the decisions that are expensive to change later.',
+    stack: ['Node.js', 'PostgreSQL', 'Terraform'],
+    office: 'Karachi',
+    years: '14 yrs',
+    visual: 'signal',
+  },
+  {
+    code: 'FS',
+    face: { skin: 1, hair: 'curls', hairColor: 0, beard: 'stubble', glasses: false, bg: 3 },
+    title: 'Senior Full-stack Engineer',
+    focus: 'Builds and ships the product surface, front end through to data layer.',
+    stack: ['Angular', 'React', '.NET'],
+    office: 'Karachi',
+    years: '8 yrs',
+    visual: 'signal',
+  },
+  {
+    code: 'MB',
+    face: { skin: 3, hair: 'buzz', hairColor: 0, beard: 'goatee', glasses: false, bg: 5 },
+    title: 'Mobile Engineering Lead',
+    focus: 'Native and cross-platform apps, release pipelines and store compliance.',
+    stack: ['React Native', 'Swift', 'Kotlin'],
+    office: 'Karachi',
+    years: '10 yrs',
+    visual: 'moss',
+  },
+  {
+    code: 'AI',
+    face: { skin: 2, hair: 'short', hairColor: 1, beard: 'stubble', glasses: true, bg: 5 },
+    title: 'AI & Automation Engineer',
+    focus: 'Applies models where they beat the status quo, and says so when they do not.',
+    stack: ['Python', 'LLM integration', 'Workflow automation'],
+    office: 'Riyadh',
+    years: '7 yrs',
+    visual: 'moss',
+  },
+  {
+    code: 'ER',
+    face: { skin: 1, hair: 'short', hairColor: 0, beard: 'full', glasses: false, bg: 4 },
+    title: 'ERP & Integrations Specialist',
+    focus: 'Maps the real process, then makes the systems match it rather than the reverse.',
+    stack: ['Odoo', 'Salesforce', 'REST / APIs'],
+    office: 'Riyadh',
+    years: '12 yrs',
+    visual: 'sand',
+  },
+  {
+    code: 'QA',
+    face: { skin: 0, hair: 'bun', hairColor: 1, beard: 'none', glasses: true, bg: 1 },
+    title: 'QA Automation Lead',
+    focus: 'Automated coverage on the paths that matter, enforced in the build.',
+    stack: ['Playwright', 'CI pipelines', 'Load testing'],
+    office: 'Karachi',
+    years: '9 yrs',
+    visual: 'tide',
+  },
+  {
+    code: 'SC',
+    face: { skin: 3, hair: 'buzz', hairColor: 0, beard: 'full', glasses: false, bg: 2 },
+    title: 'Security Consultant',
+    focus: 'Testing, hardening and the evidence pack your auditor will ask for.',
+    stack: ['Pen testing', 'ISO 27001', 'NCA ECC'],
+    office: 'Riyadh',
+    years: '13 yrs',
+    visual: 'ember',
+  },
+  {
+    code: 'DM',
+    face: { skin: 0, hair: 'wave', hairColor: 2, beard: 'none', glasses: false, bg: 0 },
+    title: 'Delivery Manager',
+    focus: 'Keeps the increments honest and the reporting readable by non-engineers.',
+    stack: ['Agile delivery', 'Jira', 'Stakeholder reporting'],
+    office: 'Geneva',
+    years: '15 yrs',
+    visual: 'dusk',
   },
 ];

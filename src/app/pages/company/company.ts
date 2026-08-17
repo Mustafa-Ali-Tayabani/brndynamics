@@ -7,6 +7,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
 import { SectionHead } from '../../ui/section-head/section-head';
 import { ScrollRevealDirective } from '../../core/scroll-reveal.directive';
 import { CountUpDirective } from '../../core/count-up.directive';
+import { Team } from './sections/team/team';
 
 @Component({
   selector: 'app-company',
@@ -17,6 +18,7 @@ import { CountUpDirective } from '../../core/count-up.directive';
     SectionHead,
     ScrollRevealDirective,
     CountUpDirective,
+    Team,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './company.html',

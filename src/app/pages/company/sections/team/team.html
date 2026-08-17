@@ -1,0 +1,67 @@
+<div class="container">
+  <app-section-head
+    index="02"
+    label="The team"
+    title="Named by what they do, not who they are."
+    lede="Ten of the twenty-plus specialists you would be working with. We list people by discipline so the page stays accurate as they move between engagements."
+  />
+
+  <!-- Office filter -->
+  <div class="filter" appReveal>
+    <span class="mono filter__label">Office</span>
+    <ul class="filter__list">
+      @for (office of offices; track office) {
+        <li>
+          <button
+            type="button"
+            class="filter__btn mono"
+            [class.is-active]="filter() === office"
+            [attr.aria-pressed]="filter() === office"
+            (click)="filter.set(office)"
+          >
+            {{ office }}
+            <span class="filter__n tnum">{{ countFor(office) }}</span>
+          </button>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <ul class="grid">
+    @for (member of visible(); track member.code; let i = $index) {
+      <li class="card person" appReveal [revealDelay]="i * 55" appSpotlight>
+        <div class="person__figure">
+          <div class="person__avatar">
+            @if (member.avatar) {
+              <img [src]="member.avatar" [alt]="member.title" loading="lazy" />
+            } @else {
+              <app-avatar [features]="member.face" [uid]="member.code" [label]="member.title" />
+            }
+          </div>
+          <span class="person__code mono" aria-hidden="true">{{ member.code }}</span>
+        </div>
+
+        <div class="person__body">
+          <h3 class="display-4 person__title">{{ member.title }}</h3>
+          <p class="body-dim person__focus">{{ member.focus }}</p>
+
+          <ul class="stack">
+            @for (t of member.stack; track t) {
+              <li class="mono-sm">{{ t }}</li>
+            }
+          </ul>
+        </div>
+
+        <div class="person__foot">
+          <span class="mono-sm">{{ member.office }}</span>
+          <span class="mono-sm tnum">{{ member.years }}</span>
+        </div>
+      </li>
+    }
+  </ul>
+
+  <p class="note body-dim" appReveal>
+    Individual names and photographs are shared at proposal stage, once we know who would actually
+    be on your engagement.
+  </p>
+</div>
