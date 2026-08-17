@@ -1,0 +1,79 @@
+<div class="container">
+  <!-- Brand moment: the real lockup, oversized and quiet. -->
+  <div class="wordmark" appReveal>
+    <app-brand-logo variant="full" label="BrnDynamics" />
+  </div>
+
+  <div class="grid">
+    <div class="col col--about">
+      <p class="mono muted">Offices</p>
+      <ul class="offices">
+        @for (office of offices; track office.id) {
+          <li class="office">
+            <span class="office__city">{{ office.city }}</span>
+            <span class="mono-sm office__meta">{{ office.country }} · {{ office.role }}</span>
+          </li>
+        }
+      </ul>
+
+      <div class="contacts">
+        <a class="link" [href]="'mailto:' + company.email">{{ company.email }}</a>
+        <a class="link" [href]="'tel:' + company.phoneHref">{{ company.phone }}</a>
+      </div>
+    </div>
+
+    <nav class="col" aria-label="Solutions">
+      <p class="mono muted">Solutions</p>
+      <ul class="list">
+        @for (cap of capabilities; track cap.id) {
+          <li>
+            <a routerLink="/solutions" [fragment]="cap.id">{{ cap.title }}</a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <nav class="col" aria-label="Company">
+      <p class="mono muted">Company</p>
+      <ul class="list">
+        @for (link of nav; track link.path) {
+          <li><a [routerLink]="link.path">{{ link.label }}</a></li>
+        }
+        <li><a routerLink="/company" fragment="careers">Careers</a></li>
+        <li><a routerLink="/contact" fragment="faq">FAQ</a></li>
+      </ul>
+    </nav>
+
+    <div class="col">
+      <p class="mono muted">Elsewhere</p>
+      <ul class="list">
+        @for (social of company.socials; track social.label) {
+          <li>
+            <a [href]="social.url" target="_blank" rel="noopener noreferrer">
+              {{ social.label }}
+              <span class="ext" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        }
+      </ul>
+
+      <div class="ratings">
+        @for (rating of company.ratings; track rating.source) {
+          <div class="rating">
+            <span class="rating__val display-4 tnum">{{ rating.value }}</span>
+            <span class="mono-sm muted">{{ rating.source }} · {{ rating.note }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="base">
+    <p class="mono-sm muted">© {{ year }} {{ company.legalName }}. All rights reserved.</p>
+    <p class="mono-sm muted base__tag">{{ company.tagline }}</p>
+    <ul class="base__legal">
+      <li><a routerLink="/legal/privacy" class="mono-sm">Privacy policy</a></li>
+      <li><a routerLink="/legal/terms" class="mono-sm">Terms</a></li>
+    </ul>
+  </div>
+</div>

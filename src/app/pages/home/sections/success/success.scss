@@ -1,0 +1,210 @@
+:host {
+  display: block;
+  padding-block: var(--section-y);
+  background: var(--ink-850);
+  border-top: 1px solid var(--line);
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--ink-800);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------- rail ---- */
+
+.rail {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+
+@media (width < 48rem) {
+  .rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.rail__tab {
+  display: grid;
+  gap: 0.2rem;
+  padding: clamp(0.875rem, 2vw, 1.25rem);
+  text-align: left;
+  border-right: 1px solid var(--line);
+  position: relative;
+  transition:
+    background var(--d-fast) var(--e-out),
+    color var(--d-fast) var(--e-out);
+}
+
+.rail__tab:last-child {
+  border-right: 0;
+}
+
+@media (width < 48rem) {
+  .rail__tab:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .rail__tab:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+.rail__tab:hover {
+  background: var(--tint-1);
+}
+
+/* Active tab is marked by a signal bar along its top edge. */
+.rail__tab::after {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 2px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transition: transform var(--d-mid) var(--e-out);
+}
+
+.rail__tab.is-on::after {
+  transform: scaleX(1);
+}
+
+.rail__tab.is-on {
+  background: var(--signal-wash);
+}
+
+.rail__num {
+  color: var(--text-faint);
+}
+
+.rail__tab.is-on .rail__num {
+  color: var(--signal-hi);
+}
+
+.rail__label {
+  font-size: var(--t-sm);
+  color: var(--text);
+}
+
+.rail__region {
+  color: var(--text-faint);
+}
+
+/* -------------------------------------------------------------- story ---- */
+
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  animation: fade 520ms var(--e-out);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story {
+    animation: none;
+  }
+}
+
+@media (width < 62rem) {
+  .story {
+    grid-template-columns: 1fr;
+  }
+}
+
+.story__art {
+  position: relative;
+  border-right: 1px solid var(--line);
+  min-height: 22rem;
+  display: grid;
+}
+
+@media (width < 62rem) {
+  .story__art {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    min-height: 16rem;
+  }
+}
+
+.story__art app-visual {
+  height: 100%;
+  border-radius: 0;
+}
+
+.story__metric {
+  position: absolute;
+  inset: auto auto clamp(1.25rem, 2.5vw, 2rem) clamp(1.25rem, 2.5vw, 2rem);
+  display: grid;
+  gap: 0.2rem;
+  padding: var(--s-4);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--ink-900) 82%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.story__metric .display-1 {
+  line-height: 1;
+}
+
+.story__metric .mono-sm {
+  color: var(--text-faint);
+}
+
+.story__body {
+  display: grid;
+  gap: var(--s-5);
+  align-content: start;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.story__head {
+  max-width: 20ch;
+}
+
+.pair {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.pair__label {
+  color: var(--signal-hi);
+}
+
+.pair p {
+  font-size: var(--t-sm);
+  line-height: 1.75;
+  max-width: 60ch;
+}
+
+.quote {
+  display: grid;
+  gap: var(--s-2);
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--signal);
+}
+
+.quote p {
+  font-family: var(--f-display);
+  font-size: var(--t-d4);
+  line-height: 1.45;
+  letter-spacing: var(--tr-snug);
+  text-wrap: pretty;
+}
+
+.quote cite {
+  color: var(--text-faint);
+  font-style: normal;
+}
+
+.story__more {
+  justify-self: start;
+}

@@ -1,0 +1,91 @@
+<app-page-hero
+  index="—"
+  label="Solutions"
+  heading="Everything between the socket and the shipped product."
+  lede="Seven disciplines under one accountable team. Each one lists what you actually receive, because 'IT support' means something different at every provider you have spoken to."
+>
+  <a routerLink="/contact" class="btn btn--primary btn--lg">Book a technical audit</a>
+</app-page-hero>
+
+<!-- Anchor index -->
+<nav class="jump" aria-label="Solutions index">
+  <ul class="container jump__list">
+    @for (cap of capabilities; track cap.id) {
+      <li>
+        <a [routerLink]="[]" [fragment]="cap.id" class="jump__link mono">
+          <b>{{ cap.index }}</b>
+          {{ cap.title }}
+        </a>
+      </li>
+    }
+  </ul>
+</nav>
+
+<!-- Discipline detail -->
+<div class="container">
+  @for (cap of capabilities; track cap.id; let i = $index) {
+    <section class="disc" [id]="cap.id" appReveal>
+      <div class="disc__rail">
+        <span class="mono disc__index">{{ cap.index }}</span>
+        <a class="disc__thumb" [routerLink]="['/solutions', cap.id]" tabindex="-1" aria-hidden="true">
+          <app-visual [kind]="cap.visual" [labels]="false" />
+        </a>
+      </div>
+
+      <div class="disc__body">
+        <h2 class="display-2">{{ cap.title }}</h2>
+        <p class="disc__summary">{{ cap.summary }}</p>
+        <p class="body-dim disc__detail">{{ cap.detail }}</p>
+      </div>
+
+      <div class="disc__side">
+        <p class="mono disc__side-label">Deliverables</p>
+        <ul class="disc__list">
+          @for (d of cap.deliverables; track d) {
+            <li>
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                <path d="M2 8.5 6 12.5 14 4" stroke="currentColor" stroke-width="1.7" fill="none" />
+              </svg>
+              {{ d }}
+            </li>
+          }
+        </ul>
+        <div class="disc__cta">
+          <a class="link" [routerLink]="['/solutions', cap.id]">Full detail →</a>
+          <a class="link" routerLink="/estimate">Estimate it →</a>
+        </div>
+      </div>
+    </section>
+  }
+</div>
+
+<!-- Platform coverage -->
+<section class="platforms">
+  <div class="container">
+    <app-section-head
+      index="07"
+      label="Coverage"
+      title="The platforms we hold certifications on."
+      lede="Vendor-neutral by default. We recommend what fits the estate, not what carries the best resale margin."
+      titleClass="display-2"
+    />
+
+    <div class="specs">
+      @for (group of platformGroups; track group.label; let i = $index) {
+        <div class="spec" appReveal [revealDelay]="i * 70">
+          <p class="mono spec__label">{{ group.label }}</p>
+          <ul class="spec__items">
+            @for (item of group.items; track item) {
+              <li>{{ item }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<app-cta-band
+  heading="Tell us what is breaking."
+  body="Send the symptoms and we will tell you which of the six disciplines above actually applies — including when the answer is none of them."
+/>

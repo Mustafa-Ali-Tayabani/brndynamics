@@ -1,0 +1,334 @@
+:host {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 100;
+  display: block;
+  transition: transform var(--d-mid) var(--e-out);
+}
+
+/* Retracts while reading forward, returns the instant you scroll back. */
+:host(.is-hidden) {
+  transform: translateY(-100%);
+}
+
+/* ---------------------------------------------------------------- rail ---- */
+
+.rail {
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: transparent;
+  overflow: hidden;
+}
+
+.rail__fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--signal-lo), var(--signal-hi));
+  transition: width 120ms linear;
+}
+
+:host(:not(.is-stuck)) .rail__fill {
+  opacity: 0;
+}
+
+/* ---------------------------------------------------------------- bar ---- */
+
+.bar {
+  border-bottom: 1px solid transparent;
+  transition:
+    background var(--d-mid) var(--e-out),
+    border-color var(--d-mid) var(--e-out),
+    backdrop-filter var(--d-mid) var(--e-out);
+}
+
+:host(.is-stuck) .bar {
+  background: var(--backdrop);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--line);
+}
+
+:host(.is-open) .bar {
+  background: var(--ink-900);
+  border-bottom-color: var(--line);
+}
+
+.bar__inner {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5);
+}
+
+/* -------------------------------------------------------------- brand ---- */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  --logo-h: 2.25rem;
+
+  color: var(--text);
+}
+
+/* The dot is the brand's signature — give it a small life on hover. */
+.brand :where(app-brand-logo) {
+  transition: opacity var(--d-fast) var(--e-out);
+}
+
+.brand:hover :where(app-brand-logo) {
+  opacity: 0.82;
+}
+
+.brand ::ng-deep .logo__dot {
+  transition:
+    transform 520ms var(--e-out),
+    fill var(--d-mid) var(--e-out);
+}
+
+.brand:hover ::ng-deep .logo__dot {
+  transform: scale(1.28);
+}
+
+/* ---------------------------------------------------------------- nav ---- */
+
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: clamp(1rem, 2.4vw, 2.25rem);
+}
+
+.nav__link {
+  position: relative;
+  display: block;
+  padding-block: 0.5rem;
+  color: var(--text-dim);
+  transition: color var(--d-fast) var(--e-out);
+}
+
+/* Label swaps for a duplicate of itself on hover. */
+.nav__label {
+  position: relative;
+  display: block;
+  overflow: hidden;
+}
+
+.nav__label::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: var(--text);
+  transform: translateY(100%);
+  transition: transform var(--d-mid) var(--e-out);
+}
+
+.nav__link:hover .nav__label::after,
+.nav__link:focus-visible .nav__label::after {
+  transform: translateY(0);
+}
+
+.nav__link.is-active {
+  color: var(--text);
+}
+
+.nav__link.is-active::before {
+  content: '';
+  position: absolute;
+  left: -0.75rem;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin-top: -1px;
+  border-radius: 50%;
+  background: var(--signal);
+}
+
+@media (width < 62rem) {
+  .nav {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------ actions ---- */
+
+.bar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  flex: none;
+}
+
+.bar__phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--f-label);
+  font-size: var(--t-mono);
+  letter-spacing: var(--tr-wide);
+  color: var(--text-dim);
+  transition: color var(--d-fast) var(--e-out);
+}
+
+.bar__phone:hover {
+  color: var(--text);
+}
+
+@media (width < 78rem) {
+  .bar__phone {
+    display: none;
+  }
+}
+
+@media (width < 34rem) {
+  .bar__actions .btn {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------- burger ---- */
+
+.burger {
+  display: none;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  place-items: center;
+  gap: 5px;
+  align-content: center;
+  transition: border-color var(--d-fast) var(--e-out);
+}
+
+.burger:hover {
+  border-color: var(--text-dim);
+}
+
+.burger__line {
+  display: block;
+  width: 15px;
+  height: 1.5px;
+  background: currentcolor;
+  transition: transform var(--d-mid) var(--e-out);
+}
+
+:host(.is-open) .burger__line:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+:host(.is-open) .burger__line:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+@media (width < 62rem) {
+  .burger {
+    display: grid;
+  }
+}
+
+/* ------------------------------------------------------------- drawer ---- */
+
+.drawer {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  background: var(--ink-900);
+  overflow-y: auto;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path var(--d-slow) var(--e-out);
+  pointer-events: none;
+}
+
+:host(.is-open) .drawer {
+  clip-path: inset(0 0 0 0);
+  pointer-events: auto;
+}
+
+.drawer__inner {
+  padding-block: clamp(2rem, 8vh, 4rem) 3rem;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
+}
+
+.drawer__eyebrow {
+  color: var(--text-faint);
+  padding-bottom: var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+.drawer__list {
+  display: grid;
+}
+
+.drawer__list li {
+  border-bottom: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+:host(.is-open) .drawer__list li {
+  animation: drawer-in var(--d-slow) var(--e-out) forwards;
+  animation-delay: calc(90ms + var(--i) * 60ms);
+}
+
+@keyframes drawer-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.drawer__link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-block: clamp(0.875rem, 2.4vh, 1.375rem);
+  transition: color var(--d-fast) var(--e-out);
+}
+
+.drawer__link:hover {
+  color: var(--signal-hi);
+}
+
+.drawer__num {
+  color: var(--text-faint);
+  font-size: var(--t-mono-sm);
+}
+
+.drawer__offices {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.drawer__offices ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+}
+
+.drawer__offices li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--text-dim);
+}
+
+.drawer__offices .mono-sm {
+  color: var(--signal-hi);
+}
+
+.drawer__foot {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-5);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--line);
+}
+
+@media (width >= 62rem) {
+  .drawer {
+    display: none;
+  }
+}

@@ -1,0 +1,103 @@
+<div class="bar">
+  <div class="bar__inner container">
+    <a routerLink="/" class="brand" aria-label="BrnDynamics — home">
+      <app-brand-logo variant="full" label="BrnDynamics" />
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      <ul class="nav__list">
+        @for (link of nav; track link.path) {
+          <li>
+            <a
+              class="nav__link mono"
+              [routerLink]="link.path"
+              routerLinkActive="is-active"
+              [routerLinkActiveOptions]="{ exact: false }"
+            >
+              <span class="nav__label" [attr.data-text]="link.label">{{ link.label }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="bar__actions">
+      <a class="bar__phone mono" [href]="'tel:' + company.phoneHref">
+        <span class="dot" aria-hidden="true"></span>
+        {{ company.phone }}
+      </a>
+
+      <app-theme-toggle />
+
+      <a
+        routerLink="/estimate"
+        class="btn btn--primary"
+        appMagnetic
+        [magneticStrength]="6"
+        data-cursor="2 min"
+      >
+        Get an estimate
+        <svg class="btn__arrow" width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M3 13 13 3M6 3h7v7"
+            stroke="currentColor"
+            stroke-width="1.5"
+            fill="none"
+            stroke-linecap="square"
+          />
+        </svg>
+      </a>
+
+      <button
+        type="button"
+        class="burger"
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="menuOpen()"
+        aria-controls="mobile-drawer"
+      >
+        <span class="visually-hidden">{{ menuOpen() ? 'Close menu' : 'Open menu' }}</span>
+        <span class="burger__line" aria-hidden="true"></span>
+        <span class="burger__line" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Reading progress -->
+  <div class="rail" aria-hidden="true">
+    <span class="rail__fill" [style.width.%]="progressPct()"></span>
+  </div>
+</div>
+
+<!-- Mobile drawer -->
+<div id="mobile-drawer" class="drawer" [attr.inert]="menuOpen() ? null : ''">
+  <div class="drawer__inner container">
+    <p class="drawer__eyebrow mono">Menu</p>
+    <ul class="drawer__list">
+      @for (link of nav; track link.path; let i = $index) {
+        <li [style.--i]="i">
+          <a [routerLink]="link.path" class="drawer__link display-2" (click)="closeMenu()">
+            <span class="mono drawer__num">0{{ i + 1 }}</span>
+            {{ link.label }}
+          </a>
+        </li>
+      }
+    </ul>
+
+    <div class="drawer__offices">
+      <p class="mono drawer__eyebrow">Offices</p>
+      <ul>
+        @for (office of offices; track office.id) {
+          <li>
+            <span class="mono-sm">{{ office.countryCode }}</span>
+            {{ office.city }}
+          </li>
+        }
+      </ul>
+    </div>
+
+    <div class="drawer__foot">
+      <a class="link" [href]="'mailto:' + company.email">{{ company.email }}</a>
+      <a class="link" [href]="'tel:' + company.phoneHref">{{ company.phone }}</a>
+    </div>
+  </div>
+</div>

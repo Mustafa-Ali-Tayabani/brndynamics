@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:brndynamics.com)",
+      "WebFetch(domain:pensatori-irrazionali.com)",
+      "WebFetch(domain:zig.ai)",
+      "WebFetch(domain:botblox.com)",
+      "Bash(grep -oE 'font-family:[^;}\"]{0,90}' zig_ai.html)",
+      "Bash(grep -oE 'font-family:[^;}\"]{0,90}' botblox_com.html)",
+      "Bash(grep -oiE '\\(font[-_]?family[^;}\"]{0,80}|fonts\\\\.googleapis[^\"]{0,120}|\\\\.woff2\\)' zig_ai.html)",
+      "Bash(grep -oE '\\(font-family:[^;}\"]{0,80}|[A-Za-z0-9_-]+\\\\.woff2?\\)' pensatori-irrazionali_com.html)",
+      "Bash(curl -sL \"https://cdn.prod.website-files.com/692db0eaf3c473ac91a06392/css/zig-ai.webflow.shared.3bf0705fc.min.css\" -o zig.css --max-time 20)",
+      "Bash(grep -oE 'font-family:[^;}]{0,80}' zig.css)",
+      "Bash(grep -oE ':root\\\\{[^}]{0,3000}' zig.css)",
+      "Bash(grep -oE '#[0-9a-fA-F]{3,8}\\\\b' zig.css)",
+      "Bash(grep -oE 'border-radius:[^;}]{0,30}' zig.css)",
+      "Bash(curl -sL -A \"Mozilla/5.0\" \"https://brndynamics.com/\" -o brn.html --max-time 25)",
+      "Bash(grep -oiE '\\(font-family:[^;}\"]{0,70}|fonts.googleapis.com[^\"]{0,140}\\)' brn.html)",
+      "Read(//Users/mustafaalitayabani/Desktop/**)",
+      "Bash(npx --yes @angular/cli@21 new brndynamics --style=scss --ssr=true --skip-tests --skip-git --package-manager=npm --ai-config=none --defaults)",
+      "Bash(grep -oE '.{0,80}010ED0.{0,60}' brn.html)"
+    ]
+  }
+}

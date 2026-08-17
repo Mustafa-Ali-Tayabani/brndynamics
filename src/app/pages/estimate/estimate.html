@@ -1,0 +1,340 @@
+<div class="wrap">
+  <!-- Progress -->
+  <div class="progress">
+    <div class="container progress__inner">
+      <span class="mono progress__label">
+        @if (service()) {
+          {{ service()!.title }}
+        } @else {
+          Cost estimator
+        }
+      </span>
+      <div class="progress__bar" role="progressbar" [attr.aria-valuenow]="progress()"
+           aria-valuemin="0" aria-valuemax="100" aria-label="Estimator progress">
+        <span class="progress__fill" [style.width.%]="progress()"></span>
+      </div>
+      <span class="mono progress__count tnum">
+        @if (service()) {
+          {{ stepIndex() + 1 }} / {{ totalSteps() }}
+        } @else {
+          Step 1
+        }
+      </span>
+    </div>
+  </div>
+
+  <div class="container stage">
+    <!-- ────────────────────────────────────────────── main column ── -->
+    <div class="panel">
+      <!-- STEP 0 — choose a service -->
+      @if (stepIndex() === 0) {
+        <div class="step">
+          <p class="mono step__eyebrow"><b>01</b> What do you need?</p>
+          <h1 class="display-1 step__title">Let’s put a number on it.</h1>
+          <p class="lede">
+            Six questions, about two minutes, and you get an indicative range with the
+            reasoning shown. No account, no call required.
+          </p>
+
+          <ul class="services">
+            @for (svc of services; track svc.id; let i = $index) {
+              <li>
+                <button type="button" class="svc" (click)="pickService(svc.id)">
+                  <span class="mono svc__num tnum">0{{ i + 1 }}</span>
+                  <span class="svc__body">
+                    <span class="display-4 svc__title">{{ svc.title }}</span>
+                    <span class="svc__blurb body-dim">{{ svc.blurb }}</span>
+                  </span>
+                  <span class="svc__meta">
+                    <span class="mono-sm">{{ svc.leadTime }}</span>
+                    <span class="svc__arrow" aria-hidden="true">→</span>
+                  </span>
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      <!-- STEPS 1..n — questions -->
+      @if (currentQuestion(); as q) {
+        <div class="step">
+          <p class="mono step__eyebrow">
+            <b>{{ stepIndex() + 1 < 10 ? '0' + (stepIndex() + 1) : stepIndex() + 1 }}</b>
+            {{ service()?.title }}
+          </p>
+          <h1 class="display-2 step__title">{{ q.title }}</h1>
+          @if (q.help) {
+            <p class="lede">{{ q.help }}</p>
+          }
+
+          <!-- choice -->
+          @if (q.kind === 'choice') {
+            <ul class="opts">
+              @for (opt of q.options; track opt.id; let i = $index) {
+                <li>
+                  <button
+                    type="button"
+                    class="opt"
+                    [class.is-on]="isSelected(q, opt)"
+                    (click)="choose(q, opt)"
+                  >
+                    <span class="opt__tick" aria-hidden="true"></span>
+                    <span class="opt__body">
+                      <span class="opt__label">{{ opt.label }}</span>
+                      @if (opt.hint) {
+                        <span class="mono-sm opt__hint">{{ opt.hint }}</span>
+                      }
+                    </span>
+                    <span class="mono-sm opt__key" aria-hidden="true">{{ i + 1 }}</span>
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+
+          <!-- multi -->
+          @if (q.kind === 'multi') {
+            <ul class="opts">
+              @for (opt of q.options; track opt.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="opt opt--multi"
+                    [class.is-on]="isSelected(q, opt)"
+                    [attr.aria-pressed]="isSelected(q, opt)"
+                    (click)="toggle(q, opt)"
+                  >
+                    <span class="opt__tick opt__tick--box" aria-hidden="true"></span>
+                    <span class="opt__body">
+                      <span class="opt__label">{{ opt.label }}</span>
+                      @if (opt.hint) {
+                        <span class="mono-sm opt__hint">{{ opt.hint }}</span>
+                      }
+                    </span>
+                    @if (opt.add) {
+                      <span class="mono-sm opt__price">+{{ money(opt.add) }}</span>
+                    }
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+
+          <!-- counter -->
+          @if (q.kind === 'counter') {
+            <div class="counter">
+              <div class="counter__row">
+                <button
+                  type="button"
+                  class="counter__btn"
+                  (click)="bump(q, -1)"
+                  [disabled]="count(q) <= (q.min ?? 0)"
+                  aria-label="Decrease"
+                >
+                  −
+                </button>
+                <span class="counter__value display-1 tnum">{{ count(q) }}</span>
+                <button
+                  type="button"
+                  class="counter__btn"
+                  (click)="bump(q, 1)"
+                  [disabled]="count(q) >= (q.max ?? 9999)"
+                  aria-label="Increase"
+                >
+                  +
+                </button>
+                <span class="counter__unit mono">
+                  {{ count(q) === 1 ? q.unit : q.unitPlural }}
+                </span>
+              </div>
+
+              <input
+                class="counter__range"
+                type="range"
+                [min]="q.min ?? 0"
+                [max]="q.max ?? 100"
+                [step]="q.step ?? 1"
+                [value]="count(q)"
+                (input)="onCounterInput(q, $event)"
+                [attr.aria-label]="q.title"
+              />
+
+              <p class="mono-sm counter__rate">
+                {{ money(q.perUnit ?? 0) }} per {{ q.unit }} ·
+                {{ money(count(q) * (q.perUnit ?? 0)) }} for {{ count(q) }}
+              </p>
+            </div>
+          }
+
+          <div class="step__nav">
+            <button type="button" class="btn" (click)="back()">Back</button>
+            <button
+              type="button"
+              class="btn btn--primary"
+              (click)="next()"
+              [disabled]="!canAdvance()"
+            >
+              Continue
+              <svg class="btn__arrow" width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+
+      <!-- CONTACT -->
+      @if (onContactStep()) {
+        <div class="step">
+          <p class="mono step__eyebrow"><b>—</b> Almost there</p>
+          <h1 class="display-2 step__title">Where should the breakdown go?</h1>
+          <p class="lede">
+            We will send the itemised estimate and, if it is useful, a suggested scope. No
+            newsletter, no follow-up sequence.
+          </p>
+
+          <form class="form" [formGroup]="contact" (ngSubmit)="submitContact()" novalidate>
+            <div class="field">
+              <label for="est-name" class="mono-sm">Name <span aria-hidden="true">*</span></label>
+              <input id="est-name" type="text" formControlName="name" autocomplete="name" />
+              @if (invalid('name')) {
+                <p class="err mono-sm">Tell us who you are.</p>
+              }
+            </div>
+
+            <div class="field">
+              <label for="est-org" class="mono-sm">Organisation</label>
+              <input id="est-org" type="text" formControlName="organisation" autocomplete="organization" />
+            </div>
+
+            <div class="field field--full">
+              <label for="est-email" class="mono-sm">Email <span aria-hidden="true">*</span></label>
+              <input id="est-email" type="email" formControlName="email" autocomplete="email" />
+              @if (invalid('email')) {
+                <p class="err mono-sm">We need a valid address to send it to.</p>
+              }
+            </div>
+
+            <div class="field field--full">
+              <label for="est-notes" class="mono-sm">Anything the questions missed?</label>
+              <textarea id="est-notes" rows="4" formControlName="notes"
+                        placeholder="Constraints, deadlines, the thing that actually prompted this."></textarea>
+            </div>
+
+            <div class="step__nav step__nav--form">
+              <button type="button" class="btn" (click)="back()">Back</button>
+              <button type="submit" class="btn btn--primary">See the estimate</button>
+            </div>
+          </form>
+        </div>
+      }
+
+      <!-- RESULT -->
+      @if (onResultStep() && estimate(); as est) {
+        <div class="step">
+          <p class="mono step__eyebrow"><b>✓</b> Indicative estimate</p>
+
+          <p class="result">
+            <span class="display-hero tnum result__figure">{{ money(est.low) }}</span>
+            <span class="result__to mono">to</span>
+            <span class="display-hero tnum result__figure">{{ money(est.high) }}</span>
+          </p>
+          <p class="mono result__unit">
+            {{ est.recurring ? 'per month, excluding third-party licences' : 'one-off project cost' }}
+          </p>
+
+          <div class="breakdown">
+            <p class="mono breakdown__label">How we got there</p>
+            <ul>
+              @for (line of est.lines; track $index) {
+                <li class="line">
+                  <span class="line__label">{{ line.label }}</span>
+                  <span class="mono-sm line__detail">{{ line.detail }}</span>
+                  <span class="mono line__amount tnum">
+                    @if (line.amount !== undefined) {
+                      {{ money(line.amount) }}
+                    } @else {
+                      ×{{ line.factor }}
+                    }
+                  </span>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="caveat">
+            <p class="body-dim">
+              This is an indicative range from the answers you gave, not a quote. The number that
+              matters comes after a conversation — usually it lands inside this range, occasionally
+              we will tell you the work is smaller than you expected.
+            </p>
+          </div>
+
+          <div class="step__nav step__nav--result">
+            @if (!sent()) {
+              <button
+                type="button"
+                class="btn btn--primary btn--lg"
+                (click)="sendBrief()"
+                appMagnetic
+                [magneticStrength]="7"
+              >
+                Send this brief to an engineer
+              </button>
+            } @else {
+              <p class="mono sent"><span class="dot"></span> Brief opened in your mail client</p>
+            }
+            <button type="button" class="btn" (click)="restart()">Start again</button>
+          </div>
+
+          <p class="mono-sm alt">
+            Prefer to talk it through?
+            <a routerLink="/contact" class="link alt__link">Book a call</a>
+          </p>
+        </div>
+      }
+    </div>
+
+    <!-- ─────────────────────────────────────────────── live summary ── -->
+    @if (service(); as svc) {
+      <aside class="summary" [class.is-result]="onResultStep()">
+        <p class="mono summary__label">Running estimate</p>
+
+        @if (estimate(); as est) {
+          <p class="summary__figure">
+            <span class="display-3 tnum">{{ money(est.low) }}</span>
+            <span class="mono summary__dash">to</span>
+            <span class="display-3 tnum">{{ money(est.high) }}</span>
+          </p>
+          <p class="mono-sm summary__unit">
+            {{ est.recurring ? 'per month' : 'project total' }}
+          </p>
+        }
+
+        <ul class="summary__steps">
+          <li>
+            <button type="button" class="summary__step" (click)="goTo(0)">
+              <span class="mono-sm">Service</span>
+              <span class="summary__val">{{ svc.title }}</span>
+            </button>
+          </li>
+          @for (q of questions(); track q.id; let i = $index) {
+            @if (answers()[q.id] !== undefined && i + 1 < stepIndex()) {
+              <li>
+                <button type="button" class="summary__step" (click)="goTo(i + 1)">
+                  <span class="mono-sm">{{ q.title }}</span>
+                  <span class="summary__val">{{ readable(q) }}</span>
+                </button>
+              </li>
+            }
+          }
+        </ul>
+
+        <p class="mono-sm summary__note">
+          Indicative only. Adjust any answer by clicking it.
+        </p>
+      </aside>
+    }
+  </div>
+</div>

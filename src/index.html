@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>BrnDynamics — Managed IT, Cloud & Security Engineering</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08090a" />
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500&display=swap"
+    />
+
+    <script>
+      // Theme bootstrap. Runs before any content is parsed so the correct
+      // palette is on <html> at first paint — a class applied later would show
+      // a flash of the default theme. Dark is the brand default; only an
+      // explicit stored choice of "light" switches it.
+      (function () {
+        try {
+          if (localStorage.getItem('brn-theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute('content', '#f4f6f7');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class="no-js">
+    <script>
+      // Removed the instant JS boots so reveal animations only run for real
+      // browsers; prerendered HTML stays visible for crawlers and no-JS users.
+      document.body.classList.remove('no-js');
+    </script>
+    <app-root></app-root>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<div class="container">
+  <app-section-head
+    index="05"
+    label="Success stories"
+    title="Short version: it worked."
+    lede="Four engagements told the quick way — what was broken, what we did, and the one number that mattered."
+  />
+
+  <div class="panel" appReveal>
+    <!-- Tab rail -->
+    <div class="rail" role="tablist" aria-label="Success stories" (keydown)="onKey($event)">
+      @for (s of stories; track s.id; let i = $index) {
+        <button
+          type="button"
+          class="rail__tab"
+          role="tab"
+          [id]="'story-tab-' + i"
+          [attr.aria-selected]="active() === i"
+          [attr.aria-controls]="'story-panel-' + i"
+          [attr.tabindex]="active() === i ? 0 : -1"
+          [class.is-on]="active() === i"
+          (click)="select(i)"
+        >
+          <span class="mono rail__num tnum">{{ '0' + (i + 1) }}</span>
+          <span class="rail__label">{{ s.sector }}</span>
+          <span class="mono-sm rail__region">{{ s.region }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Story -->
+    @for (s of stories; track s.id; let i = $index) {
+      @if (active() === i) {
+        <div
+          class="story"
+          role="tabpanel"
+          [id]="'story-panel-' + i"
+          [attr.aria-labelledby]="'story-tab-' + i"
+        >
+          <div class="story__art">
+            <app-visual [kind]="s.visual" [alt]="s.sector + ' engagement'" />
+            <div class="story__metric">
+              <span class="display-1 tnum">{{ s.metric.value }}</span>
+              <span class="mono-sm">{{ s.metric.label }}</span>
+            </div>
+          </div>
+
+          <div class="story__body">
+            <h3 class="display-2 story__head">{{ s.headline }}</h3>
+
+            <div class="pair">
+              <p class="mono pair__label">The problem</p>
+              <p class="body-dim">{{ s.problem }}</p>
+            </div>
+
+            <div class="pair">
+              <p class="mono pair__label">What we did</p>
+              <p class="body-dim">{{ s.outcome }}</p>
+            </div>
+
+            @if (s.quote) {
+              <blockquote class="quote">
+                <p>“{{ s.quote.text }}”</p>
+                <cite class="mono-sm">{{ s.quote.name }}</cite>
+              </blockquote>
+            }
+
+            @if (s.caseSlug) {
+              <a class="link story__more" [routerLink]="['/work', s.caseSlug]">
+                Read the full case study →
+              </a>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

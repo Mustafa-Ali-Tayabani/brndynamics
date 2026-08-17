@@ -1,0 +1,171 @@
+:host {
+  display: block;
+  border-top: 1px solid var(--line);
+  background: var(--ink-850);
+  padding-top: clamp(3rem, 7vw, 5.5rem);
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------------- wordmark ---- */
+
+.wordmark {
+  --logo-h: clamp(4.5rem, 15vw, 15rem);
+
+  display: block;
+  user-select: none;
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  /* Sits back so it reads as a watermark, not a second header. */
+  color: var(--watermark);
+  transition: color var(--d-slow) var(--e-out);
+}
+
+.wordmark:hover {
+  color: var(--watermark-hi);
+}
+
+.wordmark ::ng-deep .logo__dot {
+  fill: color-mix(in srgb, var(--signal) 55%, transparent);
+}
+
+/* --------------------------------------------------------------- grid ---- */
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+  gap: clamp(2rem, 4vw, 3.5rem);
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+@media (width < 62rem) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (width < 34rem) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.col {
+  display: grid;
+  align-content: start;
+  gap: var(--s-4);
+}
+
+.muted {
+  color: var(--text-faint);
+}
+
+.offices {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.office {
+  display: grid;
+  gap: 1px;
+  padding-left: var(--s-3);
+  border-left: 1px solid var(--line-strong);
+}
+
+.office__city {
+  font-size: var(--t-sm);
+  color: var(--text);
+}
+
+.office__meta {
+  color: var(--text-faint);
+}
+
+.contacts {
+  display: grid;
+  justify-items: start;
+  gap: var(--s-3);
+  margin-top: var(--s-2);
+}
+
+/* --------------------------------------------------------------- list ---- */
+
+.list {
+  display: grid;
+  gap: 0.625rem;
+}
+
+.list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-dim);
+  font-size: var(--t-sm);
+  transition:
+    color var(--d-fast) var(--e-out),
+    transform var(--d-fast) var(--e-out);
+}
+
+.list a:hover {
+  color: var(--text);
+  transform: translateX(3px);
+}
+
+.ext {
+  font-size: 0.7em;
+  color: var(--text-faint);
+}
+
+/* ------------------------------------------------------------ ratings ---- */
+
+.ratings {
+  display: flex;
+  gap: var(--s-5);
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+
+.rating {
+  display: grid;
+  gap: 2px;
+}
+
+.rating__val {
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------- base ---- */
+
+.base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding-block: var(--s-5);
+  border-top: 1px solid var(--line);
+}
+
+.base__tag {
+  color: var(--text-faint);
+}
+
+@media (width < 62rem) {
+  .base__tag {
+    order: 3;
+    width: 100%;
+  }
+}
+
+.base__legal {
+  display: flex;
+  gap: var(--s-5);
+}
+
+.base__legal a {
+  color: var(--text-faint);
+  transition: color var(--d-fast) var(--e-out);
+}
+
+.base__legal a:hover {
+  color: var(--text);
+}

@@ -1,0 +1,210 @@
+/* =============================================================================
+   Design tokens — BrnDynamics
+   Aesthetic: engineering-grade infrastructure. Hairline technical grid, tracked
+   uppercase metadata, one signal colour.
+
+   Note: --t-mono / .mono / .mono-sm are historical names for the metadata
+   scale. The face is Space Grotesk, not a monospace — see --f-label.
+
+   THEMING
+   Dark is the brand default and lives on bare :root. Light is an explicit
+   opt-in via [data-theme="light"] on <html>, set by ThemeService before first
+   paint. Nothing here keys off prefers-color-scheme — visitors get the intended
+   identity first and choose otherwise if they want. To make the OS preference
+   win instead, see the commented block at the foot of this file.
+
+   Anything that varies between themes MUST be a token. Never write a literal
+   rgb(255 255 255 / x%) in a component — use --tint-*, --line* or --scrim.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* --- Canvas ------------------------------------------------------------ */
+  --ink-900: #08090a; /* page canvas                */
+  --ink-850: #0b0d0f; /* alternating band           */
+  --ink-800: #0e1113; /* raised surface / card      */
+  --ink-700: #14181b; /* card hover                 */
+  --ink-600: #1b2024; /* input                      */
+
+  /* --- Hairlines --------------------------------------------------------- */
+  --line: rgb(255 255 255 / 8%);
+  --line-strong: rgb(255 255 255 / 14%);
+  --line-faint: rgb(255 255 255 / 4%);
+
+  /* --- Surface tints (hover washes, chips, insets) ----------------------- */
+  --tint-1: rgb(255 255 255 / 2%);
+  --tint-2: rgb(255 255 255 / 4%);
+  --tint-3: rgb(255 255 255 / 7%);
+
+  /* --- Text -------------------------------------------------------------- */
+  --text: #f4f6f7;
+  --text-dim: #98a2a8;
+  --text-faint: #626b71;
+
+  /* --- Signal ------------------------------------------------------------ */
+  /* The brand blue is #010ED0. On a near-black canvas it reads almost navy, so
+     dark mode uses a brightened version; light mode uses the true brand value. */
+  --signal: #2e5bff;
+  --signal-hi: #5a7dff;
+  --signal-lo: #1c3fd6;
+  --signal-wash: rgb(46 91 255 / 12%);
+  --signal-line: rgb(46 91 255 / 32%);
+  --on-signal: #fff;
+
+  /* --- Status ------------------------------------------------------------ */
+  --live: #00e5a0;
+  --warn: #ff6b6b;
+
+  /* --- Composites -------------------------------------------------------- */
+  --backdrop: rgb(8 9 10 / 78%); /* sticky bars                */
+  --watermark: rgb(255 255 255 / 7%); /* oversized footer logo      */
+  --watermark-hi: rgb(255 255 255 / 11%);
+  --scrim: rgb(255 255 255 / 40%); /* cursor ring                */
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 4%) inset, 0 24px 60px -30px rgb(0 0 0 / 90%);
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 7%) inset, 0 40px 80px -32px rgb(0 0 0 / 100%);
+
+  /* --- Diagram ----------------------------------------------------------- */
+  --diagram-fill: rgb(255 255 255 / 3%);
+  --diagram-line: rgb(255 255 255 / 18%);
+
+  /* --- Type -------------------------------------------------------------- */
+  --f-display: 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --f-body: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* Metadata (eyebrows, indices, spec values) is set in Space Grotesk too —
+     uppercase and tracked rather than in a separate monospace. One typeface
+     across the whole page reads warmer and more deliberate than a display face
+     bolted to a borrowed mono. Numerals are aligned with font-variant-numeric
+     where columns need it, which Space Grotesk supports. */
+  --f-label: 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --t-hero: clamp(2.75rem, 8.2vw, 8.5rem);
+  --t-d1: clamp(2.25rem, 5.4vw, 5rem);
+  --t-d2: clamp(1.875rem, 3.6vw, 3.25rem);
+  --t-d3: clamp(1.5rem, 2.4vw, 2.125rem);
+  --t-d4: clamp(1.25rem, 1.6vw, 1.5rem);
+  --t-body-l: clamp(1.0625rem, 1.15vw, 1.25rem);
+  --t-body: 1rem;
+  --t-sm: 0.875rem;
+  --t-mono: 0.75rem;
+  --t-mono-sm: 0.6875rem;
+
+  --lh-tight: 0.95;
+  --lh-snug: 1.08;
+  --lh-normal: 1.35;
+  --lh-loose: 1.62;
+
+  --tr-tight: -0.035em;
+  --tr-snug: -0.02em;
+  --tr-none: 0;
+  /* Uppercase Space Grotesk needs real tracking to read as a label. */
+  --tr-wide: 0.13em;
+  --tr-wider: 0.17em;
+
+  /* --- Space ------------------------------------------------------------- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-10: 8rem;
+
+  --gutter: clamp(1.25rem, 4vw, 3.5rem);
+  --section-y: clamp(4.5rem, 10vw, 9.5rem);
+  --container: 90rem;
+  --measure: 34rem;
+
+  /* --- Radius ------------------------------------------------------------ */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 14px;
+  --r-pill: 100px;
+
+  /* --- Motion ------------------------------------------------------------ */
+  --e-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --e-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --d-fast: 180ms;
+  --d-mid: 380ms;
+  --d-slow: 720ms;
+
+  --header-h: 68px;
+}
+
+/* =============================================================================
+   Light theme
+   Not an inversion — a light interface needs its own decisions. Surfaces go
+   white and lift off a grey canvas (the reverse of dark, where surfaces lighten
+   off black), lines become dark alpha, and the signal returns to the true brand
+   blue, which is too dark to carry a near-black background but sings here.
+   ========================================================================== */
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --ink-900: #f4f6f7; /* canvas                     */
+  --ink-850: #eceff1; /* alternating band           */
+  --ink-800: #fff; /* raised surface / card      */
+  --ink-700: #f8fafb; /* card hover                 */
+  --ink-600: #fff; /* input                      */
+
+  --line: rgb(11 22 28 / 11%);
+  --line-strong: rgb(11 22 28 / 18%);
+  --line-faint: rgb(11 22 28 / 6%);
+
+  --tint-1: rgb(11 22 28 / 3%);
+  --tint-2: rgb(11 22 28 / 5%);
+  --tint-3: rgb(11 22 28 / 8%);
+
+  --text: #0b0f12;
+  --text-dim: #4e585e;
+  --text-faint: #6e767c;
+
+  --signal: #010ed0;
+  --signal-hi: #2e5bff;
+  --signal-lo: #000a9e;
+  --signal-wash: rgb(1 14 208 / 7%);
+  --signal-line: rgb(1 14 208 / 26%);
+  --on-signal: #fff;
+
+  --live: #00875a;
+  --warn: #c02626;
+
+  --backdrop: rgb(244 246 247 / 82%);
+  --watermark: rgb(11 22 28 / 8%);
+  --watermark-hi: rgb(11 22 28 / 13%);
+  --scrim: rgb(11 22 28 / 45%);
+  --shadow-card: 0 1px 2px rgb(11 22 28 / 5%), 0 12px 32px -18px rgb(11 22 28 / 22%);
+  --shadow-lift: 0 2px 4px rgb(11 22 28 / 6%), 0 24px 48px -20px rgb(11 22 28 / 26%);
+
+  --diagram-fill: rgb(11 22 28 / 3%);
+  --diagram-line: rgb(11 22 28 / 22%);
+}
+
+/* Suppress transitions during a theme swap so the whole page does not
+   cross-fade component by component. */
+:root.theme-switching,
+:root.theme-switching *,
+:root.theme-switching *::before,
+:root.theme-switching *::after {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --d-fast: 1ms;
+    --d-mid: 1ms;
+    --d-slow: 1ms;
+  }
+}
+
+/* To let the operating system preference decide on first visit instead of
+   always opening dark, uncomment this and drop the default from ThemeService:
+
+   @media (prefers-color-scheme: light) {
+     :root:not([data-theme='dark']) { … copy the light block above … }
+   }
+*/

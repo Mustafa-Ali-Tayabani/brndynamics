@@ -1,0 +1,135 @@
+@if (study(); as s) {
+  <!-- Hero -->
+  <header class="hero">
+    <app-grid-lines />
+    <div class="hero__art" aria-hidden="true"><app-visual [kind]="s.visual" [labels]="false" /></div>
+    <div class="container hero__in">
+      <nav class="crumbs mono" aria-label="Breadcrumb">
+        <a routerLink="/work">Work</a>
+        <span aria-hidden="true">/</span>
+        <span class="crumbs__here">{{ s.sector }}</span>
+      </nav>
+
+      <p class="mono hero__client">{{ s.client }}</p>
+      <h1 class="display-hero hero__title" appSplitText>{{ s.title }}</h1>
+      <p class="lede hero__lede">{{ s.summary }}</p>
+    </div>
+
+    <!-- Spec strip -->
+    <div class="specs">
+      <div class="container specs__grid">
+        <div><span class="mono-sm">Discipline</span><span class="specs__v">{{ s.discipline }}</span></div>
+        <div><span class="mono-sm">Region</span><span class="specs__v">{{ s.region }}</span></div>
+        <div><span class="mono-sm">Duration</span><span class="specs__v">{{ s.duration }}</span></div>
+        <div><span class="mono-sm">Team</span><span class="specs__v">{{ s.teamSize }}</span></div>
+        <div><span class="mono-sm">Year</span><span class="specs__v tnum">{{ s.year }}</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Headline metric -->
+  <section class="headline">
+    <div class="container headline__in" appReveal>
+      @if (numeric(s.metric.value); as n) {
+        <p class="display-hero tnum headline__figure">
+          <span
+            [appCountUp]="n"
+            [countPrefix]="prefix(s.metric.value)"
+            [countSuffix]="suffix(s.metric.value)"
+          >{{ s.metric.value }}</span>
+        </p>
+      } @else {
+        <p class="display-hero tnum headline__figure">{{ s.metric.value }}</p>
+      }
+      <p class="mono headline__label">{{ s.metric.label }}</p>
+    </div>
+  </section>
+
+  <!-- Challenge -->
+  <section class="block block--band">
+    <div class="container split">
+      <p class="mono split__label" appReveal><b>01</b> The challenge</p>
+      <div class="split__body">
+        @for (para of s.challenge; track $index) {
+          <p
+            [class]="$first ? 'display-3 lead' : 'body-dim'"
+            appReveal
+            [revealDelay]="$index * 60"
+          >
+            {{ para }}
+          </p>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section class="block">
+    <div class="container">
+      <p class="mono block__label" appReveal><b>02</b> What we did</p>
+      <ol class="steps">
+        @for (step of s.approach; track step.title; let i = $index) {
+          <li class="step" appReveal [revealDelay]="i * 70">
+            <span class="mono step__num tnum">{{ '0' + (i + 1) }}</span>
+            <h2 class="display-3 step__title">{{ step.title }}</h2>
+            <p class="body-dim step__text">{{ step.body }}</p>
+          </li>
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="block block--band">
+    <div class="container">
+      <p class="mono block__label" appReveal><b>03</b> Results</p>
+      <ul class="results">
+        @for (r of s.results; track r.label; let i = $index) {
+          <li class="result card" appReveal [revealDelay]="i * 70" appSpotlight>
+            <span class="display-1 tnum result__v">{{ r.value }}</span>
+            <span class="mono-sm result__l">{{ r.label }}</span>
+          </li>
+        }
+      </ul>
+
+      <div class="stack-wrap" appReveal>
+        <p class="mono stack-wrap__label">Built with</p>
+        <ul class="stack">
+          @for (t of s.stack; track t) {
+            <li class="mono-sm">{{ t }}</li>
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quote -->
+  @if (s.quote; as q) {
+    <section class="quote-band">
+      <div class="container quote-band__in" appReveal>
+        <span class="quote-band__mark" aria-hidden="true">&ldquo;</span>
+        <blockquote class="display-2 quote-band__text">{{ q.text }}</blockquote>
+        <p class="mono quote-band__who">{{ q.name }} — {{ q.role }}</p>
+      </div>
+    </section>
+  }
+
+  <!-- Next -->
+  <nav class="nextnav container" aria-label="More work">
+    @if (discipline(); as d) {
+      <a class="nextnav__card" [routerLink]="['/solutions', d.id]">
+        <span class="mono-sm">Discipline</span>
+        <span class="display-4">{{ d.title }}</span>
+      </a>
+    }
+    <a class="nextnav__card nextnav__card--next" [routerLink]="['/work', next().slug]">
+      <span class="mono-sm">Next case study →</span>
+      <span class="display-4">{{ next().title }}</span>
+    </a>
+  </nav>
+
+  <app-cta-band
+    heading="Your project is the next entry."
+    body="Bring us the constraint that has stalled the work — budget, compliance, a vendor that will not cooperate — and we will tell you how we would sequence it."
+  />
+}

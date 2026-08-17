@@ -1,0 +1,62 @@
+<app-grid-lines />
+<div class="glow" aria-hidden="true"></div>
+
+<!-- Artwork sits behind the type, bled off the right edge. -->
+<div class="art" aria-hidden="true">
+  <app-visual kind="signal" [labels]="false" />
+</div>
+
+<div class="container inner">
+  <p class="chip mono stagger" style="--d: 0ms">
+    <span class="dot"></span>
+    Accepting new engagements
+  </p>
+
+  <h1 class="display-hero headline">
+    <span class="line"><span class="line__in stagger" style="--d: 90ms">We handle</span></span>
+    <span class="line">
+      <span class="line__in stagger" style="--d: 180ms">
+        the tech<em class="stop">.</em>
+      </span>
+    </span>
+    <span class="line">
+      <span class="line__in stagger dim" style="--d: 270ms">You focus on growth.</span>
+    </span>
+  </h1>
+
+  <div class="body">
+    <p class="lede stagger" style="--d: 400ms">
+      BrnDynamics is a managed IT, cloud and cyber security engineering firm. We take operational
+      ownership of your estate — monitoring, hardening, migrating and building — under an SLA you
+      can hold us to.
+    </p>
+
+    <div class="actions stagger" style="--d: 470ms">
+      <a routerLink="/contact" class="btn btn--primary btn--lg" appMagnetic [magneticStrength]="8">
+        Book a technical audit
+        <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <path
+            d="M3 13 13 3M6 3h7v7"
+            stroke="currentColor"
+            stroke-width="1.5"
+            fill="none"
+            stroke-linecap="square"
+          />
+        </svg>
+      </a>
+      <a routerLink="/solutions" class="btn btn--lg">See capabilities</a>
+    </div>
+  </div>
+</div>
+
+<!-- Technical readout strip -->
+<div class="readout stagger" style="--d: 580ms">
+  <div class="container readout__grid">
+    @for (item of readout; track item.key) {
+      <div class="readout__cell">
+        <span class="mono-sm readout__key">{{ item.key }}</span>
+        <span class="mono readout__val tnum">{{ item.value }}</span>
+      </div>
+    }
+  </div>
+</div>

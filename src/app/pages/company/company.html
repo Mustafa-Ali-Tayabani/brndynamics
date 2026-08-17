@@ -1,0 +1,154 @@
+<app-page-hero
+  index="—"
+  label="Company"
+  heading="Built by the people who used to be your on-call."
+  lede="BrnDynamics started in 2019 with a small team who had spent their careers inside the estates they now look after. That is still the hiring bar."
+>
+  <a routerLink="/contact" class="btn btn--primary btn--lg">Talk to an engineer</a>
+</app-page-hero>
+
+<!-- Narrative -->
+<section class="story">
+  <div class="container story__grid">
+    <div class="story__rail">
+      <p class="mono muted">Operating since</p>
+      <p class="display-1 tnum">{{ company.founded }}</p>
+      <ul class="story__facts">
+        <li><span class="mono-sm muted">HQ</span> {{ company.hq.city }}, {{ company.hq.country }}</li>
+        <li><span class="mono-sm muted">Offices</span> Karachi · Geneva · Riyadh</li>
+        <li><span class="mono-sm muted">Model</span> Distributed engineering</li>
+        <li><span class="mono-sm muted">Coverage</span> 24 / 7 / 365</li>
+      </ul>
+    </div>
+
+    <div class="story__body">
+      <p class="story__lead">
+        Most managed service providers are sales organisations with an engineering department
+        attached. We built the inverse.
+      </p>
+      <p class="body-dim">
+        BrnDynamics started in Karachi in 2019 with a small group of engineers who had spent their
+        careers inside the estates they now look after. That is still the hiring bar, and Karachi is
+        still where the build and the service desk live.
+      </p>
+      <p class="body-dim">
+        Geneva came next, because European clients need European contracting, European
+        data-protection terms and someone reachable in European hours. Riyadh followed for the
+        same reason in the Gulf, where data residency and Vision 2030 programmes need people on the
+        ground rather than on a call.
+      </p>
+      <p class="body-dim">
+        The three offices are not a sales map. They are a working day that starts in Karachi,
+        overlaps with Riyadh through the morning and Geneva through the afternoon, and hands back.
+        That is what lets us answer at 03:00 with an engineer instead of an apology.
+      </p>
+      <p class="body-dim">
+        Every engagement is scoped by the engineer who will own it, and the same pod stays with your
+        estate for the life of the contract. No tiered queue designed to keep you from the people
+        who can fix the problem, and no account manager translating your incident into a ticket
+        category. It costs us margin on paper. It is also why clients who joined in our first year
+        are still here.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="numbers">
+  <div class="container">
+    <ul class="numbers__grid">
+      @for (stat of stats; track stat.label; let i = $index) {
+        <li appReveal [revealDelay]="i * 70">
+          <span
+            class="display-1 tnum"
+            [appCountUp]="stat.value"
+            [countSuffix]="stat.suffix"
+          >{{ stat.value }}{{ stat.suffix }}</span>
+          <span class="numbers__name">{{ stat.label }}</span>
+          <span class="mono-sm muted">{{ stat.note }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="values">
+  <div class="container">
+    <app-section-head
+      index="01"
+      label="Principles"
+      title="Four commitments, in writing."
+      lede="These are contractual, not aspirational. If we break one, it is a service credit conversation, not a values conversation."
+      titleClass="display-2"
+    />
+
+    <ul class="values__grid">
+      @for (value of values; track value.index; let i = $index) {
+        <li class="card value" appReveal [revealDelay]="i * 70">
+          <span class="mono value__index">{{ value.index }}</span>
+          <h3 class="display-3">{{ value.title }}</h3>
+          <p class="body-dim">{{ value.body }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- How we work -->
+<section class="how">
+  <div class="container">
+    <app-section-head
+      index="02"
+      label="How we work"
+      title="The same four stages, every time."
+      titleClass="display-2"
+    />
+
+    <ol class="how__list">
+      @for (step of process; track step.index; let i = $index) {
+        <li class="how__step" appReveal [revealDelay]="i * 60">
+          <span class="mono how__index">{{ step.index }}</span>
+          <h3 class="display-3">{{ step.title }}</h3>
+          <p class="body-dim">{{ step.body }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Careers -->
+<section class="careers" id="careers">
+  <div class="container">
+    <app-section-head
+      index="03"
+      label="Careers"
+      title="We hire engineers who have carried a pager."
+      lede="Four open roles. If none fit but you can point at systems you kept alive, write to us anyway."
+      titleClass="display-2"
+    />
+
+    <ul class="roles">
+      @for (role of roles; track role.title; let i = $index) {
+        <li class="role" appReveal [revealDelay]="i * 55">
+          <span class="mono role__num tnum">{{ '0' + (i + 1) }}</span>
+          <h3 class="display-4 role__title">{{ role.title }}</h3>
+          <span class="mono-sm role__loc">{{ role.location }}</span>
+          <span class="mono-sm role__type">{{ role.type }}</span>
+          <a
+            class="role__apply link"
+            [href]="'mailto:' + company.email + '?subject=' + encode(role.title)"
+          >
+            Apply
+            <span aria-hidden="true">→</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<app-cta-band
+  heading="Come and see how the estate is really doing."
+  body="The audit takes two weeks and produces a findings pack you can act on with or without us. It is the cheapest way to find out whether we are worth the contract."
+/>
