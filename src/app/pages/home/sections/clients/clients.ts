@@ -19,7 +19,7 @@ import { BrandMark } from '../../../../ui/brand-mark/brand-mark';
   template: `
     <div class="container">
       <app-section-head
-        index="01"
+        index="03"
         label="Partners & certifications"
         title="Certified on what you already run."
         lede="We hold certifications across these platforms and take no resale margin on any of them, which is what keeps the recommendation independent."

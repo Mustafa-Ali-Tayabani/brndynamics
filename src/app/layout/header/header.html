@@ -1,20 +1,31 @@
 <div class="bar">
   <div class="bar__inner container">
-    <a routerLink="/" class="brand" aria-label="BrnDynamics — home">
+    <a routerLink="/" class="brand" aria-label="BrnDynamics, home">
       <app-brand-logo variant="full" label="BrnDynamics" />
     </a>
 
     <nav class="nav" aria-label="Primary">
       <ul class="nav__list">
         @for (link of nav; track link.path) {
-          <li>
+          <li
+            [class.has-mega]="link.path === '/services'"
+            (pointerenter)="link.path === '/services' ? openMega() : closeMega()"
+            (pointerleave)="link.path === '/services' && scheduleMegaClose()"
+          >
             <a
               class="nav__link mono"
               [routerLink]="link.path"
               routerLinkActive="is-active"
               [routerLinkActiveOptions]="{ exact: false }"
+              [attr.aria-expanded]="link.path === '/services' ? megaOpen() : null"
+              (focus)="link.path === '/services' ? openMega() : closeMega()"
             >
               <span class="nav__label" [attr.data-text]="link.label">{{ link.label }}</span>
+              @if (link.path === '/services') {
+                <svg class="nav__chev" width="9" height="9" viewBox="0 0 10 10" aria-hidden="true">
+                  <path d="M2 4l3 3 3-3" stroke="currentColor" stroke-width="1.4" fill="none" />
+                </svg>
+              }
             </a>
           </li>
         }
@@ -22,10 +33,13 @@
     </nav>
 
     <div class="bar__actions">
-      <a class="bar__phone mono" [href]="'tel:' + company.phoneHref">
-        <span class="dot" aria-hidden="true"></span>
-        {{ company.phone }}
-      </a>
+      <span class="bar__contact">
+        <a class="bar__mail mono" [href]="'mailto:' + company.email">{{ company.email }}</a>
+        <a class="bar__phone mono" [href]="'tel:' + company.phoneHref">
+          <span class="dot" aria-hidden="true"></span>
+          {{ company.phone }}
+        </a>
+      </span>
 
       <app-theme-toggle />
 
@@ -61,6 +75,14 @@
       </button>
     </div>
   </div>
+
+  <!-- Services mega menu -->
+  <app-mega-menu
+    [open]="megaOpen()"
+    (dismiss)="closeMega()"
+    (pointerenter)="openMega()"
+    (pointerleave)="scheduleMegaClose()"
+  />
 
   <!-- Reading progress -->
   <div class="rail" aria-hidden="true">

@@ -31,14 +31,28 @@ export interface FlowStage {
           <!-- Connector into this stage -->
           @if (!$first) {
             <span class="conn" aria-hidden="true">
-              <svg viewBox="0 0 100 12" preserveAspectRatio="none">
-                <line x1="0" y1="6" x2="100" y2="6" />
+              <!-- Horizontal on wide screens -->
+              <svg class="conn__h" viewBox="0 0 100 12" preserveAspectRatio="none">
+                <line x1="0" y1="6" x2="100" y2="6" stroke-dasharray="3 4" />
                 <circle r="2.6" cy="6">
                   <animate
                     attributeName="cx"
                     from="0"
                     to="100"
-                    [attr.dur]="1.9 + i * 0.15 + 's'"
+                    [attr.dur]="2.2 + i * 0.18 + 's'"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+              </svg>
+              <!-- Vertical rail below the breakpoint -->
+              <svg class="conn__v" viewBox="0 0 12 100" preserveAspectRatio="none">
+                <line x1="6" y1="0" x2="6" y2="100" stroke-dasharray="3 4" />
+                <circle r="2.6" cx="6">
+                  <animate
+                    attributeName="cy"
+                    from="0"
+                    to="100"
+                    [attr.dur]="2.2 + i * 0.18 + 's'"
                     repeatCount="indefinite"
                   />
                 </circle>

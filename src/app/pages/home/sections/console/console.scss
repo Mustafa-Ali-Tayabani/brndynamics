@@ -1,0 +1,331 @@
+:host {
+  display: block;
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--line);
+}
+
+/* ---------------------------------------------------------------- ide ---- */
+
+.ide {
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  background: var(--ink-850);
+  overflow: hidden;
+  box-shadow: var(--shadow-lift);
+}
+
+/* -------------------------------------------------------------- chrome ---- */
+
+.ide__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
+  padding: 0.7rem clamp(0.875rem, 2vw, 1.25rem);
+  border-bottom: 1px solid var(--line);
+  background: var(--ink-800);
+}
+
+.ide__dots {
+  display: inline-flex;
+  gap: 6px;
+  flex: none;
+}
+
+.ide__dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.ide__dots i:first-child {
+  background: color-mix(in srgb, #ff5f57 70%, var(--ink-800));
+}
+
+.ide__dots i:nth-child(2) {
+  background: color-mix(in srgb, #febc2e 70%, var(--ink-800));
+}
+
+.ide__dots i:last-child {
+  background: color-mix(in srgb, #28c840 70%, var(--ink-800));
+}
+
+.ide__path {
+  color: var(--text-faint);
+  flex: 1;
+  text-align: center;
+}
+
+.ide__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-faint);
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- body ---- */
+
+.ide__body {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  min-height: 24rem;
+}
+
+@media (width < 56rem) {
+  .ide__body {
+    grid-template-columns: 1fr;
+  }
+
+  .ide__rail {
+    display: none;
+  }
+}
+
+/* ---------------------------------------------------------------- rail ---- */
+
+.ide__rail {
+  border-right: 1px solid var(--line);
+  padding: var(--s-4);
+  display: grid;
+  align-content: start;
+  gap: var(--s-2);
+}
+
+.ide__rail-label {
+  color: var(--text-faint);
+  padding-bottom: var(--s-2);
+}
+
+.ide__rail-label--gap {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+
+.ide__file {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.5rem;
+  margin-inline: -0.5rem;
+  border-radius: var(--r-sm);
+  font-size: var(--t-sm);
+  color: var(--text-faint);
+  text-align: left;
+  position: relative;
+  transition:
+    color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out);
+}
+
+.ide__file:hover {
+  color: var(--text-dim);
+  background: var(--tint-1);
+}
+
+.ide__file.is-active {
+  color: var(--text);
+  background: var(--tint-2);
+}
+
+/* Signal bar marks the open file, the way an editor gutter would. */
+.ide__file.is-active::before {
+  content: '';
+  position: absolute;
+  inset: 0.25rem auto 0.25rem -0.5rem;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--signal);
+}
+
+.ide__offices {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.ide__offices li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+}
+
+.ide__offices .mono-sm {
+  color: var(--signal-hi);
+}
+
+/* ---------------------------------------------------------------- pane ---- */
+
+.ide__pane {
+  padding: clamp(1rem, 2.5vw, 1.75rem);
+  display: grid;
+  align-content: start;
+  gap: var(--s-5);
+  /* Holds its height while a shorter file types in, so the page below does
+     not jump every time someone opens a different tab. */
+  min-height: 21rem;
+}
+
+.log {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.log__line {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.75rem;
+  animation: line-in 380ms var(--e-out);
+}
+
+.log__no {
+  color: var(--text-faint);
+  opacity: 0.45;
+  text-align: right;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.log__content {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+@keyframes line-in {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .log__line {
+    animation: none;
+  }
+}
+
+/* Commands */
+.log__prompt {
+  color: var(--signal-hi);
+  font-family: var(--f-label);
+  font-size: var(--t-mono);
+  flex: none;
+}
+
+.log__cmd {
+  font-family: var(--f-label);
+  font-size: var(--t-mono);
+  letter-spacing: 0.02em;
+  color: var(--text);
+}
+
+.log__line[data-kind='cmd'] {
+  margin-top: var(--s-3);
+}
+
+.log__line[data-kind='cmd']:first-child {
+  margin-top: 0;
+}
+
+/* Assistant and returned values */
+.log__who {
+  flex: none;
+  color: var(--signal-hi);
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--signal-line);
+  border-radius: var(--r-sm);
+  line-height: 1.2;
+}
+
+.log__who--out {
+  color: var(--text-faint);
+  border-color: var(--line-strong);
+}
+
+.log__text {
+  font-size: var(--t-sm);
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 62ch;
+}
+
+.log__text--dim {
+  color: var(--text-dim);
+}
+
+/* Stats */
+.log__line[data-kind='stat'] .log__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-4);
+  align-items: baseline;
+  padding-block: 0.3rem;
+  border-bottom: 1px dashed var(--line-faint);
+  max-width: 34rem;
+}
+
+.log__key {
+  color: var(--text-faint);
+}
+
+.log__val {
+  font-family: var(--f-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--live);
+  line-height: 1;
+}
+
+/* Caret */
+.caret {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background: var(--signal-hi);
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.ide__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  animation: line-in 480ms var(--e-out);
+}
+
+/* -------------------------------------------------------------- status ---- */
+
+.ide__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-3) clamp(1rem, 3vw, 2rem);
+  padding: 0.6rem clamp(0.875rem, 2vw, 1.25rem);
+  border-top: 1px solid var(--line);
+  background: var(--ink-800);
+  color: var(--text-faint);
+}
+
+.ide__note {
+  margin-left: auto;
+  opacity: 0.75;
+}
+
+@media (width < 48rem) {
+  .ide__note {
+    margin-left: 0;
+  }
+}

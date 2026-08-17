@@ -1,0 +1,42 @@
+<div class="mega" [attr.inert]="open() ? null : ''" (pointerleave)="close()">
+  <div class="container mega__inner">
+    <!-- Services grid -->
+    <div class="mega__main">
+      <p class="mono mega__label">All services</p>
+      <ul class="mega__grid">
+        @for (cap of capabilities; track cap.id) {
+          <li>
+            <a class="tile" [routerLink]="['/services', cap.id]" (click)="close()">
+              <span class="tile__icon"><app-service-icon [name]="cap.id" /></span>
+              <span class="tile__body">
+                <span class="tile__title">{{ cap.title }}</span>
+                <span class="tile__blurb">{{ cap.summary }}</span>
+              </span>
+              <span class="mono-sm tile__price">{{ cap.engagement }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <!-- Side rail -->
+    <aside class="mega__side">
+      <p class="mono mega__label">Not sure which?</p>
+      <a class="promo" routerLink="/estimate" (click)="close()" data-cursor="2 min">
+        <span class="display-4 promo__title">Brief us in two minutes</span>
+        <span class="promo__body">
+          Answer a few questions about the work and we will come back with a scope and a price.
+        </span>
+        <span class="link promo__cta">Start a brief →</span>
+      </a>
+
+      <ul class="quick">
+        <li><a routerLink="/services" (click)="close()">All services overview</a></li>
+        <li><a routerLink="/work" (click)="close()">Case studies</a></li>
+        <li><a routerLink="/contact" (click)="close()">Talk to an engineer</a></li>
+      </ul>
+
+      <a class="mega__mail" [href]="'mailto:' + company.email">{{ company.email }}</a>
+    </aside>
+  </div>
+</div>

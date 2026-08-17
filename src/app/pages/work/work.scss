@@ -6,9 +6,10 @@
 
 .filter {
   position: sticky;
-  top: var(--header-h);
+  top: var(--sticky-top, var(--header-h));
   z-index: 20;
   background: var(--backdrop);
+  transition: top var(--d-mid) var(--e-out);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }

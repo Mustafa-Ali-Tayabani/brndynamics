@@ -21,7 +21,7 @@ export class SeoService {
   private readonly doc = inject(DOCUMENT);
 
   apply({ title, description, path }: PageMeta): void {
-    const full = `${title} — ${COMPANY.name}`;
+    const full = `${title} | ${COMPANY.name}`;
     const url = `${SITE_URL}${path}`;
 
     this.title.setTitle(full);
@@ -80,8 +80,9 @@ export const ORGANIZATION_JSON_LD = {
   email: COMPANY.email,
   telephone: COMPANY.phone,
   slogan: COMPANY.tagline,
+  foundingDate: COMPANY.founded,
   description:
-    'BrnDynamics is a managed IT, cloud and cyber security engineering firm with offices in Karachi, Geneva and Riyadh. We take operational ownership of your estate so your team can focus on growth.',
+    'BrnDynamics is a technology company specialising in UI/UX design, software development, AI-powered solutions, SaaS products, CRM and ERP systems, and digital transformation. Offices in Karachi, Riyadh and Geneva.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: COMPANY.hq.city,
@@ -89,7 +90,7 @@ export const ORGANIZATION_JSON_LD = {
   },
   location: OFFICES.map((o) => ({
     '@type': 'Place',
-    name: `${COMPANY.name} — ${o.city}`,
+    name: `${COMPANY.name} ${o.city}`,
     address: {
       '@type': 'PostalAddress',
       addressLocality: o.city,

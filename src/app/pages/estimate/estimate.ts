@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@a
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
+  BUDGET_QUESTION,
   EstimatorOption,
   EstimatorQuestion,
   EstimatorService,
   SERVICES,
-  SPREAD_HIGH,
-  SPREAD_LOW,
   TIMELINE_QUESTION,
 } from '../../data/estimator.data';
 import { COMPANY } from '../../data/site.data';
@@ -16,13 +15,14 @@ import { MagneticDirective } from '../../core/magnetic.directive';
 
 type AnswerValue = string | string[] | number;
 
-interface Line {
-  label: string;
-  detail: string;
-  amount?: number;
-  factor?: number;
-}
-
+/**
+ * Project brief.
+ *
+ * Deliberately shows no price. The prospect scopes the work and states their
+ * own budget range; BrnDynamics reviews the brief and replies with a figure.
+ * A quote should be a considered response rather than a formula run by a form,
+ * and asking for budget up front stops us designing something unfundable.
+ */
 @Component({
   selector: 'app-estimate',
   imports: [ReactiveFormsModule, RouterLink, MagneticDirective],
@@ -57,13 +57,13 @@ export class Estimate {
     () => this.services.find((s) => s.id === this.serviceId()) ?? null,
   );
 
-  /** Service questions plus the shared timeline question. */
+  /** Service questions, then the two asked on every flow. */
   protected readonly questions = computed<EstimatorQuestion[]>(() => {
     const svc = this.service();
-    return svc ? [...svc.questions, TIMELINE_QUESTION] : [];
+    return svc ? [...svc.questions, TIMELINE_QUESTION, BUDGET_QUESTION] : [];
   });
 
-  /** 0 = pick a service, 1..n = questions, n+1 = contact, n+2 = result. */
+  /** 0 = pick a service, 1..n = questions, n+1 = contact, n+2 = confirmation. */
   protected readonly totalSteps = computed(() => this.questions().length + 3);
 
   protected readonly progress = computed(() =>
@@ -84,67 +84,14 @@ export class Estimate {
     () => this.stepIndex() === this.questions().length + 2,
   );
 
-  /**
-   * subtotal = base + flat adds + counters × perUnit
-   * total    = subtotal × multipliers
-   */
-  protected readonly estimate = computed(() => {
-    const svc = this.service();
-    if (!svc) return null;
+  /** Everything answered so far, for the summary rail and the final review. */
+  protected readonly summary = computed(() =>
+    this.questions()
+      .map((q, i) => ({ q, i }))
+      .filter(({ q }) => this.answers()[q.id] !== undefined)
+      .map(({ q, i }) => ({ step: i + 1, title: q.title, value: this.readable(q) })),
+  );
 
-    const values = this.answers();
-    const lines: Line[] = [{ label: svc.title, detail: 'Base engagement', amount: svc.base }];
-
-    let subtotal = svc.base;
-    let factor = 1;
-
-    for (const q of this.questions()) {
-      const value = values[q.id];
-      if (value === undefined) continue;
-
-      if (q.kind === 'counter' && typeof value === 'number' && q.perUnit) {
-        const amount = value * q.perUnit;
-        if (!amount) continue;
-        subtotal += amount;
-        lines.push({
-          label: `${value} ${value === 1 ? q.unit : q.unitPlural}`,
-          detail: `${this.money(q.perUnit)} each`,
-          amount,
-        });
-      } else if (q.kind === 'choice' && typeof value === 'string') {
-        const opt = q.options?.find((o) => o.id === value);
-        if (!opt) continue;
-        if (opt.add) {
-          subtotal += opt.add;
-          lines.push({ label: opt.label, detail: q.title, amount: opt.add });
-        }
-        if (opt.mult && opt.mult !== 1) {
-          factor *= opt.mult;
-          lines.push({ label: opt.label, detail: q.title, factor: opt.mult });
-        }
-      } else if (q.kind === 'multi' && Array.isArray(value)) {
-        for (const id of value) {
-          const opt = q.options?.find((o) => o.id === id);
-          if (!opt?.add) continue;
-          subtotal += opt.add;
-          lines.push({ label: opt.label, detail: 'Add-on', amount: opt.add });
-        }
-      }
-    }
-
-    const total = subtotal * factor;
-    return {
-      lines,
-      subtotal,
-      factor,
-      total,
-      low: this.round(total * SPREAD_LOW),
-      high: this.round(total * SPREAD_HIGH),
-      recurring: svc.recurring,
-    };
-  });
-
-  /** Every question must be answered before the contact step unlocks. */
   protected readonly canAdvance = computed(() => {
     if (this.stepIndex() === 0) return !!this.serviceId();
     const q = this.currentQuestion();
@@ -156,9 +103,9 @@ export class Estimate {
 
   constructor() {
     inject(SeoService).apply({
-      title: 'Cost Estimator',
+      title: 'Project Brief',
       description:
-        'Get an indicative price for managed services, cloud engineering, cyber security, software, web and mobile, or IT consulting. Six questions, about two minutes.',
+        'Tell us about your project in about two minutes: product design, SaaS, CRM and ERP, AI and automation, web and mobile, engineering or security. We reply with a scope and a price.',
       path: '/estimate',
     });
   }
@@ -167,7 +114,7 @@ export class Estimate {
 
   protected pickService(id: string): void {
     this.serviceId.set(id);
-    // Seed counter defaults so the running figure is never nonsensically low.
+    // Seed counters and multi-selects so the summary is never half-empty.
     const svc = this.services.find((s) => s.id === id);
     const seeded: Record<string, AnswerValue> = {};
     for (const q of svc?.questions ?? []) {
@@ -181,8 +128,8 @@ export class Estimate {
 
   protected choose(q: EstimatorQuestion, opt: EstimatorOption): void {
     this.answers.update((a) => ({ ...a, [q.id]: opt.id }));
-    // Single-choice answers advance on their own — it reads as responsive
-    // rather than making people confirm an obvious selection.
+    // Single-choice answers advance on their own. It reads as responsive rather
+    // than making people confirm an obvious selection.
     setTimeout(() => this.next(), 220);
   }
 
@@ -208,8 +155,7 @@ export class Estimate {
   protected setCount(q: EstimatorQuestion, raw: number): void {
     const min = q.min ?? 0;
     const max = q.max ?? 9999;
-    const value = Math.max(min, Math.min(max, Math.round(raw)));
-    this.answers.update((a) => ({ ...a, [q.id]: value }));
+    this.answers.update((a) => ({ ...a, [q.id]: Math.max(min, Math.min(max, Math.round(raw))) }));
   }
 
   protected bump(q: EstimatorQuestion, direction: 1 | -1): void {
@@ -262,46 +208,32 @@ export class Estimate {
   }
 
   /**
-   * No backend yet — the brief goes out as a prefilled email. The payload below
-   * is the shape an API endpoint should receive when one exists.
+   * No backend yet, so the brief goes out as a prefilled email. The payload
+   * below is the shape an API endpoint should receive when one exists.
    */
   protected sendBrief(): void {
-    const est = this.estimate();
     const svc = this.service();
-    if (!est || !svc) return;
+    if (!svc) return;
 
     const v = this.contact.getRawValue();
-    const answerLines = this.questions().map((q) => {
-      const value = this.answers()[q.id];
-      let readable: string;
-      if (Array.isArray(value)) {
-        readable =
-          value.map((id) => q.options?.find((o) => o.id === id)?.label ?? id).join(', ') || 'None';
-      } else if (typeof value === 'number') {
-        readable = `${value} ${value === 1 ? q.unit : q.unitPlural}`;
-      } else {
-        readable = q.options?.find((o) => o.id === value)?.label ?? String(value ?? '—');
-      }
-      return `  ${q.title} → ${readable}`;
-    });
+    const answers = this.summary().map((s) => `  ${s.title}\n    ${s.value}`);
 
     const body = [
       `Service: ${svc.title}`,
-      `Indicative range: ${this.money(est.low)} – ${this.money(est.high)}${svc.recurring ? ' per month' : ''}`,
       '',
-      'Answers:',
-      ...answerLines,
+      'Brief:',
+      ...answers,
       '',
       `Name: ${v.name}`,
-      `Organisation: ${v.organisation || '—'}`,
+      `Organisation: ${v.organisation || 'Not given'}`,
       `Email: ${v.email}`,
       '',
-      `Notes: ${v.notes || '—'}`,
+      `Notes: ${v.notes || 'None'}`,
     ].join('\n');
 
     const href =
       `mailto:${COMPANY.email}` +
-      `?subject=${encodeURIComponent(`Estimate request — ${svc.title}`)}` +
+      `?subject=${encodeURIComponent(`Project brief: ${svc.title}`)}` +
       `&body=${encodeURIComponent(body)}`;
 
     this.sent.set(true);
@@ -310,10 +242,10 @@ export class Estimate {
 
   /* ------------------------------------------------------------- helpers */
 
-  /** A human-readable form of the current answer, for the summary rail. */
+  /** A human-readable form of the current answer. */
   protected readable(q: EstimatorQuestion): string {
     const value = this.answers()[q.id];
-    if (value === undefined) return '—';
+    if (value === undefined) return 'Not set';
     if (Array.isArray(value)) {
       if (!value.length) return 'None';
       return value.map((id) => q.options?.find((o) => o.id === id)?.label ?? id).join(', ');
@@ -322,16 +254,5 @@ export class Estimate {
       return `${value} ${value === 1 ? q.unit : q.unitPlural}`;
     }
     return q.options?.find((o) => o.id === value)?.label ?? String(value);
-  }
-
-  protected money(n: number): string {
-    return `$${Math.round(n).toLocaleString('en-US')}`;
-  }
-
-  /** Round to a figure that reads as an estimate rather than a quote. */
-  private round(n: number): number {
-    if (n < 1000) return Math.round(n / 50) * 50;
-    if (n < 10000) return Math.round(n / 500) * 500;
-    return Math.round(n / 1000) * 1000;
   }
 }

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { DIFFERENTIATORS } from '../../../../data/site.data';
+import { DIFFERENTIATORS, WHY_INTRO } from '../../../../data/site.data';
 import { ScrollRevealDirective } from '../../../../core/scroll-reveal.directive';
 import { GridLines } from '../../../../ui/grid-lines/grid-lines';
 
@@ -14,17 +14,19 @@ import { GridLines } from '../../../../ui/grid-lines/grid-lines';
       <!-- Sticky rail: stays with the reader while the list scrolls past. -->
       <div class="rail">
         <p class="sec-head__index mono" appReveal>
-          <b>03</b>
-          <span>Why BrnDynamics</span>
+          <b>05</b>
+          <span>Why BrnDynamics is different</span>
         </p>
-        <h2 class="display-1" appReveal [revealDelay]="60">
-          The difference is who picks up the phone.
-        </h2>
-        <p class="lede" appReveal [revealDelay]="120">
-          Four commitments we put in writing, because they are the four things clients tell us went
-          wrong with the last provider.
-        </p>
-        <a routerLink="/company" class="btn" appReveal [revealDelay]="180">How we work</a>
+        <h2 class="display-1" appReveal [revealDelay]="60">{{ intro.heading }}</h2>
+        @for (para of intro.body; track $index) {
+          <p class="lede" appReveal [revealDelay]="120 + $index * 60">{{ para }}</p>
+        }
+        <a [routerLink]="intro.cta.path" class="btn" appReveal [revealDelay]="260">
+          {{ intro.cta.label }}
+          <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" fill="none" />
+          </svg>
+        </a>
       </div>
 
       <ul class="list">
@@ -125,4 +127,5 @@ import { GridLines } from '../../../../ui/grid-lines/grid-lines';
 })
 export class Differentiators {
   protected readonly items = DIFFERENTIATORS;
+  protected readonly intro = WHY_INTRO;
 }

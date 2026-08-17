@@ -1,14 +1,14 @@
 <app-page-hero
-  index="—"
-  label="Solutions"
-  heading="Everything between the socket and the shipped product."
-  lede="Seven disciplines under one accountable team. Each one lists what you actually receive, because 'IT support' means something different at every provider you have spoken to."
+  index="//"
+  label="Services"
+  heading="From first sketch to shipped product."
+  lede="Seven disciplines under one accountable team, covering product design, SaaS, CRM and ERP, AI, web and mobile, engineering and security. Each one lists what you actually receive."
 >
-  <a routerLink="/contact" class="btn btn--primary btn--lg">Book a technical audit</a>
+  <a routerLink="/estimate" class="btn btn--primary btn--lg" data-cursor="2 min">Get an estimate</a>
 </app-page-hero>
 
 <!-- Anchor index -->
-<nav class="jump" aria-label="Solutions index">
+<nav class="jump" aria-label="Services index">
   <ul class="container jump__list">
     @for (cap of capabilities; track cap.id) {
       <li>
@@ -24,11 +24,11 @@
 <!-- Discipline detail -->
 <div class="container">
   @for (cap of capabilities; track cap.id; let i = $index) {
-    <section class="disc" [id]="cap.id" appReveal>
+    <section class="disc icon-host" [id]="cap.id" appReveal>
       <div class="disc__rail">
         <span class="mono disc__index">{{ cap.index }}</span>
-        <a class="disc__thumb" [routerLink]="['/solutions', cap.id]" tabindex="-1" aria-hidden="true">
-          <app-visual [kind]="cap.visual" [labels]="false" />
+        <a class="disc__icon" [routerLink]="['/services', cap.id]" tabindex="-1" aria-hidden="true">
+          <app-service-icon [name]="cap.id" />
         </a>
       </div>
 
@@ -51,7 +51,7 @@
           }
         </ul>
         <div class="disc__cta">
-          <a class="link" [routerLink]="['/solutions', cap.id]">Full detail →</a>
+          <a class="link" [routerLink]="['/services', cap.id]">Full detail →</a>
           <a class="link" routerLink="/estimate">Estimate it →</a>
         </div>
       </div>
@@ -65,8 +65,8 @@
     <app-section-head
       index="07"
       label="Coverage"
-      title="The platforms we hold certifications on."
-      lede="Vendor-neutral by default. We recommend what fits the estate, not what carries the best resale margin."
+      title="What we build with."
+      lede="Chosen per engagement, never by habit. The stack that fits your ability to maintain it beats the stack that is fashionable this year."
       titleClass="display-2"
     />
 
@@ -86,6 +86,6 @@
 </section>
 
 <app-cta-band
-  heading="Tell us what is breaking."
-  body="Send the symptoms and we will tell you which of the six disciplines above actually applies — including when the answer is none of them."
+  heading="Tell us what you are building."
+  body="Describe the problem and we will tell you which of the disciplines above actually applies, including when the answer is none of them."
 />

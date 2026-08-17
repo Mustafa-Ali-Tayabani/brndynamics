@@ -1,0 +1,90 @@
+:host {
+  display: block;
+  --star: #ffb020;
+}
+
+.rows {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.rows--inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3) clamp(1rem, 2.5vw, 2rem);
+}
+
+/* --------------------------------------------------------------- row ---- */
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  background: var(--tint-1);
+  transition:
+    border-color var(--d-fast) var(--e-out),
+    background var(--d-fast) var(--e-out);
+}
+
+.row:hover {
+  border-color: var(--line-strong);
+  background: var(--tint-2);
+}
+
+/* -------------------------------------------------------------- marks ---- */
+
+.mark {
+  display: block;
+  flex: none;
+  height: 15px;
+  width: auto;
+}
+
+/* The Clutch wordmark takes the text colour; its dot keeps brand red. */
+.mark--clutch {
+  color: var(--text);
+  width: 52px;
+}
+
+.mark--google {
+  height: 16px;
+  width: 16px;
+}
+
+/* -------------------------------------------------------------- stars ---- */
+
+.stars {
+  display: inline-flex;
+  gap: 1px;
+}
+
+.star {
+  width: 13px;
+  height: 13px;
+  fill: var(--star);
+  display: block;
+}
+
+/* --------------------------------------------------------------- text ---- */
+
+.score {
+  font-family: var(--f-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--text);
+}
+
+.note {
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+@media (width < 30rem) {
+  .note {
+    display: none;
+  }
+}

@@ -6,9 +6,10 @@
 
 .jump {
   position: sticky;
-  top: var(--header-h);
+  top: var(--sticky-top, var(--header-h));
   z-index: 20;
   background: var(--backdrop);
+  transition: top var(--d-mid) var(--e-out);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
 }
@@ -81,22 +82,35 @@
   color: var(--signal-hi);
 }
 
-.disc__thumb {
-  display: block;
+.disc__icon {
+  display: grid;
+  place-items: center;
+  width: 4.25rem;
+  height: 4.25rem;
   margin-top: var(--s-4);
-  aspect-ratio: 1;
   border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  overflow: hidden;
+  border-radius: var(--r-lg);
+  background: var(--ink-800);
+  color: var(--text-dim);
+  --icon-size: 30px;
+
+  transition:
+    color var(--d-mid) var(--e-out),
+    border-color var(--d-mid) var(--e-out),
+    background var(--d-mid) var(--e-out);
 }
 
-.disc__thumb app-visual {
-  height: 100%;
+.disc:hover .disc__icon {
+  color: var(--signal-hi);
+  border-color: var(--signal-line);
+  background: var(--signal-wash);
 }
 
 @media (width < 62rem) {
-  .disc__thumb {
-    display: none;
+  .disc__icon {
+    width: 3.25rem;
+    height: 3.25rem;
+    --icon-size: 24px;
   }
 }
 

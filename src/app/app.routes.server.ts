@@ -8,7 +8,7 @@ import { CAPABILITIES, CASE_STUDIES } from './data/site.data';
  */
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'solutions/:slug',
+    path: 'services/:slug',
     renderMode: RenderMode.Prerender,
     getPrerenderParams: async () => CAPABILITIES.map((c) => ({ slug: c.id })),
   },

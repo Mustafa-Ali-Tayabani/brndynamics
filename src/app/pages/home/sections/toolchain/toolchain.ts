@@ -18,7 +18,7 @@ import { BrandMark } from '../../../../ui/brand-mark/brand-mark';
   template: `
     <div class="container">
       <app-section-head
-        index="07"
+        index="09"
         label="Toolchain"
         title="We work in your tools."
         lede="Three lists: what we run projects on, what we build with, and what we design in. If yours is missing, we have almost certainly used it."

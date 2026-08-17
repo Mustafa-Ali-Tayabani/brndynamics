@@ -11,9 +11,9 @@ import { GridLines } from '../../ui/grid-lines/grid-lines';
   template: `
     <app-grid-lines />
     <div class="container inner">
-      <p class="mono code">Error 404 — route not resolved</p>
+      <p class="mono code">Error 404 / route not resolved</p>
       <p class="big display-hero tnum" aria-hidden="true">404</p>
-      <h1 class="display-2">This page is not in the estate.</h1>
+      <h1 class="display-2">This page does not exist.</h1>
       <p class="lede">
         The address resolved, the page did not. Try one of the routes below, or tell us what you
         were looking for and we will point you at it.

@@ -11,10 +11,10 @@ import { SpotlightDirective } from '../../../../core/spotlight.directive';
   template: `
     <div class="container">
       <app-section-head
-        index="10"
+        index="12"
         label="Verified reviews"
         title="What the last decade of clients say."
-        lede="Rated 5.0 on Clutch across 31 verified reviews and 4.9 on Google."
+        lede="Verified reviews from clients who have worked with us for years, not months."
       />
 
       <ul class="grid">
@@ -33,17 +33,6 @@ import { SpotlightDirective } from '../../../../core/spotlight.directive';
         }
       </ul>
 
-      <ul class="ratings" appReveal>
-        @for (rating of company.ratings; track rating.source) {
-          <li class="rating">
-            <span class="display-2 tnum">{{ rating.value }}</span>
-            <span class="rating__meta">
-              <span class="stars" aria-hidden="true">★★★★★</span>
-              <span class="mono-sm">{{ rating.source }} · {{ rating.note }}</span>
-            </span>
-          </li>
-        }
-      </ul>
     </div>
   `,
   styles: `

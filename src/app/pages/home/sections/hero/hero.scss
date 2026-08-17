@@ -9,9 +9,9 @@
 .inner {
   position: relative;
   z-index: 1;
-  padding-block: clamp(3.5rem, 11vh, 8rem) clamp(3rem, 8vh, 6rem);
+  padding-block: clamp(2.25rem, 7vh, 4.5rem) clamp(1.75rem, 4vh, 3rem);
   display: grid;
-  gap: clamp(1.75rem, 4vw, 3rem);
+  gap: clamp(1rem, 2.4vw, 1.75rem);
 }
 
 /* --------------------------------------------------------------- glow ---- */
@@ -75,7 +75,10 @@
 
 .headline {
   display: grid;
-  max-width: 18ch;
+  max-width: 20ch;
+  /* Longer copy than the old three-word headline, so the top of the clamp
+     comes down to keep it to three lines without dominating the fold. */
+  font-size: clamp(2.25rem, 5.6vw, 5.75rem);
 }
 
 /* Each line masks its own child so the text wipes up from below. */
@@ -132,10 +135,10 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: clamp(1.5rem, 4vw, 4rem);
-  padding-top: clamp(0.5rem, 2vw, 1.5rem);
+  gap: clamp(1rem, 3vw, 3rem);
+  padding-top: clamp(0.5rem, 1.5vw, 1rem);
   border-top: 1px solid var(--line);
-  margin-top: clamp(0.5rem, 2vw, 1rem);
+  margin-top: clamp(0.25rem, 1vw, 0.75rem);
 }
 
 @media (width < 60rem) {
@@ -147,14 +150,21 @@
 
 .lede {
   max-width: 46ch;
-  padding-top: var(--s-5);
+  padding-top: var(--s-4);
+  font-size: var(--t-body);
 }
 
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--s-3);
-  padding-top: var(--s-5);
+  padding-top: var(--s-4);
+}
+
+/* Social proof sits under the whole block, spanning both columns. */
+.proof {
+  grid-column: 1 / -1;
+  padding-top: var(--s-4);
 }
 
 /* ------------------------------------------------------------ readout ---- */

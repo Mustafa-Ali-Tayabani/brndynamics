@@ -5,7 +5,7 @@
     <div class="hero__art" aria-hidden="true"><app-visual [kind]="c.visual" [labels]="false" /></div>
     <div class="container hero__in">
       <nav class="crumbs mono" aria-label="Breadcrumb">
-        <a routerLink="/solutions">Solutions</a>
+        <a routerLink="/services">Services</a>
         <span aria-hidden="true">/</span>
         <span class="crumbs__here">{{ c.title }}</span>
       </nav>
@@ -21,14 +21,14 @@
             <dd>{{ c.engagement }}</dd>
           </div>
           <div>
-            <dt class="mono-sm">Indicative</dt>
-            <dd class="tnum">{{ c.startsAt }}</dd>
+            <dt class="mono-sm">Related work</dt>
+            <dd>{{ related().length ? related()[0].sector : 'Across nine sectors' }}</dd>
           </div>
         </dl>
 
         <div class="hero__actions">
           <a routerLink="/estimate" class="btn btn--primary btn--lg" data-cursor="2 min">
-            Estimate this
+            Start a brief
           </a>
           <a routerLink="/contact" class="btn btn--lg">Talk it through</a>
         </div>
@@ -153,12 +153,12 @@
   }
 
   <!-- Sibling navigation -->
-  <nav class="siblings container" aria-label="Other disciplines">
-    <a class="sibling" [routerLink]="['/solutions', siblings().prev.id]">
+  <nav class="siblings container" aria-label="Other services">
+    <a class="sibling" [routerLink]="['/services', siblings().prev.id]">
       <span class="mono-sm">← Previous</span>
       <span class="display-4">{{ siblings().prev.title }}</span>
     </a>
-    <a class="sibling sibling--next" [routerLink]="['/solutions', siblings().next.id]">
+    <a class="sibling sibling--next" [routerLink]="['/services', siblings().next.id]">
       <span class="mono-sm">Next →</span>
       <span class="display-4">{{ siblings().next.title }}</span>
     </a>

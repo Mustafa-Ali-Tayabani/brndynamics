@@ -20,7 +20,7 @@ const DOCS: Record<string, LegalDoc> = {
       {
         heading: 'What we collect',
         body: [
-          'When you submit an enquiry we receive the name, organisation, email address, phone number and message you provide. We do not collect anything else through this website — there is no analytics tag, no advertising pixel and no third-party session recording.',
+          'When you submit an enquiry we receive the name, organisation, email address, phone number and message you provide. We do not collect anything else through this website. There is no analytics tag, no advertising pixel and no third-party session recording.',
           'When you become a client we additionally process the operational data required to deliver the service, which is set out in the data processing schedule attached to your contract rather than here.',
         ],
       },
@@ -94,7 +94,7 @@ const DOCS: Record<string, LegalDoc> = {
   imports: [PageHero],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <app-page-hero index="—" label="Legal" [heading]="doc().title" [lede]="doc().lede" />
+    <app-page-hero index="//" label="Legal" [heading]="doc().title" [lede]="doc().lede" />
 
     <div class="container body">
       <article class="prose">
@@ -115,7 +115,7 @@ const DOCS: Record<string, LegalDoc> = {
           <div class="block__body">
             <h2 class="display-3">Contact</h2>
             <p>
-              {{ company.legalName }} —
+              {{ company.legalName }}:
               @for (office of offices; track office.id; let last = $last) {
                 {{ office.city }}, {{ office.country }}{{ last ? '.' : '; ' }}
               }
@@ -126,7 +126,7 @@ const DOCS: Record<string, LegalDoc> = {
           </div>
         </section>
 
-        <p class="mono updated">Last updated — January 2026</p>
+        <p class="mono updated">Last updated January 2026</p>
       </article>
     </div>
   `,

@@ -35,6 +35,7 @@
 /* ---------------------------------------------------------------- bar ---- */
 
 .bar {
+  position: relative;
   border-bottom: 1px solid transparent;
   transition:
     background var(--d-mid) var(--e-out),
@@ -159,6 +160,26 @@
   flex: none;
 }
 
+.bar__contact {
+  display: grid;
+  gap: 1px;
+  text-align: right;
+}
+
+.bar__mail {
+  font-family: var(--f-label);
+  font-size: var(--t-mono-sm);
+  font-weight: 500;
+  letter-spacing: var(--tr-wide);
+  text-transform: uppercase;
+  color: var(--text-faint);
+  transition: color var(--d-fast) var(--e-out);
+}
+
+.bar__mail:hover {
+  color: var(--signal-hi);
+}
+
 .bar__phone {
   display: inline-flex;
   align-items: center;
@@ -174,10 +195,27 @@
   color: var(--text);
 }
 
-@media (width < 78rem) {
-  .bar__phone {
+@media (width < 84rem) {
+  .bar__contact {
     display: none;
   }
+}
+
+/* Services trigger */
+.nav__chev {
+  margin-left: 0.3rem;
+  color: var(--text-faint);
+  transition: transform var(--d-mid) var(--e-out);
+}
+
+.has-mega .nav__link {
+  display: inline-flex;
+  align-items: center;
+}
+
+:host(.is-mega) .has-mega .nav__chev {
+  transform: rotate(180deg);
+  color: var(--signal-hi);
 }
 
 @media (width < 34rem) {

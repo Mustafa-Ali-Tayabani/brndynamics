@@ -6,26 +6,26 @@ import { PageHero } from '../../ui/page-hero/page-hero';
 import { CtaBand } from '../../ui/cta-band/cta-band';
 import { ScrollRevealDirective } from '../../core/scroll-reveal.directive';
 import { SectionHead } from '../../ui/section-head/section-head';
-import { Visual } from '../../ui/visual/visual';
+import { ServiceIcon } from '../../ui/service-icon/service-icon';
 
 @Component({
-  selector: 'app-solutions',
-  imports: [RouterLink, PageHero, CtaBand, ScrollRevealDirective, SectionHead, Visual],
+  selector: 'app-services',
+  imports: [RouterLink, PageHero, CtaBand, ScrollRevealDirective, SectionHead, ServiceIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './solutions.html',
-  styleUrl: './solutions.scss',
+  templateUrl: './services.html',
+  styleUrl: './services.scss',
 })
-export class Solutions {
+export class Services {
   protected readonly capabilities = CAPABILITIES;
   protected readonly platformGroups = PLATFORM_GROUPS;
   protected readonly process = PROCESS;
 
   constructor() {
     inject(SeoService).apply({
-      title: 'Solutions',
+      title: 'Services',
       description:
-        'Managed services, cloud engineering, cyber security, custom software, web and mobile, and independent IT consulting — with the deliverables for each written down.',
-      path: '/solutions',
+        'Product design, SaaS development, CRM and ERP, AI and automation, web and mobile, software engineering, and security. The deliverables for each are written down.',
+      path: '/services',
     });
   }
 }

@@ -38,7 +38,7 @@ export class Contact {
     '$10k – $50k',
     '$50k – $250k',
     '$250k+',
-    'Retainer / managed service',
+    'Monthly retainer',
   ];
 
   protected toggleFaq(i: number): void {
@@ -68,9 +68,9 @@ export class Contact {
 
     const body = [
       `Name: ${v.name}`,
-      `Organisation: ${v.organisation || '—'}`,
+      `Organisation: ${v.organisation || 'Not given'}`,
       `Email: ${v.email}`,
-      `Phone: ${v.phone || '—'}`,
+      `Phone: ${v.phone || 'Not given'}`,
       `Interest: ${discipline}`,
       '',
       v.message,
@@ -78,7 +78,7 @@ export class Contact {
 
     const href =
       `mailto:${COMPANY.email}` +
-      `?subject=${encodeURIComponent(`New enquiry — ${discipline}`)}` +
+      `?subject=${encodeURIComponent(`New enquiry: ${discipline}`)}` +
       `&body=${encodeURIComponent(body)}`;
 
     if (typeof window !== 'undefined') window.location.href = href;
@@ -88,7 +88,7 @@ export class Contact {
     inject(SeoService).apply({
       title: 'Contact',
       description:
-        'Talk to a BrnDynamics engineer. Mean first response under 60 minutes, 24/7 coverage. Book a technical audit or call +92 324 923 5848.',
+        'Talk to the BrnDynamics team about your product. Offices in Karachi, Riyadh and Geneva. Start with the estimator or call +92 324 923 5848.',
       path: '/contact',
     });
   }

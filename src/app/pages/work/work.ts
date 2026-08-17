@@ -13,10 +13,10 @@ import { Visual } from '../../ui/visual/visual';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-page-hero
-      index="—"
+      index="//"
       label="Selected work"
       heading="Engagements we can talk about."
-      lede="A sample of the 74 projects delivered since 2019. Names are withheld where the contract requires it; the numbers are not."
+      lede="A sample of the 80+ projects delivered since 2019. Names are withheld where the contract requires it; the numbers are not."
     >
       <a routerLink="/contact" class="btn btn--primary btn--lg">Discuss your project</a>
     </app-page-hero>
@@ -58,7 +58,7 @@ import { Visual } from '../../ui/visual/visual';
           </div>
 
           <div class="entry__main">
-            <p class="mono entry__sector">{{ item.sector }} — {{ item.discipline }}</p>
+            <p class="mono entry__sector">{{ item.sector }} / {{ item.discipline }}</p>
             <h2 class="display-2">
               <a class="entry__link" [routerLink]="['/work', item.slug]">{{ item.title }}</a>
             </h2>
@@ -101,7 +101,7 @@ import { Visual } from '../../ui/visual/visual';
 
     <app-cta-band
       heading="Your project is the next entry."
-      body="Bring us the constraint that has stalled the work — budget, compliance, a vendor that will not cooperate — and we will tell you how we would sequence it."
+      body="Bring us the constraint that has stalled the work, whether that is budget, compliance or a vendor that will not cooperate, and we will tell you how we would sequence it."
     />
   `,
   styleUrl: './work.scss',
@@ -126,7 +126,7 @@ export class Work {
     inject(SeoService).apply({
       title: 'Case Studies',
       description:
-        'Selected BrnDynamics engagements: a $750k/month cloud saving for an insurance provider, a logistics throughput rebuild, a public safety mobile app and a zero-downtime healthcare transition.',
+        'Selected BrnDynamics engagements: an analytics platform rebuild, a four-system ERP consolidation, a public-sector mobile app and a clinical SaaS platform.',
       path: '/work',
     });
   }

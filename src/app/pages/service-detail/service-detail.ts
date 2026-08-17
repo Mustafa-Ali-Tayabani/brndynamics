@@ -12,7 +12,7 @@ import { GridLines } from '../../ui/grid-lines/grid-lines';
 import { Visual } from '../../ui/visual/visual';
 
 @Component({
-  selector: 'app-solution-detail',
+  selector: 'app-service-detail',
   imports: [
     RouterLink,
     CtaBand,
@@ -23,10 +23,10 @@ import { Visual } from '../../ui/visual/visual';
     Visual,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './solution-detail.html',
-  styleUrl: './solution-detail.scss',
+  templateUrl: './service-detail.html',
+  styleUrl: './service-detail.scss',
 })
-export class SolutionDetail {
+export class ServiceDetail {
   private readonly slug = toSignal(
     inject(ActivatedRoute).paramMap.pipe(map((p) => p.get('slug') ?? '')),
     { initialValue: '' },
@@ -63,7 +63,7 @@ export class SolutionDetail {
     seo.apply({
       title: cap.title,
       description: cap.summary,
-      path: `/solutions/${cap.id}`,
+      path: `/services/${cap.id}`,
     });
     seo.setJsonLd('ld-service', {
       '@context': 'https://schema.org',

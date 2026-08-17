@@ -12,15 +12,15 @@ import { FlowDiagram } from '../../../../ui/flow-diagram/flow-diagram';
   template: `
     <div class="container">
       <app-section-head
-        index="06"
+        index="08"
         label="How an engagement runs"
         title="Five stages, and a gate you control."
-        lede="The audit is the entry point for everything. At stage three you either sign or take the findings and go — that gate is deliberate."
+        lede="Discovery is the entry point for everything. At stage three you either sign or keep the specification and walk. That gate is deliberate."
       />
 
       <app-flow-diagram
         [stages]="flow"
-        loopLabel="Operate feeds back into Audit — every service review reopens the findings list rather than closing it."
+        loopLabel="Support feeds back into Discover. Every review reopens the backlog rather than closing it."
       />
 
       <div class="foot" appReveal>

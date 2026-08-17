@@ -1,0 +1,209 @@
+:host {
+  position: absolute;
+  inset: 100% 0 auto;
+  display: block;
+  pointer-events: none;
+}
+
+.mega {
+  background: var(--ink-900);
+  border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-lift);
+  /* Wipes down from the header edge rather than fading, which reads as the
+     panel belonging to the bar above it. */
+  clip-path: inset(0 0 100% 0);
+  opacity: 0;
+  transition:
+    clip-path var(--d-mid) var(--e-out),
+    opacity var(--d-fast) var(--e-out);
+}
+
+:host(.is-open) {
+  pointer-events: auto;
+}
+
+:host(.is-open) .mega {
+  clip-path: inset(0 0 0 0);
+  opacity: 1;
+}
+
+.mega__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 20rem;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding-block: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+@media (width < 74rem) {
+  .mega__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mega__label {
+  color: var(--text-faint);
+  padding-bottom: var(--s-4);
+  margin-bottom: var(--s-4);
+  border-bottom: 1px solid var(--line);
+}
+
+/* --------------------------------------------------------------- grid ---- */
+
+.mega__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem;
+}
+
+@media (width < 56rem) {
+  .mega__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tile {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--s-4);
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  border: 1px solid transparent;
+  transition:
+    background var(--d-fast) var(--e-out),
+    border-color var(--d-fast) var(--e-out);
+}
+
+.tile:hover {
+  background: var(--tint-1);
+  border-color: var(--line);
+}
+
+.tile__icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  color: var(--text-dim);
+  background: var(--ink-800);
+  transition:
+    color var(--d-fast) var(--e-out),
+    border-color var(--d-fast) var(--e-out);
+}
+
+.tile:hover .tile__icon {
+  color: var(--signal-hi);
+  border-color: var(--signal-line);
+}
+
+.tile__body {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.tile__title {
+  font-family: var(--f-display);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: var(--tr-snug);
+}
+
+.tile__blurb {
+  font-size: var(--t-sm);
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+
+.tile__price {
+  color: var(--text-faint);
+  max-width: 11rem;
+  text-align: right;
+  line-height: 1.4;
+  padding-top: 0.2rem;
+}
+
+@media (width < 48rem) {
+  .tile__price {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------- side ---- */
+
+.mega__side {
+  display: grid;
+  align-content: start;
+  gap: var(--s-4);
+}
+
+.promo {
+  display: grid;
+  gap: var(--s-3);
+  padding: var(--s-5);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--signal-line);
+  background: var(--signal-wash);
+  transition: background var(--d-fast) var(--e-out);
+}
+
+.promo:hover {
+  background: color-mix(in srgb, var(--signal) 16%, transparent);
+}
+
+.promo__body {
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.promo__cta {
+  justify-self: start;
+  color: var(--signal-hi);
+}
+
+.quick {
+  display: grid;
+  gap: 0.5rem;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+}
+
+.quick a {
+  font-size: var(--t-sm);
+  color: var(--text-dim);
+  transition:
+    color var(--d-fast) var(--e-out),
+    transform var(--d-fast) var(--e-out);
+  display: inline-block;
+}
+
+.quick a:hover {
+  color: var(--text);
+  transform: translateX(3px);
+}
+
+.mega__mail {
+  font-family: var(--f-label);
+  font-size: var(--t-mono);
+  letter-spacing: var(--tr-wide);
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  transition: color var(--d-fast) var(--e-out);
+}
+
+.mega__mail:hover {
+  color: var(--signal-hi);
+}
+
+/* The panel is desktop-only; the drawer covers narrow screens. */
+@media (width < 62rem) {
+  :host {
+    display: none;
+  }
+}

@@ -30,22 +30,22 @@ export class Company {
   protected readonly industries = INDUSTRIES;
 
   protected readonly roles = [
-    { title: 'Senior Cloud Engineer', location: 'New York / Remote', type: 'Full-time' },
-    { title: 'Security Analyst (SOC)', location: 'Remote', type: 'Full-time' },
-    { title: 'Service Desk Engineer, Tier 2', location: 'New York', type: 'Full-time' },
-    { title: 'Full-stack Developer', location: 'Remote', type: 'Contract' },
+    { title: 'Senior Product Designer', location: 'Karachi / Remote', type: 'Full-time' },
+    { title: 'Full-stack Engineer (Node, React)', location: 'Karachi', type: 'Full-time' },
+    { title: 'AI / ML Engineer', location: 'Remote', type: 'Full-time' },
+    { title: 'QA Automation Specialist', location: 'Karachi / Remote', type: 'Contract' },
   ];
 
   /** Pre-fills the mailto subject line for a role. */
   protected encode(role: string): string {
-    return encodeURIComponent(`Application — ${role}`);
+    return encodeURIComponent(`Application: ${role}`);
   }
 
   constructor() {
     inject(SeoService).apply({
       title: 'Company',
       description:
-        'BrnDynamics is a managed IT and engineering firm operating since 2019 from New York, with a distributed team providing genuine 24/7 coverage across six regulated sectors.',
+        'Founded in 2019, BrnDynamics is a technology company specialising in UI/UX design, software development, AI-powered solutions, SaaS products and CRM and ERP systems, with offices in Karachi, Riyadh and Geneva.',
       path: '/company',
     });
   }

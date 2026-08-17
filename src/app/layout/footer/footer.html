@@ -22,12 +22,12 @@
       </div>
     </div>
 
-    <nav class="col" aria-label="Solutions">
-      <p class="mono muted">Solutions</p>
+    <nav class="col" aria-label="Services">
+      <p class="mono muted">Services</p>
       <ul class="list">
         @for (cap of capabilities; track cap.id) {
           <li>
-            <a routerLink="/solutions" [fragment]="cap.id">{{ cap.title }}</a>
+            <a routerLink="/services" [fragment]="cap.id">{{ cap.title }}</a>
           </li>
         }
       </ul>

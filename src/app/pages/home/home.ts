@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SeoService } from '../../core/seo.service';
 import { Hero } from './sections/hero/hero';
 import { Stats } from './sections/stats/stats';
+import { Console } from './sections/console/console';
 import { Clients } from './sections/clients/clients';
 import { Capabilities } from './sections/capabilities/capabilities';
 import { Differentiators } from './sections/differentiators/differentiators';
@@ -19,6 +20,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
   imports: [
     Hero,
     Stats,
+    Console,
     Clients,
     Capabilities,
     Differentiators,
@@ -35,6 +37,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
   template: `
     <app-hero />
     <app-stats />
+    <app-console />
     <app-clients />
     <app-capabilities />
     <app-differentiators />
@@ -53,7 +56,7 @@ export class Home {
     inject(SeoService).apply({
       title: 'Managed IT, Cloud & Security Engineering',
       description:
-        'BrnDynamics takes operational ownership of your IT estate — managed services, cloud engineering, cyber security and custom software. Offices in Karachi, Geneva and Riyadh, 24/7 cover, sub-60-minute response.',
+        'BrnDynamics builds digital products: UI/UX design, SaaS platforms, CRM and ERP systems, AI-powered solutions, and web and mobile applications. Offices in Karachi, Riyadh and Geneva.',
       path: '/',
     });
   }

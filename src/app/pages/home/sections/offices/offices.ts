@@ -13,7 +13,7 @@ import { LocalTime } from '../../../../ui/local-time/local-time';
   template: `
     <div class="container">
       <app-section-head
-        index="09"
+        index="11"
         label="Where we are"
         title="Three offices, one working day."
         lede="Karachi opens, Riyadh overlaps through the morning, Geneva through the afternoon. That handover is why someone answers at 03:00."

@@ -13,10 +13,10 @@ import { Visual } from '../../../../ui/visual/visual';
   template: `
     <div class="container">
       <app-section-head
-        index="04"
+        index="06"
         label="Selected work"
         title="Outcomes, with the number attached."
-        lede="Four engagements that show the range — a nine-figure estate, a distribution floor, a public-sector app and a healthcare continuity platform."
+        lede="Four engagements that show the range: an analytics platform, an ERP consolidation, a public-sector mobile app and a clinical SaaS platform."
       />
 
       <ul class="grid">

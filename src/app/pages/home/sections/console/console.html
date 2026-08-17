@@ -1,0 +1,122 @@
+<div class="container">
+  <app-section-head
+    index="02"
+    label="Meet the team"
+    title="Ask us anything. Here is the short answer."
+    lede="Six years, eighty projects, three offices. Open a file on the left for the rest."
+  />
+
+  <div class="ide" appReveal>
+    <!-- Window chrome -->
+    <div class="ide__bar">
+      <span class="ide__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="mono-sm ide__path">brndynamics / {{ active().name }}</span>
+      <span class="mono-sm ide__badge">
+        <span class="dot"></span>
+        online
+      </span>
+    </div>
+
+    <div class="ide__body">
+      <!-- File rail -->
+      <nav class="ide__rail" aria-label="Panel files">
+        <p class="mono-sm ide__rail-label">Explorer</p>
+        <ul>
+          @for (f of files; track f.id) {
+            <li>
+              <button
+                type="button"
+                class="ide__file"
+                [class.is-active]="f.id === activeId()"
+                [attr.aria-current]="f.id === activeId() ? 'true' : null"
+                (click)="select(f.id)"
+              >
+                <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+                  <path d="M4 1.5h5l3 3v10H4z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                  <path d="M9 1.5v3h3" fill="none" stroke="currentColor" stroke-width="1.2" />
+                </svg>
+                {{ f.name }}
+              </button>
+            </li>
+          }
+        </ul>
+
+        <p class="mono-sm ide__rail-label ide__rail-label--gap">Offices</p>
+        <ul class="ide__offices">
+          <li><span class="mono-sm">PK</span> Karachi</li>
+          <li><span class="mono-sm">SA</span> Riyadh</li>
+          <li><span class="mono-sm">CH</span> Geneva</li>
+        </ul>
+      </nav>
+
+      <!-- Transcript -->
+      <div class="ide__pane">
+        <ol class="log">
+          @for (line of active().lines; track $index; let i = $index) {
+            @if (i < shown()) {
+              <li class="log__line" [attr.data-kind]="line.kind">
+                <span class="log__no mono-sm" aria-hidden="true">{{ i + 1 }}</span>
+                <span class="log__content">
+                  @switch (line.kind) {
+                    @case ('cmd') {
+                      <span class="log__prompt" aria-hidden="true">$</span>
+                      <code class="log__cmd">{{ line.text }}</code>
+                    }
+                    @case ('stat') {
+                      <span class="log__key mono-sm">{{ line.text }}</span>
+                      <span class="log__val tnum">{{ line.value }}</span>
+                    }
+                    @case ('in') {
+                      <span class="log__who mono-sm" aria-hidden="true">brn</span>
+                      <span class="log__text">{{ line.text }}</span>
+                    }
+                    @default {
+                      <span class="log__who log__who--out mono-sm" aria-hidden="true">out</span>
+                      <span class="log__text log__text--dim">{{ line.text }}</span>
+                    }
+                  }
+                </span>
+              </li>
+            }
+          }
+
+          @if (!done()) {
+            <li class="log__line log__line--caret" aria-hidden="true">
+              <span class="log__no mono-sm">{{ shown() + 1 }}</span>
+              <span class="log__content">
+                <span class="log__prompt">$</span>
+                <span class="caret"></span>
+              </span>
+            </li>
+          }
+        </ol>
+
+        @if (done()) {
+          <div class="ide__cta">
+            <a routerLink="/estimate" class="btn btn--primary" data-cursor="2 min">
+              Start a brief
+              <svg class="btn__arrow" width="13" height="13" viewBox="0 0 16 16" aria-hidden="true">
+                <path
+                  d="M3 13 13 3M6 3h7v7"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  fill="none"
+                  stroke-linecap="square"
+                />
+              </svg>
+            </a>
+            <a [href]="'mailto:' + company.email" class="btn">{{ company.email }}</a>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Status bar -->
+    <div class="ide__status">
+      <span class="mono-sm">Since 2019</span>
+      <span class="mono-sm">20+ specialists</span>
+      <span class="mono-sm">80+ projects</span>
+      <span class="mono-sm ide__note">A summary panel, not a live chat.</span>
+    </div>
+  </div>
+</div>

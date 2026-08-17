@@ -11,7 +11,7 @@ import { Marquee } from '../../../../ui/marquee/marquee';
   template: `
     <div class="container">
       <app-section-head
-        index="08"
+        index="10"
         label="Sectors"
         title="Constraints we already know."
         lede="Regulated environments punish providers who learn the rules on your budget. These are the six where we have shipped repeatedly."

@@ -17,7 +17,7 @@ import { GridLines } from '../grid-lines/grid-lines';
     <div class="container inner">
       <p class="chip chip--signal mono" appReveal>
         <span class="dot"></span>
-        Mean first response under 60 minutes
+        Usually a reply the same business day
       </p>
 
       <h2 class="display-hero head" appReveal [revealDelay]="60">{{ heading() }}</h2>
@@ -47,7 +47,7 @@ import { GridLines } from '../grid-lines/grid-lines';
       </div>
 
       <p class="mono-sm alt">
-        Or write directly —
+        Or write directly:
         <a class="link alt__link" [href]="'mailto:' + company.email">{{ company.email }}</a>
       </p>
 
@@ -58,11 +58,11 @@ import { GridLines } from '../grid-lines/grid-lines';
         </div>
         <div>
           <dt class="mono-sm">Offices</dt>
-          <dd>Karachi · Geneva · Riyadh</dd>
+          <dd>Karachi · Riyadh · Geneva</dd>
         </div>
         <div>
-          <dt class="mono-sm">Coverage</dt>
-          <dd>24 / 7 / 365</dd>
+          <dt class="mono-sm">Time zones</dt>
+          <dd>PKT / AST / CET</dd>
         </div>
       </dl>
     </div>
@@ -160,8 +160,8 @@ import { GridLines } from '../grid-lines/grid-lines';
 export class CtaBand {
   protected readonly company = COMPANY;
 
-  readonly heading = input('Let us take the estate off your desk.');
+  readonly heading = input('Let us build it with you.');
   readonly body = input(
-    'Start with a technical audit. Two weeks, fixed fee, and you keep the findings and the roadmap whether or not you engage us for the work.',
+    'Start with the estimator for an indicative number, or tell us what you are building and we will come back with a scope and a real figure.',
   );
 }

@@ -6,7 +6,7 @@
         @if (service()) {
           {{ service()!.title }}
         } @else {
-          Cost estimator
+          Project brief
         }
       </span>
       <div class="progress__bar" role="progressbar" [attr.aria-valuenow]="progress()"
@@ -26,14 +26,14 @@
   <div class="container stage">
     <!-- ────────────────────────────────────────────── main column ── -->
     <div class="panel">
-      <!-- STEP 0 — choose a service -->
+      <!-- STEP 0: choose a service -->
       @if (stepIndex() === 0) {
         <div class="step">
           <p class="mono step__eyebrow"><b>01</b> What do you need?</p>
-          <h1 class="display-1 step__title">Let’s put a number on it.</h1>
+          <h1 class="display-1 step__title">Tell us what you are building.</h1>
           <p class="lede">
-            Six questions, about two minutes, and you get an indicative range with the
-            reasoning shown. No account, no call required.
+            A few questions, about two minutes. We read every brief ourselves and reply with a
+            scope and a price. No account, no call required to start.
           </p>
 
           <ul class="services">
@@ -56,7 +56,7 @@
         </div>
       }
 
-      <!-- STEPS 1..n — questions -->
+      <!-- STEPS 1..n: questions -->
       @if (currentQuestion(); as q) {
         <div class="step">
           <p class="mono step__eyebrow">
@@ -112,9 +112,6 @@
                         <span class="mono-sm opt__hint">{{ opt.hint }}</span>
                       }
                     </span>
-                    @if (opt.add) {
-                      <span class="mono-sm opt__price">+{{ money(opt.add) }}</span>
-                    }
                   </button>
                 </li>
               }
@@ -160,10 +157,6 @@
                 [attr.aria-label]="q.title"
               />
 
-              <p class="mono-sm counter__rate">
-                {{ money(q.perUnit ?? 0) }} per {{ q.unit }} ·
-                {{ money(count(q) * (q.perUnit ?? 0)) }} for {{ count(q) }}
-              </p>
             </div>
           }
 
@@ -187,10 +180,10 @@
       <!-- CONTACT -->
       @if (onContactStep()) {
         <div class="step">
-          <p class="mono step__eyebrow"><b>—</b> Almost there</p>
-          <h1 class="display-2 step__title">Where should the breakdown go?</h1>
+          <p class="mono step__eyebrow"><b>//</b> Almost there</p>
+          <h1 class="display-2 step__title">Where should we send the quote?</h1>
           <p class="lede">
-            We will send the itemised estimate and, if it is useful, a suggested scope. No
+            We will reply with a scope and a price, usually within one business day. No
             newsletter, no follow-up sequence.
           </p>
 
@@ -224,50 +217,41 @@
 
             <div class="step__nav step__nav--form">
               <button type="button" class="btn" (click)="back()">Back</button>
-              <button type="submit" class="btn btn--primary">See the estimate</button>
+              <button type="submit" class="btn btn--primary">Review the brief</button>
             </div>
           </form>
         </div>
       }
 
-      <!-- RESULT -->
-      @if (onResultStep() && estimate(); as est) {
+      <!-- REVIEW -->
+      @if (onResultStep()) {
         <div class="step">
-          <p class="mono step__eyebrow"><b>✓</b> Indicative estimate</p>
-
-          <p class="result">
-            <span class="display-hero tnum result__figure">{{ money(est.low) }}</span>
-            <span class="result__to mono">to</span>
-            <span class="display-hero tnum result__figure">{{ money(est.high) }}</span>
-          </p>
-          <p class="mono result__unit">
-            {{ est.recurring ? 'per month, excluding third-party licences' : 'one-off project cost' }}
+          <p class="mono step__eyebrow"><b>//</b> Your brief</p>
+          <h1 class="display-2 step__title">Ready to send.</h1>
+          <p class="lede">
+            Here is what we will receive. Change anything by clicking it, then send it over and we
+            will come back with a scope and a price.
           </p>
 
-          <div class="breakdown">
-            <p class="mono breakdown__label">How we got there</p>
-            <ul>
-              @for (line of est.lines; track $index) {
-                <li class="line">
-                  <span class="line__label">{{ line.label }}</span>
-                  <span class="mono-sm line__detail">{{ line.detail }}</span>
-                  <span class="mono line__amount tnum">
-                    @if (line.amount !== undefined) {
-                      {{ money(line.amount) }}
-                    } @else {
-                      ×{{ line.factor }}
-                    }
-                  </span>
-                </li>
-              }
-            </ul>
+          <div class="review">
+            <div class="review__row review__row--head">
+              <span class="mono">Service</span>
+              <span class="review__val">{{ service()?.title }}</span>
+            </div>
+            @for (item of summary(); track item.title) {
+              <button type="button" class="review__row" (click)="goTo(item.step)">
+                <span class="mono">{{ item.title }}</span>
+                <span class="review__val">{{ item.value }}</span>
+                <span class="review__edit mono-sm" aria-hidden="true">Edit</span>
+              </button>
+            }
           </div>
 
           <div class="caveat">
             <p class="body-dim">
-              This is an indicative range from the answers you gave, not a quote. The number that
-              matters comes after a conversation — usually it lands inside this range, occasionally
-              we will tell you the work is smaller than you expected.
+              We do not quote from a formula. A person reads the brief, checks it against work we
+              have actually delivered, and replies with a real number. If your budget and the scope
+              do not line up, we will say so and suggest what would.
             </p>
           </div>
 
@@ -280,7 +264,16 @@
                 appMagnetic
                 [magneticStrength]="7"
               >
-                Send this brief to an engineer
+                Send the brief
+                <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+                  <path
+                    d="M3 13 13 3M6 3h7v7"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    fill="none"
+                    stroke-linecap="square"
+                  />
+                </svg>
               </button>
             } @else {
               <p class="mono sent"><span class="dot"></span> Brief opened in your mail client</p>
@@ -299,18 +292,10 @@
     <!-- ─────────────────────────────────────────────── live summary ── -->
     @if (service(); as svc) {
       <aside class="summary" [class.is-result]="onResultStep()">
-        <p class="mono summary__label">Running estimate</p>
+        <p class="mono summary__label">Your brief so far</p>
 
-        @if (estimate(); as est) {
-          <p class="summary__figure">
-            <span class="display-3 tnum">{{ money(est.low) }}</span>
-            <span class="mono summary__dash">to</span>
-            <span class="display-3 tnum">{{ money(est.high) }}</span>
-          </p>
-          <p class="mono-sm summary__unit">
-            {{ est.recurring ? 'per month' : 'project total' }}
-          </p>
-        }
+        <p class="summary__service display-4">{{ svc.title }}</p>
+        <p class="mono-sm summary__lead">{{ svc.leadTime }}</p>
 
         <ul class="summary__steps">
           <li>
@@ -319,12 +304,12 @@
               <span class="summary__val">{{ svc.title }}</span>
             </button>
           </li>
-          @for (q of questions(); track q.id; let i = $index) {
-            @if (answers()[q.id] !== undefined && i + 1 < stepIndex()) {
+          @for (item of summary(); track item.title) {
+            @if (item.step < stepIndex()) {
               <li>
-                <button type="button" class="summary__step" (click)="goTo(i + 1)">
-                  <span class="mono-sm">{{ q.title }}</span>
-                  <span class="summary__val">{{ readable(q) }}</span>
+                <button type="button" class="summary__step" (click)="goTo(item.step)">
+                  <span class="mono-sm">{{ item.title }}</span>
+                  <span class="summary__val">{{ item.value }}</span>
                 </button>
               </li>
             }
@@ -332,7 +317,7 @@
         </ul>
 
         <p class="mono-sm summary__note">
-          Indicative only. Adjust any answer by clicking it.
+          No price is shown here. We review the brief and send you a figure.
         </p>
       </aside>
     }
