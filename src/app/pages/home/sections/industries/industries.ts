@@ -20,7 +20,7 @@ import { Marquee } from '../../../../ui/marquee/marquee';
       <ul class="grid">
         @for (item of industries; track item.name; let i = $index) {
           <li class="cell" appReveal [revealDelay]="i * 55">
-            <span class="mono cell__num tnum">{{ '0' + (i + 1) }}</span>
+            <span class="mono cell__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</span>
             <h3 class="display-4 cell__name">{{ item.name }}</h3>
             <p class="mono-sm cell__note">{{ item.note }}</p>
             <span class="cell__arrow" aria-hidden="true">→</span>

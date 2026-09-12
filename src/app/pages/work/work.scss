@@ -79,10 +79,13 @@
   padding-bottom: clamp(2rem, 5vw, 4rem);
 }
 
+/* The artwork used to sit in a 9rem metadata gutter, which rendered a 2400px
+   render at 142px. It now takes half the row. */
 .entry {
   display: grid;
-  grid-template-columns: 9rem minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: clamp(1rem, 3vw, 3rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: center;
   padding-block: clamp(2rem, 5vw, 3.5rem);
   border-bottom: 1px solid var(--line);
 }
@@ -94,41 +97,47 @@
   }
 }
 
-.entry__meta {
-  display: grid;
-  gap: 0.25rem;
-  align-content: start;
-}
-
-@media (width < 62rem) {
-  .entry__meta {
-    display: flex;
-    gap: var(--s-4);
-  }
-}
-
-.entry__thumb {
+.entry__media {
   display: block;
-  margin-top: var(--s-3);
-  aspect-ratio: 4 / 3;
   border: 1px solid var(--line);
-  border-radius: var(--r-md);
+  border-radius: var(--r-lg);
   overflow: hidden;
+  background: var(--shot-plate);
 }
 
-.entry__thumb app-visual {
+/* A real render sets its own height from its source ratio; only the generated
+   fallback needs a box to fill. Nothing here is cropped. */
+.entry__media:not(:has(img)) {
+  aspect-ratio: 16 / 9;
+}
+
+.entry__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.entry__media app-visual {
+  display: block;
+  width: 100%;
   height: 100%;
   transition: transform var(--d-slow) var(--e-out);
 }
 
-.entry:hover .entry__thumb app-visual {
-  transform: scale(1.06);
+.entry:hover .entry__media app-visual {
+  transform: scale(1.04);
 }
 
-@media (width < 62rem) {
-  .entry__thumb {
-    display: none;
-  }
+.entry__main {
+  display: grid;
+  gap: var(--s-4);
+  align-content: center;
+}
+
+.entry__index {
+  display: flex;
+  align-items: center;
+  gap: var(--s-4);
 }
 
 .entry__num {
@@ -139,10 +148,8 @@
   color: var(--text-faint);
 }
 
-.entry__main {
-  display: grid;
-  gap: var(--s-4);
-  align-content: start;
+.entry__logo {
+  --case-logo-h: 30px;
 }
 
 .entry__sector {
@@ -163,6 +170,25 @@
   max-width: 56ch;
 }
 
+.entry__metric {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line-strong);
+}
+
+.entry__value {
+  line-height: 1;
+}
+
+.entry__label {
+  color: var(--text-faint);
+  max-width: 24ch;
+  line-height: 1.5;
+}
+
 .entry__more {
   justify-self: start;
 }
@@ -179,37 +205,6 @@
   border-radius: var(--r-sm);
   color: var(--text-dim);
   background: var(--tint-1);
-}
-
-.entry__metric {
-  display: grid;
-  gap: 0.375rem;
-  align-content: start;
-  padding-left: clamp(1rem, 2vw, 1.5rem);
-  border-left: 1px solid var(--line-strong);
-}
-
-@media (width < 62rem) {
-  .entry__metric {
-    padding-left: 0;
-    padding-top: var(--s-4);
-    border-left: 0;
-    border-top: 1px solid var(--line-strong);
-  }
-}
-
-.entry__value {
-  line-height: 1;
-}
-
-.entry__label,
-.entry__client {
-  color: var(--text-faint);
-}
-
-.entry__client {
-  margin-top: var(--s-2);
-  color: var(--text-dim);
 }
 
 .empty {

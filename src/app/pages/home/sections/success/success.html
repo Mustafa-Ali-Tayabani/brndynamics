@@ -21,7 +21,7 @@
           [class.is-on]="active() === i"
           (click)="select(i)"
         >
-          <span class="mono rail__num tnum">{{ '0' + (i + 1) }}</span>
+          <span class="mono rail__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</span>
           <span class="rail__label">{{ s.sector }}</span>
           <span class="mono-sm rail__region">{{ s.region }}</span>
         </button>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
@@ -11,6 +11,9 @@ import { SpotlightDirective } from '../../core/spotlight.directive';
 import { CountUpDirective } from '../../core/count-up.directive';
 import { GridLines } from '../../ui/grid-lines/grid-lines';
 import { Visual } from '../../ui/visual/visual';
+import { ImgOk } from '../../ui/img-ok';
+import { CaseLogo } from '../../ui/case-logo/case-logo';
+import { LeadGuide } from '../../ui/lead-guide/lead-guide';
 
 @Component({
   selector: 'app-case-detail',
@@ -23,6 +26,9 @@ import { Visual } from '../../ui/visual/visual';
     CountUpDirective,
     GridLines,
     Visual,
+    ImgOk,
+    CaseLogo,
+    LeadGuide,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './case-detail.html',
@@ -38,12 +44,42 @@ export class CaseDetail {
     () => CASE_STUDIES.find((c) => c.slug === this.slug()) ?? CASE_STUDIES[0],
   );
 
-  /** The discipline this engagement belongs to, for a route back into services. */
-  protected readonly discipline = computed(() =>
-    CAPABILITIES.find((c) => c.relatedCases.includes(this.study().slug)),
+  /**
+   * Artwork that 404s is dropped rather than left as a broken frame, so the
+   * page stays presentable until the files are in place.
+   */
+  protected readonly missing = signal<ReadonlySet<string>>(new Set());
+
+  protected markMissing(src: string): void {
+    this.missing.update((set) => new Set(set).add(src));
+  }
+
+  /** Hero artwork, dropped once it is known to be unavailable. */
+  protected readonly heroShot = computed(() => {
+    const img = this.study().hero;
+    return img && !this.missing().has(img.src) ? img : null;
+  });
+
+  /** First supporting image, shown beside the results. */
+  protected readonly figure = computed(() => {
+    const img = this.study().gallery?.[0];
+    return img && !this.missing().has(img.src) ? img : null;
+  });
+
+  /** Anything beyond that falls through to a grid of its own. */
+  protected readonly extras = computed(() =>
+    (this.study().gallery ?? []).slice(1).filter((i) => !this.missing().has(i.src)),
   );
 
+  /** The discipline this engagement belongs to, for a route back into services. */
+  protected readonly discipline = computed(() =>
+    CAPABILITIES.find((c) => c.id === this.study().capability),
+  );
+
+  /** Null while this is the only published case study, so the nav never
+      offers the page you are already on as the next one. */
   protected readonly next = computed(() => {
+    if (CASE_STUDIES.length < 2) return null;
     const i = CASE_STUDIES.findIndex((c) => c.slug === this.study().slug);
     return CASE_STUDIES[(i + 1) % CASE_STUDIES.length];
   });

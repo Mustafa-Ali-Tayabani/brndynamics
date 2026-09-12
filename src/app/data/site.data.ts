@@ -67,9 +67,28 @@ export interface Industry {
   note: string;
 }
 
+export interface CaseStudyImage {
+  /** Path under public/, e.g. '/work/rpa/hero.webp'. */
+  src: string;
+  /** Variant for the dark canvas, when the artwork is fixed-colour raster. */
+  srcDark?: string;
+  alt: string;
+  /** 'wide' spans the full column; 'square' sits in the half-width grid. */
+  shape?: 'wide' | 'square';
+}
+
 export interface CaseStudy {
   slug: string;
+  /** Capability this engagement belongs to, for the route back into services. */
+  capability: string;
+  /** Fallback artwork used wherever no image has been supplied. */
   visual: VisualKind;
+  /** Logo of the product itself, shown above the title. */
+  logo?: CaseStudyImage;
+  /** Lead image for the card and the detail hero. */
+  hero?: CaseStudyImage;
+  /** Additional imagery shown through the case study body. */
+  gallery?: CaseStudyImage[];
   client: string;
   sector: string;
   discipline: string;
@@ -298,7 +317,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Fixed-scope project or embedded designer',
     startsAt: 'from $5,500',
-    relatedCases: ['public-safety-travel-app'],
+    relatedCases: ['gym-club-management', 'ai-waiter-smart-dining'],
   },
   {
     id: 'saas-development',
@@ -353,7 +372,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Fixed-fee discovery, then project or dedicated team',
     startsAt: 'from $14,000',
-    relatedCases: ['insurance-data-platform'],
+    relatedCases: ['gym-club-management', 'qapipeline-stlc-management'],
   },
   {
     id: 'crm-erp',
@@ -408,7 +427,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Fixed-scope project, optional ongoing support',
     startsAt: 'from $12,000',
-    relatedCases: ['logistics-erp-consolidation'],
+    relatedCases: ['gym-club-management', 'estimate-property-case-management'],
   },
   {
     id: 'ai-automation',
@@ -463,7 +482,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Assessment, then project or retainer',
     startsAt: 'from $6,500 (assessment)',
-    relatedCases: ['insurance-data-platform'],
+    relatedCases: ['ai-waiter-smart-dining', 'rpa-finance-automation'],
   },
   {
     id: 'web-mobile',
@@ -518,7 +537,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Fixed-scope project',
     startsAt: 'from $7,500',
-    relatedCases: ['public-safety-travel-app'],
+    relatedCases: ['fixify-wordpress-care', 'ai-waiter-smart-dining'],
   },
   {
     id: 'software-engineering',
@@ -573,7 +592,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Fixed-fee discovery, then project or dedicated team',
     startsAt: 'from $3,500 (discovery)',
-    relatedCases: ['logistics-erp-consolidation'],
+    relatedCases: ['qapipeline-stlc-management', 'rpa-finance-automation'],
   },
   {
     id: 'security-compliance',
@@ -628,7 +647,7 @@ export const CAPABILITIES: Capability[] = [
     ],
     engagement: 'Assessment, then project or retainer',
     startsAt: 'from $6,500',
-    relatedCases: ['healthcare-platform'],
+    relatedCases: ['fixify-wordpress-care', 'qapipeline-stlc-management'],
   },
 ];
 
@@ -842,199 +861,701 @@ export const INDUSTRIES: Industry[] = [
 
 export const CASE_STUDIES: CaseStudy[] = [
   {
-    slug: 'insurance-data-platform',
+    slug: 'gym-club-management',
+    capability: 'crm-erp',
+    visual: 'tide',
+    logo: {
+      src: '/work/gym/logo.png',
+      srcDark: '/work/gym/logo-dark.png',
+      alt: 'Gym Club',
+    },
+    hero: {
+      src: '/work/gym/hero.webp',
+      alt: 'Gym Club dashboard showing active members, check-ins, reservations and revenue, with a client profile open on a laptop',
+      shape: 'wide',
+    },
+    gallery: [
+      {
+        src: '/work/gym/overview.webp',
+        alt: 'The ten modules the platform connects, from reception and memberships through lockers, access control and point of sale',
+        shape: 'square',
+      },
+    ],
+    client: 'Fitness & Wellness Clubs',
+    sector: 'Fitness & Wellness',
+    discipline: 'CRM & ERP platforms',
+    title: 'Gym & Club Management Platform',
+    summary:
+      'An end-to-end management platform built for modern fitness and wellness clubs. From client onboarding, memberships and reservations to lockers, access control, POS, inventory and AI-powered client assistance, the system connects the entire club operation within one centralized experience.',
+    metric: { value: '10', label: 'Operational modules in a single system' },
+    stack: [
+      'Memberships',
+      'Reservations',
+      'Reception',
+      'Lockers',
+      'Access Control',
+      'POS',
+      'Inventory',
+      'Services',
+      'AI Assistant',
+    ],
+    year: '2026',
+    region: 'Single and multi-site clubs',
+    duration: 'Ongoing build',
+    teamSize: 'Product pod',
+    challenge: [
+      'Clubs run on more systems than they should. Reception works in one tool, memberships in another, bookings in a third, and lockers, access and payments often sit outside all of them.',
+      'When those systems do not share a record, the front desk cannot answer a simple question without opening four screens. Membership status does not reach the door. A locker is assigned in one place and billed in another. Staff spend their attention on reconciling tools rather than on the member standing in front of them.',
+      'The brief was one operational system for the whole club, from the first check-in through long-term engagement, with every module reading from the same member record.',
+    ],
+    approach: [
+      {
+        title: 'Reception management',
+        body: 'Front-desk teams get quick access to members, check-ins, bookings, payments, services and the daily operational actions, in one place rather than across several tools.',
+      },
+      {
+        title: 'Client management',
+        body: 'Complete client profiles hold membership information, activity, reservations, services, locker details and the notes that matter, so any member of staff can pick up where the last one left off.',
+      },
+      {
+        title: 'Membership management',
+        body: 'Plans, validity, renewals, remaining sessions, freezes, restrictions and status are managed together, so the commercial rules and the operational reality never drift apart.',
+      },
+      {
+        title: 'Reservations and scheduling',
+        body: 'Classes, facilities, trainers, appointments and other club resources are booked from one centralised calendar rather than a spreadsheet per resource.',
+      },
+      {
+        title: 'Services management',
+        body: 'Additional paid offerings such as personal training, massage, physiotherapy and wellness sessions are configured, sold and tracked alongside the membership they attach to.',
+      },
+      {
+        title: 'Locker management',
+        body: 'Lockers are assigned, availability and occupancy are tracked, and locker subscriptions are managed per member rather than on a board behind the desk.',
+      },
+      {
+        title: 'Access control',
+        body: 'Membership status is connected to club access, so eligibility at the door is a property of the record rather than a judgement call at reception.',
+      },
+      {
+        title: 'Point of sale',
+        body: 'Memberships, services, passes and products are sold directly from the system, which keeps the transaction attached to the member it belongs to.',
+      },
+      {
+        title: 'Inventory management',
+        body: 'Products, stock availability, internal movement and items sold through the club are tracked in the same place the sale happens.',
+      },
+      {
+        title: 'Master data',
+        body: 'Services, categories, resources, plans and system-level settings are configured centrally, so club teams manage operational data consistently instead of per module.',
+      },
+      {
+        title: 'AI assistant',
+        body: 'Staff can ask about client information, get recommendations and work through day-to-day decisions without leaving the screen they are already on.',
+      },
+      {
+        title: 'AI working context',
+        body: 'The assistant is given the relevant member context, so answers are grounded in that client\u2019s actual information and history rather than generic advice.',
+      },
+      {
+        title: 'Client intake',
+        body: 'Structured onboarding captures goals, lifestyle, activity and preferences before training or assessment, so the first session starts with something to work from.',
+      },
+    ],
+    results: [
+      { value: '10', label: 'Core modules in one system' },
+      { value: '3', label: 'AI capabilities inside the workflow' },
+      { value: '7', label: 'Club formats the platform supports' },
+      { value: '1', label: 'Shared record per member' },
+    ],
+  },
+  {
+    slug: 'estimate-property-case-management',
+    capability: 'crm-erp',
+    visual: 'sand',
+    logo: {
+      src: '/work/rfq/logo.png',
+      srcDark: '/work/rfq/logo-dark.png',
+      alt: 'RFQ Management',
+    },
+    hero: {
+      src: '/work/rfq/hero.webp',
+      alt: 'RFQ Management dashboard showing new requests, quotes sent, active cases, recent requests and the upcoming site visit schedule',
+      shape: 'wide',
+    },
+    gallery: [
+      {
+        src: '/work/rfq/overview.webp',
+        alt: 'The modules the platform connects, from request and estimate management through scheduling, diagnostics, laboratories and permissions',
+        shape: 'square',
+      },
+    ],
+    client: 'Property & Building Services',
+    sector: 'Property & Construction',
+    discipline: 'CRM & ERP platforms',
+    title: 'Estimate & Property Case Management Platform',
+    summary:
+      'An end-to-end platform for managing service requests, estimates, active cases, scheduling, emails, building data and property-related operations. Built for companies handling construction, repair, maintenance, inspections, diagnostics and resolution workflows in one centralized system.',
+    metric: { value: '15', label: 'Modules connected from request to resolution' },
+    stack: [
+      'Requests',
+      'Estimates',
+      'Case Tracking',
+      'Scheduling',
+      'Building Data',
+      'Emails',
+      'Diagnostics',
+      'Laboratories',
+      'User Permissions',
+    ],
+    year: '2026',
+    region: 'Property and building services',
+    duration: 'Ongoing build',
+    teamSize: 'Product pod',
+    challenge: [
+      'Property service work arrives as a request and ends as a finished job, but almost everything in between lives in spreadsheets, inboxes and tools that never speak to each other.',
+      'A request comes in by email. The estimate is built somewhere else. The site visit is booked in a calendar nobody else reads. Lab results land in an attachment. By the time somebody asks what is happening with a case, the answer has to be reassembled by hand from four places, and the client is waiting while it happens.',
+      'The brief was a single system that carries a request from the moment it lands through estimate, scheduling, execution and closure, with the building, the client and the money attached to it the whole way.',
+    ],
+    approach: [
+      {
+        title: 'Dashboard',
+        body: 'Teams get a complete operational overview of incoming requests, active estimates, ongoing cases, schedules and overall business activity, so the state of the pipeline is a glance rather than an exercise.',
+      },
+      {
+        title: 'Customer base',
+        body: 'Client information, property history, communication records and every linked request or estimate sit on one record, so nobody starts a conversation without the context behind it.',
+      },
+      {
+        title: 'Estimate management',
+        body: 'Teams prepare, manage and track quotations for construction, repair, maintenance, inspection and related property services, with each one tied back to the request it answers.',
+      },
+      {
+        title: 'Request management',
+        body: 'Incoming service requests are captured and organised into a structured workflow for review and follow-up, rather than living as unread mail in a shared inbox.',
+      },
+      {
+        title: 'Cases in progress',
+        body: 'Ongoing property cases are monitored from initial request through execution, updates and closure, so the status of any job is a property of the record.',
+      },
+      {
+        title: 'Calendar and scheduling',
+        body: 'Appointments, site visits, inspections, technician scheduling and service timelines are managed together, which is what keeps field work and office work in step.',
+      },
+      {
+        title: 'Email management',
+        body: 'Email is centralised inside the system, so discussions, updates, confirmations and client correspondence stay attached to the case instead of scattering across personal mailboxes.',
+      },
+      {
+        title: 'Building management',
+        body: 'Building-related information is stored and organised per case or request, so the property itself is a first-class record rather than a line of free text.',
+      },
+      {
+        title: 'Company and offices',
+        body: 'Company structure, office-level configuration and operational entities are managed in one place, which is what makes multi-office working practical.',
+      },
+      {
+        title: 'Financial parameters',
+        body: 'Pricing logic, financial settings and estimate cost structures are configurable, so commercial rules are set once rather than reapplied per quote.',
+      },
+      {
+        title: 'Services and benefits',
+        body: 'The service catalogue defines what can be offered, priced and delivered, which keeps estimates and case handling drawing on the same definitions.',
+      },
+      {
+        title: 'Types of diagnosis',
+        body: 'Inspections, technical issues and diagnostic categories are classified consistently, so reporting across cases means something.',
+      },
+      {
+        title: 'Laboratories',
+        body: 'Workflows where samples, technical checks or lab-based evaluations form part of the service are supported directly, rather than handled on the side.',
+      },
+      {
+        title: 'Users',
+        body: 'Staff accounts and team access are managed within the platform, so onboarding somebody is a task rather than a project.',
+      },
+      {
+        title: 'Permissions',
+        body: 'Granular control over who can view, create, edit, approve or manage each part of the workflow, which is what lets approval actually mean something.',
+      },
+    ],
+    results: [
+      { value: '7', label: 'Core workflow modules' },
+      { value: '6', label: 'Supporting data domains' },
+      { value: '5', label: 'Request states tracked end to end' },
+      { value: '2', label: 'Access and administration layers' },
+    ],
+  },
+  {
+    slug: 'ai-waiter-smart-dining',
+    capability: 'ai-automation',
+    visual: 'ember',
+    logo: {
+      src: '/work/aiwaiter/logo.png',
+      srcDark: '/work/aiwaiter/logo-dark.png',
+      alt: 'AI Waiter',
+    },
+    hero: {
+      src: '/work/aiwaiter/hero.webp',
+      alt: 'A guest ordering from the table through the AI waiter, with the assistant suggesting a dish from their taste profile while a waiter serves',
+      shape: 'wide',
+    },
+    gallery: [
+      {
+        src: '/work/aiwaiter/overview.webp',
+        alt: 'The assistant recalling a previous order, suggesting a dish and a wine pairing, and offering to take a spoken request',
+        shape: 'square',
+      },
+    ],
+    client: 'Restaurants & Hospitality',
+    sector: 'Hospitality & Restaurants',
+    discipline: 'AI & business automation',
+    title: 'AI Waiter & Smart Restaurant Ordering',
+    summary:
+      'An intelligent restaurant platform that turns a table QR into a personal AI waiter. Guests discover dishes, get recommendations based on mood and preference, customise meals, order by text or voice, call for human help, pay and earn rewards, while the restaurant gains a connected view of preferences, orders, feedback and sales.',
+    metric: { value: '22', label: 'Capabilities from QR scan to feedback' },
+    stack: [
+      'AI Recommendations',
+      'QR Ordering',
+      'Taste Profiles',
+      'Voice Ordering',
+      'Smart Menu',
+      'Group Orders',
+      'POS Integration',
+      'Loyalty',
+      'Payments',
+      'Restaurant Intelligence',
+    ],
+    year: '2026',
+    region: 'Restaurants and hospitality venues',
+    duration: 'Ongoing build',
+    teamSize: 'Product pod',
+    challenge: [
+      'A QR menu digitises the menu. It does not digitise the waiter.',
+      'The guest scans, lands on a list of categories, and is left to do the work a waiter used to do for them. Nobody remembers that they were here three weeks ago, that they had the chicken, that they do not eat shellfish, or that tonight they want something lighter. The restaurant learns nothing from the visit either.',
+      'The brief was to keep the convenience of a scan and put the judgement back in. A guest should be able to say \u201cI had chicken last time, today I want something different, a little spicy but not too heavy\u201d and get a real answer, built from their profile, their dietary needs, the budget they are working to and what the kitchen can actually make tonight.',
+    ],
+    approach: [
+      {
+        title: 'Instant QR entry',
+        body: 'Guests scan the table code and start browsing or ordering straight away, with no app to download and no account to create first.',
+      },
+      {
+        title: 'Customer recognition and guest mode',
+        body: 'Returning guests are recognised by phone, email or username, while anyone who would rather stay anonymous can order without identifying themselves at all.',
+      },
+      {
+        title: 'Personalised AI welcome',
+        body: 'Returning guests are greeted by name, with their previous visits, orders and preferences already in hand rather than asked for again.',
+      },
+      {
+        title: 'Mood and context aware dining',
+        body: 'Recommendations adapt to mood, budget and occasion, because a solo lunch, a date and a family table are three different problems.',
+      },
+      {
+        title: 'AI food recommendations',
+        body: 'Dishes are suggested from taste preferences, visit history, dietary needs, budget and the context of the current meal, not from a list of what the kitchen wants to shift.',
+      },
+      {
+        title: 'Natural language and voice ordering',
+        body: 'Guests type or speak the way they would talk to a waiter, including requests as loose as something spicy, light and under a budget.',
+      },
+      {
+        title: 'Smart interactive menu',
+        body: 'Dishes, categories, ingredients, prices, availability and dietary information are explored conversationally rather than by tapping through a hierarchy.',
+      },
+      {
+        title: 'Taste profile',
+        body: 'Favourite dishes, spice levels, dislikes, exclusions, dietary preferences and previous choices are remembered, so each visit starts further along than the last.',
+      },
+      {
+        title: 'Dietary and allergy intelligence',
+        body: 'Recommendations are filtered for vegetarian, vegan, halal, allergies, intolerances and other restrictions, so the guest never has to check the menu twice.',
+      },
+      {
+        title: 'Food customisation',
+        body: 'Spice levels, toppings, sauces, sides, ingredients and exclusions are set before the order is placed rather than negotiated at the table.',
+      },
+      {
+        title: 'Smart cart and AI upselling',
+        body: 'The cart suggests drinks, sides, desserts, combos and add-ons that fit what has actually been chosen, which is what a good waiter does and a generic upsell does not.',
+      },
+      {
+        title: 'Group ordering',
+        body: 'Several people at the same table contribute to one shared order, so a group is a single kitchen ticket rather than a round of separate ones.',
+      },
+      {
+        title: 'Order confirmation',
+        body: 'Dishes, customisation, quantities, pricing and table information are shown clearly before anything is submitted.',
+      },
+      {
+        title: 'POS and kitchen integration',
+        body: 'Confirmed orders flow straight into restaurant operations, and the assistant stays aware of items that are sold out or unavailable.',
+      },
+      {
+        title: 'Ask for help',
+        body: 'A waiter, water, cutlery or the bill can be requested from the table without waving at anybody.',
+      },
+      {
+        title: 'Human handoff',
+        body: 'The guest can move from the assistant to a real waiter at any point, because the goal is better service rather than less staff.',
+      },
+      {
+        title: 'Bill and payments',
+        body: 'The bill is requested from the table, split between guests where needed, and settled through digital payment.',
+      },
+      {
+        title: 'Loyalty and rewards',
+        body: 'Points, rewards, repeat-customer benefits and relevant promotions surface at the moment they are worth something.',
+      },
+      {
+        title: 'Personalised offers',
+        body: 'Promotions are matched to the individual rather than shown identically to everybody who scans a table.',
+      },
+      {
+        title: 'Multilingual AI',
+        body: 'Guests talk to the restaurant in their own language, which matters more in hospitality than almost anywhere else.',
+      },
+      {
+        title: 'Feedback intelligence',
+        body: 'Quick post-meal ratings and comments are collected while the experience is fresh, and feed back into what the restaurant does next.',
+      },
+      {
+        title: 'Restaurant dashboard',
+        body: 'Management get visibility into customers, orders, popular dishes, feedback, preferences and sales, so the guest data is worth something operationally.',
+      },
+    ],
+    results: [
+      { value: '0', label: 'App downloads or logins needed' },
+      { value: '3', label: 'Ways to order: tap, type or speak' },
+      { value: '2', label: 'Service paths, AI or a human waiter' },
+      { value: '22', label: 'Capabilities in one guest journey' },
+    ],
+  },
+  {
+    slug: 'qapipeline-stlc-management',
+    capability: 'software-engineering',
+    visual: 'moss',
+    logo: {
+      src: '/work/qapipeline/logo.png',
+      srcDark: '/work/qapipeline/logo-dark.png',
+      alt: 'QAPipeline',
+    },
+    hero: {
+      src: '/work/qapipeline/hero.webp',
+      alt: 'QAPipeline dashboard showing total runs, average pass rate, failures and active projects, with pass rate trend, test distribution and region and device health',
+      shape: 'wide',
+    },
+    gallery: [
+      {
+        src: '/work/qapipeline/overview.webp',
+        alt: 'The path from scattered documents and spreadsheets to generated test cases, an automated pipeline, results and quality insights',
+        shape: 'square',
+      },
+    ],
+    client: 'QA & Engineering Teams',
+    sector: 'Software & Quality Engineering',
+    discipline: 'Quality engineering platforms',
+    title: 'AI-Powered STLC & Test Management Platform',
+    summary:
+      'A centralized quality engineering platform for managing the complete Software Testing Life Cycle, from documentation and test case creation through automated execution, result tracking, visualization and AI-assisted testing. QA teams organize cases, run manual and automated tests, analyse results on interactive dashboards and use AI to generate scenarios and close coverage gaps, all behind secure authentication and role-based access.',
+    metric: { value: '17', label: 'Capabilities across the testing lifecycle' },
+    stack: [
+      'Test Management',
+      'AI Test Generation',
+      'Automated Testing',
+      'Test Runs',
+      'Documentation',
+      'Analytics',
+      'RBAC',
+      'Quality Insights',
+    ],
+    year: '2026',
+    region: 'QA and engineering teams',
+    duration: 'Ongoing build',
+    teamSize: 'Product pod',
+    challenge: [
+      'QA runs on spreadsheets far more often than anyone puts in a process document.',
+      'Test cases live in a document somebody last opened two sprints ago. Results are pasted into a chat thread. Bug reports sit in a third tool with no link back to the case that found them. Ask which areas are actually covered and the honest answer is that nobody can say without an afternoon of reading.',
+      'The brief was one workspace that holds the whole testing lifecycle, where a requirement, the cases written from it, the runs that executed them and the failures they produced are the same thread rather than four separate records.',
+    ],
+    approach: [
+      {
+        title: 'Test documentation',
+        body: 'Testing documents, plans, scenarios, cases, expected results and supporting information are managed centrally, so the plan and the tests written from it stay in the same place.',
+      },
+      {
+        title: 'Test case management',
+        body: 'Manual and automated cases are created, organised, updated, prioritised and maintained together rather than split across tools by execution method.',
+      },
+      {
+        title: 'AI test case generation',
+        body: 'Test cases, scenarios, edge cases and expected outcomes are generated from a requirement or feature description, which removes most of the blank-page work.',
+      },
+      {
+        title: 'Automated test runs',
+        body: 'Automated suites are executed through the platform with execution status tracked as it happens, so nobody has to go and ask the pipeline.',
+      },
+      {
+        title: 'Manual test execution',
+        body: 'Testers are guided through cases while pass, fail, blocked, skipped and other states are recorded, so a manual run leaves the same trail an automated one does.',
+      },
+      {
+        title: 'Test suites and cycles',
+        body: 'Cases are grouped into suites, releases, sprints, modules or testing cycles, which is what makes a release scope something you can point at.',
+      },
+      {
+        title: 'Execution history',
+        body: 'Every previous run, result, failure and piece of execution activity is kept, so regressions are visible as a pattern rather than a surprise.',
+      },
+      {
+        title: 'Visual test analytics',
+        body: 'Testing data becomes dashboards, pass and fail trends, execution progress and quality insights, which is the difference between having data and being able to act on it.',
+      },
+      {
+        title: 'Failure analysis',
+        body: 'Failed cases, recurring issues and the areas that need attention surface directly, rather than being reconstructed from a list of red rows.',
+      },
+      {
+        title: 'AI testing assistant',
+        body: 'Teams use AI to generate scenarios, improve existing cases, find missing coverage and understand why something failed.',
+      },
+      {
+        title: 'Reusable test cases',
+        body: 'Reusable components and scenarios cut the repetitive documentation work that makes QA writing feel like copying.',
+      },
+      {
+        title: 'Search and filtering',
+        body: 'Cases, suites, runs, modules, statuses and documentation are found quickly, which matters more as the case count grows past what anyone can hold in their head.',
+      },
+      {
+        title: 'User management',
+        body: 'QA engineers, developers, managers and administrators are managed centrally, so access follows the team rather than trailing behind it.',
+      },
+      {
+        title: 'Role-based access control',
+        body: 'Permissions are defined by role and responsibility, so what somebody can change is a property of their job rather than of who set them up.',
+      },
+      {
+        title: 'Secure authentication',
+        body: 'Access to testing projects and information is controlled and authenticated, which is table stakes once the test data describes a real product.',
+      },
+      {
+        title: 'Project-level access',
+        body: 'Teams and users are scoped to specific testing projects and environments, so a shared platform does not mean a shared blast radius.',
+      },
+      {
+        title: 'Activity and accountability',
+        body: 'Testing activity and the actions taken across the platform stay visible, which is what makes a result something you can stand behind in a release meeting.',
+      },
+    ],
+    results: [
+      { value: '12', label: 'Core testing and analytics modules' },
+      { value: '5', label: 'Stages from requirement to expected result' },
+      { value: '5', label: 'Access and accountability controls' },
+      { value: '4', label: 'Execution states recorded per case' },
+    ],
+  },
+  {
+    slug: 'fixify-wordpress-care',
+    capability: 'web-mobile',
+    visual: 'dusk',
+    logo: {
+      src: '/work/fixify/logo.png',
+      srcDark: '/work/fixify/logo-dark.png',
+      alt: 'Fixify',
+    },
+    hero: {
+      src: '/work/fixify/hero.webp',
+      alt: 'Fixify dashboard showing website health, performance, accessibility, best practice and SEO scores, security checks and AI insights across managed sites',
+      shape: 'wide',
+    },
+    gallery: [
+      {
+        src: '/work/fixify/overview.webp',
+        alt: 'Website health, performance and security panels alongside the services covered: maintenance, security, speed, SEO, backups, monitoring and support',
+        shape: 'square',
+      },
+    ],
+    client: 'Businesses running WordPress',
+    sector: 'Web & Managed Services',
+    discipline: 'Managed web services',
+    title: 'Fixify: WordPress Maintenance as a Service',
+    summary:
+      'A subscription WordPress care service covering maintenance, security, backups, performance, SEO, bug fixing, content updates and technical support. Fixify acts as the ongoing technical team for businesses that need their site fast, secure and reliable without hiring developers to keep it that way.',
+    metric: { value: '19', label: 'Services covered by one subscription' },
+    stack: [
+      'Maintenance',
+      'Security',
+      'Speed Optimization',
+      'SEO',
+      'Backups',
+      'Bug Fixing',
+      'Updates',
+      'Monitoring',
+      'WooCommerce',
+      'Technical Support',
+    ],
+    year: '2026',
+    region: 'Businesses running WordPress',
+    duration: 'Ongoing subscription service',
+    teamSize: 'Managed service pod',
+    challenge: [
+      'A WordPress site is never finished, and most businesses run theirs as though it is.',
+      'Plugins drift out of date. A theme update breaks a form nobody notices for a fortnight. The certificate expires on a Saturday. Each time, somebody goes looking for a developer who is free, explains the site from scratch, pays for an hour, and the site goes back to being unattended until the next thing breaks.',
+      'Nothing in that pattern is monitoring uptime, watching for vulnerabilities, or making the site faster between emergencies. The proposition was to replace the scramble with a subscription: one team that already knows the site and is looking at it continuously.',
+    ],
+    approach: [
+      {
+        title: 'WordPress maintenance',
+        body: 'Core, themes, plugins and overall site health are managed continuously rather than revisited when something has already gone wrong.',
+      },
+      {
+        title: 'Plugin and theme updates',
+        body: 'Components are kept current while compatibility risk is managed, which is the part that stops most owners updating in the first place.',
+      },
+      {
+        title: 'Bug fixing',
+        body: 'Broken pages, errors, layout problems, forms and unexpected behaviour are diagnosed and fixed as part of the subscription, not quoted per incident.',
+      },
+      {
+        title: 'Security monitoring',
+        body: 'Vulnerabilities, suspicious activity and potential threats are watched for continuously, so a compromise is caught early rather than reported by a customer.',
+      },
+      {
+        title: 'Website backups',
+        body: 'Regular backups are maintained so a site can actually be restored, which is the difference between a bad afternoon and a lost business.',
+      },
+      {
+        title: 'Speed optimisation',
+        body: 'Load times are improved through caching, image optimisation, database cleanup and code work, rather than a single audit that ages immediately.',
+      },
+      {
+        title: 'Core Web Vitals',
+        body: 'The metrics that shape both the visitor experience and search performance are tracked and worked on directly.',
+      },
+      {
+        title: 'SEO optimisation',
+        body: 'Technical and on-page SEO is improved so the site is easier for search engines to read and rank.',
+      },
+      {
+        title: 'SEO health checks',
+        body: 'Broken links, missing metadata, indexing problems and technical issues are found before they cost traffic.',
+      },
+      {
+        title: 'Content updates',
+        body: 'Text, images, pages, banners, products and general content changes are handled, so routine edits never wait on developer availability.',
+      },
+      {
+        title: 'Uptime monitoring',
+        body: 'Availability is tracked and downtime is responded to, which only works if somebody is watching when nobody is looking.',
+      },
+      {
+        title: 'Database optimisation',
+        body: 'WordPress databases are cleaned and optimised for performance and stability, which is where a slow site is often actually slow.',
+      },
+      {
+        title: 'Responsive and UI fixes',
+        body: 'Layout and usability problems are resolved across desktop, tablet and mobile, rather than only where the owner happens to look.',
+      },
+      {
+        title: 'WooCommerce support',
+        body: 'Stores, products, checkout, payment integrations and WooCommerce updates are maintained, because on a shop every broken hour is measurable.',
+      },
+      {
+        title: 'Forms and integrations',
+        body: 'Contact forms, APIs, analytics, tracking, email systems and third-party integrations are kept working, since these fail quietly more often than loudly.',
+      },
+      {
+        title: 'Malware and recovery support',
+        body: 'Compromised sites are cleaned up and restored, with the work covered rather than negotiated during the emergency.',
+      },
+      {
+        title: 'Hosting and domain assistance',
+        body: 'Migrations, DNS, SSL, hosting configuration and PHP upgrades are handled, which is the infrastructure work most site owners have no route to.',
+      },
+      {
+        title: 'Regular website audits',
+        body: 'Performance, security, SEO and overall health are reviewed on a cycle, so the picture stays current instead of being a snapshot from onboarding.',
+      },
+      {
+        title: 'Technical support',
+        body: 'A team that already knows the site is available when it needs attention, which is the whole reason the subscription exists.',
+      },
+    ],
+    results: [
+      { value: '1', label: 'Subscription, not a quote per task' },
+      { value: '0', label: 'In-house developers needed' },
+      { value: '2', label: 'Plan cycles, monthly or annual' },
+      { value: '4', label: 'Areas audited continuously' },
+    ],
+  },
+  {
+    slug: 'rpa-finance-automation',
+    capability: 'ai-automation',
     visual: 'signal',
-    client: 'Insurance Provider',
+    logo: { src: '/work/rpa/logo.png', srcDark: '/work/rpa/logo-dark.png', alt: 'RPA' },
+    hero: {
+      src: '/work/rpa/hero.webp',
+      alt: 'RPA Automation Studio sign-in screen and operations dashboard',
+      shape: 'wide',
+    },
+    gallery: [
+      {
+        src: '/work/rpa/workflow.webp',
+        alt: 'Automation flow from email intake and OCR through branch mapping to per-branch payment status',
+        shape: 'square',
+      },
+    ],
+    client: 'Banking & Finance Operations',
     sector: 'Finance & FinTech',
     discipline: 'AI & business automation',
-    title: 'Analytics platform rebuild cuts $750k a month in running cost',
+    title: 'RPA: Intelligent Finance Automation',
     summary:
-      'A legacy analytics estate was billing on capacity nobody had reviewed in four years. We re-architected the storage tiers, rebuilt the ingest pipeline and added automated classification to the claims workflow.',
-    metric: { value: '$750k', label: 'Monthly run-rate removed' },
-    stack: ['Python', 'Terraform', 'PostgreSQL', 'Airflow'],
-    year: '2024',
-    region: 'Europe',
-    duration: '7 months',
-    teamSize: '6 specialists',
+      'From inbox to reconciliation, automated. A smart RPA platform that receives electricity bills by email, extracts the data with OCR, maps each bill to its branch, tracks payment status and supports reconciliation across large multi-branch operations.',
+    metric: { value: '412h', label: 'Hours saved against the manual baseline' },
+    stack: ['Email Automation', 'OCR', 'Reconciliation', 'Branch Mapping', 'Finance Workflows', 'Real-Time Dashboard'],
+    year: '2026',
+    region: 'Multi-branch banking',
+    duration: 'In production, ongoing',
+    teamSize: 'Automation pod',
     challenge: [
-      'The analytics platform had been lifted to the cloud four years earlier and never revisited. Capacity renewed automatically, storage was uniform regardless of access pattern, and the nightly batch ran on always-on infrastructure that sat idle nineteen hours a day.',
-      'Nobody could attribute cost to a business unit, so no business unit felt responsible for it. Finance had escalated three times and been told each time that reducing spend risked the overnight close.',
-      'The constraint that mattered: the regulatory close had to complete before 06:00 every business day, and had never missed.',
+      'Finance teams in organisations running hundreds or thousands of branches spend a significant part of every month collecting bills, entering information by hand, chasing branches for missing documents, reconciling payments and maintaining MIS records.',
+      'Bills arrive by email in inconsistent formats. Each one has to be opened, read, matched to the right branch or consumer, recorded, and then followed through to payment. Nothing about that work is difficult, and all of it is slow.',
+      'The result is a fragmented process with no single view of what has been received, what is outstanding, what is due and where the exceptions are.',
     ],
     approach: [
       {
-        title: 'Measure before changing anything',
-        body: 'Six weeks of tagging and cost attribution first, so every recommendation carried a number and an owner. This also surfaced two entire environments nobody was using.',
+        title: 'Automated email reading',
+        body: 'The platform monitors centralised inboxes and processes incoming bills and attachments automatically, with no one having to open a mailbox to start the workflow.',
       },
       {
-        title: 'Tier the storage',
-        body: 'Access-pattern analysis showed 71% of the warehouse had not been read in ninety days. Lifecycle policies moved it to cold storage with no change to the queries that mattered.',
+        title: 'OCR and data extraction',
+        body: 'Electricity bills are read and the key fields extracted: consumer details, account numbers, amounts, due dates and billing periods.',
       },
       {
-        title: 'Rebuild the pipeline',
-        body: 'The nightly job was made interruption tolerant and moved to elastic capacity with a guaranteed fallback, preserving the 06:00 deadline while removing most of the compute cost.',
+        title: 'Branch mapping',
+        body: 'Each bill is associated automatically with the relevant bank branch or consumer, which is the step that previously required a person who knew the estate.',
       },
       {
-        title: 'Automate the claims triage',
-        body: 'A classification model now routes inbound claims documents, with a human reviewing anything below the confidence threshold. It removed roughly two days of manual sorting per week.',
+        title: 'Bill processing workflow',
+        body: 'Bills are tracked through received, pending, paid, unpaid and reconciliation stages, so status is a property of the record rather than something held in an inbox.',
+      },
+      {
+        title: 'Automated reconciliation',
+        body: 'Payment records, bills and finance data are matched automatically, reducing the manual reconciliation effort at period close.',
+      },
+      {
+        title: 'Centralised dashboard',
+        body: 'Finance teams get visibility of received and pending bills, due dates, processed records, exceptions by type and automation performance in one place.',
       },
     ],
     results: [
-      { value: '$750k', label: 'Monthly run-rate removed' },
-      { value: '71%', label: 'Warehouse moved to cold storage' },
-      { value: '0', label: 'Missed regulatory closes' },
-      { value: '5.2 mo', label: 'Payback on the engagement' },
+      { value: '412h', label: 'Hours saved vs manual baseline' },
+      { value: '89.6%', label: 'Automation success rate' },
+      { value: '99.4%', label: 'Bot availability' },
+      { value: '50', label: 'Bills processed this month' },
     ],
-    quote: {
-      text: 'They spent the first six weeks measuring instead of cutting, which is why nothing broke when they started cutting.',
-      name: 'Head of Platform Engineering',
-      role: 'Insurance Provider',
-    },
-  },
-  {
-    slug: 'logistics-erp-consolidation',
-    visual: 'sand',
-    client: 'Restaurant Product Supplier',
-    sector: 'Logistics & Supply Chain',
-    discipline: 'CRM & ERP solutions',
-    title: 'Four systems consolidated into one, and throughput tripled',
-    summary:
-      'A distribution business had bought good software and deployed it badly. We re-mapped the order-to-delivery flow, consolidated four overlapping systems and retrained the floor on the one that survived.',
-    metric: { value: '3.4x', label: 'Order throughput per head' },
-    stack: ['Odoo', 'Node.js', 'PostgreSQL', 'REST APIs'],
-    year: '2024',
-    region: 'Europe and Gulf',
-    duration: '5 months',
-    teamSize: '4 specialists',
-    challenge: [
-      'Four systems had been bought over six years, each to solve a problem the previous one created. Orders were re-keyed between three of them, and the fourth existed because one depot refused to use the others.',
-      'The warehouse floor had built a parallel process on paper and spreadsheets, which was faster than the software and invisible to management reporting.',
-      'The stated goal was to buy a fifth system. The audit found the problem was implementation and process, not capability.',
-    ],
-    approach: [
-      {
-        title: 'Follow the order, not the org chart',
-        body: 'We walked the full order-to-delivery path on site, including the paper process. Mapping what people actually did surfaced eleven re-keying steps nobody had counted.',
-      },
-      {
-        title: 'Consolidate to one system of record',
-        body: 'One of the four covered eighty per cent of the need. We extended it to cover the rest rather than buying a fifth, and retired the other three on a staged timetable.',
-      },
-      {
-        title: 'Automate the joins',
-        body: 'Remaining handoffs were automated so data moves without a human retyping it, removing both the delay and the transcription errors.',
-      },
-      {
-        title: 'Train on the floor',
-        body: 'Training ran on shift, on the floor, with the people doing the work, including the depot that had resisted.',
-      },
-    ],
-    results: [
-      { value: '3.4x', label: 'Order throughput per head' },
-      { value: '11', label: 'Re-keying steps removed' },
-      { value: '3', label: 'Systems retired' },
-      { value: '$0', label: 'Spent on new licences' },
-    ],
-    quote: {
-      text: 'We asked them to help us choose a new system. They told us we did not need one, and then proved it.',
-      name: 'Daniel Legrante',
-      role: 'CIO, Restaurant Product Supplier',
-    },
-  },
-  {
-    slug: 'public-safety-travel-app',
-    visual: 'dusk',
-    client: 'Public Safety Authority',
-    sector: 'Enterprise Operations',
-    discipline: 'Product design and mobile development',
-    title: 'AI-supported public safety travel app for London',
-    summary:
-      'A move from a static information portal to a live mobile application, with routing that responds to incident feeds and an accessibility standard that had to pass public-sector procurement.',
-    metric: { value: '210k', label: 'First-year installs' },
-    stack: ['React Native', 'Node.js', 'PostgreSQL', 'Figma'],
-    year: '2025',
-    region: 'United Kingdom',
-    duration: '9 months',
-    teamSize: '7 specialists',
-    challenge: [
-      'The existing service was a web portal updated by hand. During an incident, the information people most needed was the information least likely to be current.',
-      'Procurement required WCAG 2.2 AA compliance, a full accessibility statement and an independent audit before launch. Retrofitting that after the build was not an option.',
-      'Incident feeds arrive in inconsistent formats from multiple authorities, and the routing had to degrade sensibly when a feed goes quiet rather than silently serving stale advice.',
-    ],
-    approach: [
-      {
-        title: 'Accessibility as a build gate',
-        body: 'Automated accessibility checks in CI from the first sprint, plus testing with screen reader users at three points during the build. The independent audit found no blocking issues.',
-      },
-      {
-        title: 'Design tested before build',
-        body: 'Interactive prototypes were tested with real commuters, including during simulated incidents. Two flows were redesigned before a line of production code was written.',
-      },
-      {
-        title: 'Normalise the feeds',
-        body: 'An ingestion layer reconciles inconsistent incident formats and tracks feed freshness, so the app can tell the user when advice may be stale.',
-      },
-      {
-        title: 'Launch in stages',
-        body: 'A limited borough rollout for six weeks before city-wide launch, which caught two routing edge cases no test environment had produced.',
-      },
-    ],
-    results: [
-      { value: '210k', label: 'First-year installs' },
-      { value: 'AA', label: 'WCAG 2.2, independently audited' },
-      { value: '4.6', label: 'Average store rating' },
-      { value: '0', label: 'Blocking audit findings' },
-    ],
-  },
-  {
-    slug: 'healthcare-platform',
-    visual: 'tide',
-    client: 'Healthcare Organisation',
-    sector: 'Healthcare',
-    discipline: 'SaaS product development',
-    title: 'A clinical platform that carried a full remote transition',
-    summary:
-      'A platform delivered weeks before it was needed. When the workforce moved home, clinical and administrative staff kept working against the same systems with no interruption to service.',
-    metric: { value: '0', label: 'Hours of service lost' },
-    stack: ['.NET', 'React', 'SQL Server', 'Azure'],
-    year: '2023',
-    region: 'Europe',
-    duration: '4 months, then ongoing',
-    teamSize: '5 specialists',
-    challenge: [
-      'Clinical staff worked from fixed workstations against systems that assumed the building. Remote access existed for a handful of administrators and would not have survived the whole organisation attempting it.',
-      'Patient data constraints meant the answer could not involve local copies. Whatever replaced the workstation had to keep data inside the managed environment.',
-      'The timetable was set by circumstance rather than by us. It had to work the first time, because there was no second window.',
-    ],
-    approach: [
-      {
-        title: 'Keep the data where it belongs',
-        body: 'The platform was designed so data never leaves the managed environment, which resolved the residency constraint and the hardware supply problem at once.',
-      },
-      {
-        title: 'Identity and access first',
-        body: 'Conditional access, MFA and device compliance were in place before a single user was migrated. Doing this afterwards would have meant a second disruption.',
-      },
-      {
-        title: 'Migrate by department',
-        body: 'Department by department in order of clinical criticality, least critical first, so the pattern was proven before it touched patient-facing work.',
-      },
-      {
-        title: 'Stay on after launch',
-        body: 'We moved onto a support retainer rather than handing back a platform nobody internally had operated before.',
-      },
-    ],
-    results: [
-      { value: '0', label: 'Hours of service lost' },
-      { value: '100%', label: 'Staff transitioned in 4 weeks' },
-      { value: '0', label: 'Data residency exceptions' },
-      { value: '6 yrs', label: 'Client relationship, ongoing' },
-    ],
-    quote: {
-      text: 'BrnDynamics implemented such a powerful platform that we had no break in service when our employees had to work from home during the pandemic.',
-      name: 'Amanda Parks',
-      role: 'Network Manager, Healthcare Organisation',
-    },
   },
 ];
 
@@ -1095,7 +1616,7 @@ export const SUCCESS_STORIES: SuccessStory[] = [
     outcome:
       'We audited every interface, built one token-based design system with a documented component library, and migrated the products onto it one surface at a time.',
     metric: { value: '4x', label: 'Faster new screen delivery' },
-    caseSlug: 'public-safety-travel-app',
+    caseSlug: 'rpa-finance-automation',
   },
   {
     id: 'audit-pass',

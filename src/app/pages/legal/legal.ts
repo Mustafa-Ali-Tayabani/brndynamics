@@ -100,7 +100,7 @@ const DOCS: Record<string, LegalDoc> = {
       <article class="prose">
         @for (section of doc().sections; track section.heading; let i = $index) {
           <section class="block">
-            <p class="mono block__num tnum">{{ '0' + (i + 1) }}</p>
+            <p class="mono block__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</p>
             <div class="block__body">
               <h2 class="display-3">{{ section.heading }}</h2>
               @for (para of section.body; track para) {

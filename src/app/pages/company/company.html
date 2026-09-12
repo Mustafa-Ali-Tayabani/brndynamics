@@ -131,7 +131,7 @@
     <ul class="roles">
       @for (role of roles; track role.title; let i = $index) {
         <li class="role" appReveal [revealDelay]="i * 55">
-          <span class="mono role__num tnum">{{ '0' + (i + 1) }}</span>
+          <span class="mono role__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</span>
           <h3 class="display-4 role__title">{{ role.title }}</h3>
           <span class="mono-sm role__loc">{{ role.location }}</span>
           <span class="mono-sm role__type">{{ role.type }}</span>

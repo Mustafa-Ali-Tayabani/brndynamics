@@ -1,8 +1,10 @@
 @if (study(); as s) {
-  <!-- Hero -->
+  <!-- Hero. Text only; the product shot carries the visual weight below it. -->
   <header class="hero">
     <app-grid-lines />
-    <div class="hero__art" aria-hidden="true"><app-visual [kind]="s.visual" [labels]="false" /></div>
+    @if (!heroShot()) {
+      <div class="hero__art" aria-hidden="true"><app-visual [kind]="s.visual" [labels]="false" /></div>
+    }
     <div class="container hero__in">
       <nav class="crumbs mono" aria-label="Breadcrumb">
         <a routerLink="/work">Work</a>
@@ -10,45 +12,56 @@
         <span class="crumbs__here">{{ s.sector }}</span>
       </nav>
 
+      @if (s.logo) {
+        <app-case-logo class="hero__logo" [image]="s.logo" />
+      }
       <p class="mono hero__client">{{ s.client }}</p>
       <h1 class="display-hero hero__title" appSplitText>{{ s.title }}</h1>
       <p class="lede hero__lede">{{ s.summary }}</p>
     </div>
-
-    <!-- Spec strip -->
-    <div class="specs">
-      <div class="container specs__grid">
-        <div><span class="mono-sm">Discipline</span><span class="specs__v">{{ s.discipline }}</span></div>
-        <div><span class="mono-sm">Region</span><span class="specs__v">{{ s.region }}</span></div>
-        <div><span class="mono-sm">Duration</span><span class="specs__v">{{ s.duration }}</span></div>
-        <div><span class="mono-sm">Team</span><span class="specs__v">{{ s.teamSize }}</span></div>
-        <div><span class="mono-sm">Year</span><span class="specs__v tnum">{{ s.year }}</span></div>
-      </div>
-    </div>
   </header>
 
-  <!-- Headline metric -->
-  <section class="headline">
-    <div class="container headline__in" appReveal>
-      @if (numeric(s.metric.value); as n) {
-        <p class="display-hero tnum headline__figure">
-          <span
-            [appCountUp]="n"
-            [countPrefix]="prefix(s.metric.value)"
-            [countSuffix]="suffix(s.metric.value)"
-          >{{ s.metric.value }}</span>
-        </p>
-      } @else {
-        <p class="display-hero tnum headline__figure">{{ s.metric.value }}</p>
-      }
-      <p class="mono headline__label">{{ s.metric.label }}</p>
-    </div>
-  </section>
+  <!-- Product shot, edge to edge. A framed thumbnail adrift in the page was the
+       weakest part of this layout; full bleed makes it the anchor instead. -->
+  @if (heroShot(); as shot) {
+    <figure class="shot">
+      <img appImgOk [src]="shot.src" [alt]="shot.alt" (failed)="markMissing(shot.src)" />
+    </figure>
+  }
 
-  <!-- Challenge -->
-  <section class="block block--band">
+  <!-- Spec strip reads as the caption under the shot. -->
+  <div class="specs">
+    <div class="container specs__grid">
+      <div><span class="mono-sm">Discipline</span><span class="specs__v">{{ s.discipline }}</span></div>
+      <div><span class="mono-sm">Region</span><span class="specs__v">{{ s.region }}</span></div>
+      <div><span class="mono-sm">Duration</span><span class="specs__v">{{ s.duration }}</span></div>
+      <div><span class="mono-sm">Team</span><span class="specs__v">{{ s.teamSize }}</span></div>
+      <div><span class="mono-sm">Year</span><span class="specs__v tnum">{{ s.year }}</span></div>
+    </div>
+  </div>
+
+  <!-- Challenge. The headline metric lives in the rail rather than alone in a
+       band of its own, so the number sits next to the problem it answers. -->
+  <section class="block">
     <div class="container split">
-      <p class="mono split__label" appReveal><b>01</b> The challenge</p>
+      <div class="split__rail">
+        <p class="mono split__label"><b>01</b> The challenge</p>
+        <div class="metric" appReveal>
+          @if (numeric(s.metric.value); as n) {
+            <p class="tnum metric__v">
+              <span
+                [appCountUp]="n"
+                [countPrefix]="prefix(s.metric.value)"
+                [countSuffix]="suffix(s.metric.value)"
+              >{{ s.metric.value }}</span>
+            </p>
+          } @else {
+            <p class="tnum metric__v">{{ s.metric.value }}</p>
+          }
+          <p class="mono-sm metric__l">{{ s.metric.label }}</p>
+        </div>
+      </div>
+
       <div class="split__body">
         @for (para of s.challenge; track $index) {
           <p
@@ -64,14 +77,14 @@
   </section>
 
   <!-- Approach -->
-  <section class="block">
+  <section class="block block--band">
     <div class="container">
       <p class="mono block__label" appReveal><b>02</b> What we did</p>
       <ol class="steps">
         @for (step of s.approach; track step.title; let i = $index) {
           <li class="step" appReveal [revealDelay]="i * 70">
-            <span class="mono step__num tnum">{{ '0' + (i + 1) }}</span>
-            <h2 class="display-3 step__title">{{ step.title }}</h2>
+            <span class="mono step__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</span>
+            <h2 class="display-4 step__title">{{ step.title }}</h2>
             <p class="body-dim step__text">{{ step.body }}</p>
           </li>
         }
@@ -79,29 +92,53 @@
     </div>
   </section>
 
-  <!-- Results -->
-  <section class="block block--band">
-    <div class="container">
-      <p class="mono block__label" appReveal><b>03</b> Results</p>
-      <ul class="results">
-        @for (r of s.results; track r.label; let i = $index) {
-          <li class="result card" appReveal [revealDelay]="i * 70" appSpotlight>
-            <span class="display-1 tnum result__v">{{ r.value }}</span>
-            <span class="mono-sm result__l">{{ r.label }}</span>
-          </li>
-        }
-      </ul>
+  <!-- Results, paired with the supporting artwork so neither sits in an empty
+       band on its own. -->
+  <section class="block">
+    <div class="container outcome">
+      @if (figure(); as fig) {
+        <figure class="outcome__fig" appReveal>
+          <img appImgOk [src]="fig.src" [alt]="fig.alt" loading="lazy" (failed)="markMissing(fig.src)" />
+          <figcaption class="mono-sm">{{ fig.alt }}</figcaption>
+        </figure>
+      }
 
-      <div class="stack-wrap" appReveal>
-        <p class="mono stack-wrap__label">Built with</p>
-        <ul class="stack">
-          @for (t of s.stack; track t) {
-            <li class="mono-sm">{{ t }}</li>
+      <div class="outcome__body">
+        <p class="mono block__label" appReveal><b>03</b> Results</p>
+        <ul class="results">
+          @for (r of s.results; track r.label; let i = $index) {
+            <li class="result card" appReveal [revealDelay]="i * 70" appSpotlight>
+              <span class="display-2 tnum result__v">{{ r.value }}</span>
+              <span class="mono-sm result__l">{{ r.label }}</span>
+            </li>
           }
         </ul>
+
+        <div class="stack-wrap" appReveal>
+          <p class="mono stack-wrap__label">Built with</p>
+          <ul class="stack">
+            @for (t of s.stack; track t) {
+              <li class="mono-sm">{{ t }}</li>
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- Any further artwork beyond the one paired with the results. -->
+  @if (extras().length) {
+    <section class="block block--tight">
+      <div class="container gallery">
+        @for (img of extras(); track img.src) {
+          <figure class="gallery__item" [class.is-square]="img.shape === 'square'" appReveal>
+            <img appImgOk [src]="img.src" [alt]="img.alt" loading="lazy" (failed)="markMissing(img.src)" />
+            <figcaption class="mono-sm">{{ img.alt }}</figcaption>
+          </figure>
+        }
+      </div>
+    </section>
+  }
 
   <!-- Quote -->
   @if (s.quote; as q) {
@@ -122,11 +159,20 @@
         <span class="display-4">{{ d.title }}</span>
       </a>
     }
-    <a class="nextnav__card nextnav__card--next" [routerLink]="['/work', next().slug]">
-      <span class="mono-sm">Next case study →</span>
-      <span class="display-4">{{ next().title }}</span>
-    </a>
+    @if (next(); as n) {
+      <a class="nextnav__card nextnav__card--next" [routerLink]="['/work', n.slug]">
+        <span class="mono-sm">Next case study →</span>
+        <span class="display-4">{{ n.title }}</span>
+      </a>
+    } @else {
+      <a class="nextnav__card nextnav__card--next" routerLink="/work">
+        <span class="mono-sm">All work →</span>
+        <span class="display-4">Back to selected work</span>
+      </a>
+    }
   </nav>
+
+  <app-lead-guide [topic]="s.title" />
 
   <app-cta-band
     heading="Your project is the next entry."

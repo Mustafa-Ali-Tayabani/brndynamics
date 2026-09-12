@@ -60,7 +60,7 @@
       @if (currentQuestion(); as q) {
         <div class="step">
           <p class="mono step__eyebrow">
-            <b>{{ stepIndex() + 1 < 10 ? '0' + (stepIndex() + 1) : stepIndex() + 1 }}</b>
+            <b>{{ (stepIndex() + 1).toString().padStart(2, '0') }}</b>
             {{ service()?.title }}
           </p>
           <h1 class="display-2 step__title">{{ q.title }}</h1>

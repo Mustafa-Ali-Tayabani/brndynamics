@@ -55,7 +55,7 @@
       <ol class="steps">
         @for (step of c.approach; track step.title; let i = $index) {
           <li class="step" appReveal [revealDelay]="i * 70">
-            <span class="mono step__num tnum">{{ '0' + (i + 1) }}</span>
+            <span class="mono step__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</span>
             <div class="step__body">
               <h2 class="display-3">{{ step.title }}</h2>
               <p class="body-dim">{{ step.body }}</p>
@@ -163,6 +163,8 @@
       <span class="display-4">{{ siblings().next.title }}</span>
     </a>
   </nav>
+
+  <app-lead-guide [topic]="c.title" />
 
   <app-cta-band
     [heading]="'Need ' + c.title.toLowerCase() + '?'"

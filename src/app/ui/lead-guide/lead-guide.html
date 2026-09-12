@@ -1,0 +1,73 @@
+<aside class="guide" aria-label="Talk to us about this">
+  <!-- The character stands on the viewport floor and points into the panel. -->
+  @if (showFigure()) {
+    <div class="guide__figure" aria-hidden="true">
+      <span class="guide__glow"></span>
+      <img
+        appImgOk
+        src="/brand/guide.png"
+        alt=""
+        loading="lazy"
+        (failed)="markFigureMissing()"
+      />
+    </div>
+  }
+
+  <div class="guide__panel">
+    <button type="button" class="guide__close" (click)="dismiss()" aria-label="Dismiss">
+      <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+        <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.6" fill="none" />
+      </svg>
+    </button>
+
+    @if (sent()) {
+      <p class="mono guide__eyebrow"><span class="dot"></span>Opening your mail</p>
+      <p class="guide__title">Thanks. We reply the same business day.</p>
+      <p class="guide__body">
+        If your mail client did not open, write to
+        <a class="link" href="mailto:hello@brndynamics.com">hello&#64;brndynamics.com</a>.
+      </p>
+    } @else {
+      <p class="mono guide__eyebrow"><span class="dot"></span>Usually replies same day</p>
+
+      <p class="guide__title">
+        Thinking about <span class="guide__topic">{{ topic() }}</span>?
+      </p>
+      <p class="guide__body">
+        Leave an address and we will come back with how we would scope and sequence it.
+      </p>
+
+      <form class="guide__form" (ngSubmit)="submit()" novalidate>
+        <div class="guide__row">
+          <input
+            class="guide__input"
+            type="email"
+            [formControl]="email"
+            placeholder="you@company.com"
+            autocomplete="email"
+            aria-label="Your email address"
+            [attr.aria-invalid]="showError() && email.invalid ? 'true' : null"
+          />
+          <button type="submit" class="guide__send" aria-label="Send">
+            <svg width="15" height="15" viewBox="0 0 16 16" aria-hidden="true">
+              <path
+                d="M3 13 13 3M6 3h7v7"
+                stroke="currentColor"
+                stroke-width="1.6"
+                fill="none"
+                stroke-linecap="square"
+              />
+            </svg>
+          </button>
+        </div>
+        @if (showError() && email.invalid) {
+          <p class="guide__err mono-sm">We need a valid address to reply to.</p>
+        }
+      </form>
+
+      <a class="guide__alt mono-sm" routerLink="/estimate" (click)="dismiss()">
+        Or build a full brief →
+      </a>
+    }
+  </div>
+</aside>

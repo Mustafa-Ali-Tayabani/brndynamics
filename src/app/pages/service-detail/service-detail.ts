@@ -10,6 +10,7 @@ import { SplitTextDirective } from '../../core/split-text.directive';
 import { SpotlightDirective } from '../../core/spotlight.directive';
 import { GridLines } from '../../ui/grid-lines/grid-lines';
 import { Visual } from '../../ui/visual/visual';
+import { LeadGuide } from '../../ui/lead-guide/lead-guide';
 
 @Component({
   selector: 'app-service-detail',
@@ -21,6 +22,7 @@ import { Visual } from '../../ui/visual/visual';
     SpotlightDirective,
     GridLines,
     Visual,
+    LeadGuide,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './service-detail.html',
