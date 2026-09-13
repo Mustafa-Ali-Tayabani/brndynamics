@@ -1,16 +1,17 @@
 # Brand character
 
-`public/brand/guide.png` is the cutout of the BrnDynamics figure used by the
+`public/brand/guide.webp` is the cutout of the BrnDynamics figure used by the
 lead capture panel on service and case study pages (`app-lead-guide`).
 
-Drop the file at that path and it appears automatically. Nothing else to change.
+Built from `guide-source.png` here: trimmed to its alpha bounding box, scaled
+to 700px wide and re-encoded as WebP with alpha. That took 1.4 MB down to 77 KB.
 
 | Requirement | Detail |
 | ----------- | ------ |
-| Path        | `public/brand/guide.png` |
+| Path        | `public/brand/guide.webp` |
 | Background  | Transparent. The figure is placed over the live page. |
-| Orientation | Portrait. The supplied cutout is 1129x1441. |
-| Framing     | Full figure, standing on the bottom edge of the canvas. |
+| Orientation | Portrait. The supplied cutout is 1122x1402, trimmed to 1085x1372. |
+| Framing     | Half figure, cut at the thigh, meeting the bottom edge of the canvas. |
 | Pose        | Pointing to the viewer's right, so the gesture leads into the panel. |
 
 The image is never cropped. Its own ratio sets the rendered height, so any

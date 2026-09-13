@@ -12,6 +12,7 @@ import { Process } from './sections/process/process';
 import { Toolchain } from './sections/toolchain/toolchain';
 import { Industries } from './sections/industries/industries';
 import { Offices } from './sections/offices/offices';
+import { Drive } from './sections/drive/drive';
 import { Testimonials } from './sections/testimonials/testimonials';
 import { CtaBand } from '../../ui/cta-band/cta-band';
 
@@ -30,6 +31,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
     Toolchain,
     Industries,
     Offices,
+    Drive,
     Testimonials,
     CtaBand,
   ],
@@ -47,6 +49,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
     <app-toolchain />
     <app-industries />
     <app-offices />
+    <app-drive />
     <app-testimonials />
     <app-cta-band />
   `,

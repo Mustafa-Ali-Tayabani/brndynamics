@@ -19,9 +19,10 @@
 
 .guide__figure {
   position: relative;
-  width: clamp(6.5rem, 13vw, 11.5rem);
-  /* Overlaps the panel so the pointing hand reaches into the message. */
-  margin-right: -1.75rem;
+  width: clamp(7.5rem, 18vw, 15.5rem);
+  /* Deep enough that the pointing hand crosses the panel edge and the gesture
+     actually leads into the message. */
+  margin-right: -2.5rem;
   z-index: 1;
   transform: translateY(115%);
   opacity: 0;
@@ -34,7 +35,8 @@
   display: block;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 26px 34px rgb(0 0 0 / 45%));
+  /* Separates a dark figure from a dark panel. */
+  filter: drop-shadow(0 18px 28px rgb(0 0 0 / 55%)) drop-shadow(0 0 1px rgb(255 255 255 / 18%));
 }
 
 /* A soft signal bloom so the cutout sits on the page rather than floating. */
@@ -46,7 +48,7 @@
   aspect-ratio: 1;
   translate: -50% 0;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--signal-wash) 0%, transparent 66%);
+  background: radial-gradient(circle, var(--signal-wash) 0%, transparent 62%);
   opacity: 0;
   transition: opacity 900ms var(--e-out) 160ms;
   pointer-events: none;
@@ -279,12 +281,12 @@
 
 @media (width < 34rem) {
   .guide__figure {
-    width: 5.25rem;
-    margin-right: -1.25rem;
+    width: 6rem;
+    margin-right: -1.5rem;
   }
 
   .guide__panel {
-    width: calc(100vw - 5.75rem);
+    width: calc(100vw - 6.5rem);
     padding-left: 1.5rem;
   }
 

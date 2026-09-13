@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="drive__head" appReveal>
+    <div>
+      <p class="mono drive__label"><span class="dot"></span>Let's connect</p>
+      <h2 class="display-2 drive__title">Tell us what you are building.</h2>
+    </div>
+    <a routerLink="/contact" class="btn btn--primary btn--lg drive__cta">
+      Talk to us
+      <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+        <path
+          d="M3 13 13 3M6 3h7v7"
+          stroke="currentColor"
+          stroke-width="1.5"
+          fill="none"
+          stroke-linecap="square"
+        />
+      </svg>
+    </a>
+  </div>
+
+  <!-- The van travels the line as the section passes the viewport. -->
+  <div class="drive__road">
+    <span class="drive__rig">
+      <img
+        class="drive__van"
+        src="/brand/van.webp"
+        alt="A BrnDynamics van with a team member leaning from the window holding a card that reads Let's connect"
+        loading="lazy"
+      />
+    </span>
+    <span class="drive__line" aria-hidden="true"></span>
+  </div>
+</div>

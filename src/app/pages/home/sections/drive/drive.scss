@@ -1,0 +1,109 @@
+:host {
+  --drive: 0;
+  display: block;
+  padding-block: var(--section-y);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- head ---- */
+
+.drive__head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--s-5);
+  flex-wrap: wrap;
+  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+}
+
+.drive__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text-faint);
+  margin-bottom: var(--s-4);
+}
+
+.drive__title {
+  max-width: 20ch;
+}
+
+.drive__cta {
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- road ---- */
+
+.drive__road {
+  --van-w: clamp(18rem, 52vw, 46rem);
+  position: relative;
+  /* The artwork is trimmed to the tyres, so its own height is the road height. */
+  height: calc(var(--van-w) / 2.663);
+}
+
+.drive__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+/* The stretch already travelled lights up behind the van. */
+.drive__line::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--drive) * 100%);
+  background: linear-gradient(90deg, transparent, var(--signal));
+  box-shadow: 0 0 12px var(--signal-line);
+}
+
+.drive__rig {
+  position: absolute;
+  bottom: 0;
+  /* Paired with the negative translate, this walks the van from flush left to
+     flush right without either width being known in script. */
+  left: calc(var(--drive) * 100%);
+  width: var(--van-w);
+  transform: translateX(calc(var(--drive) * -100%));
+  will-change: transform;
+}
+
+/* Contact light on the line, since a dark shadow would not read on a dark
+   page. Sits under the wheelbase and travels with the van. */
+.drive__rig::after {
+  content: '';
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  bottom: -3px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, var(--signal-line), transparent 70%);
+  filter: blur(4px);
+}
+
+.drive__van {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (width < 48rem) {
+  .drive__head {
+    align-items: start;
+  }
+
+  .drive__road {
+    --van-w: clamp(13rem, 80vw, 26rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drive__rig {
+    will-change: auto;
+  }
+}
