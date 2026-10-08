@@ -24,7 +24,8 @@ import { Avatar } from '../../../../ui/avatar/avatar';
 })
 export class Team {
   protected readonly all = TEAM;
-  protected readonly offices = ['All', 'Karachi', 'Riyadh', 'Geneva'] as const;
+  /** Derived from the roster, so a new office never leaves an empty filter behind. */
+  protected readonly offices = ['All', ...new Set(TEAM.map((m) => m.office))];
   protected readonly filter = signal<string>('All');
 
   protected readonly visible = computed<TeamMember[]>(() => {

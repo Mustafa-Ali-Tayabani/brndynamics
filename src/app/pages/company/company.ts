@@ -47,7 +47,7 @@ export class Company {
     inject(SeoService).apply({
       title: 'Company',
       description:
-        'Founded in 2019, BrnDynamics is a technology company specialising in UI/UX design, software development, AI-powered solutions, SaaS products and CRM and ERP systems, with offices in Karachi, Riyadh and Geneva.',
+        'Founded in 2019, BrnDynamics is a technology company specialising in UI/UX design, software development, AI-powered solutions, SaaS products and CRM and ERP systems, with offices in Karachi, Riyadh, Kuwait City and Geneva.',
       path: '/company',
     });
   }

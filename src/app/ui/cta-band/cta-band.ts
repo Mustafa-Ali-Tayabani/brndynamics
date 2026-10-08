@@ -58,7 +58,7 @@ import { GridLines } from '../grid-lines/grid-lines';
         </div>
         <div>
           <dt class="mono-sm">Offices</dt>
-          <dd>Karachi · Riyadh · Geneva</dd>
+          <dd>Karachi · Riyadh · Kuwait City · Geneva</dd>
         </div>
         <div>
           <dt class="mono-sm">Time zones</dt>

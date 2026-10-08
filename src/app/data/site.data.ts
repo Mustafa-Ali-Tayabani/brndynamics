@@ -163,11 +163,22 @@ export const OFFICES: Office[] = [
     city: 'Riyadh',
     country: 'Kingdom of Saudi Arabia',
     countryCode: 'SA',
-    role: 'Gulf operations',
+    role: 'Saudi operations',
     line1: 'Riyadh, Saudi Arabia',
     timezone: 'AST',
     utcOffset: 3,
     note: 'Supporting organisations with digital transformation initiatives, enterprise solutions and business process automation.',
+  },
+  {
+    id: 'kuwait',
+    city: 'Kuwait City',
+    country: 'Kuwait',
+    countryCode: 'KW',
+    role: 'Kuwait operations',
+    line1: 'Kuwait City, Kuwait',
+    timezone: 'AST',
+    utcOffset: 3,
+    note: 'Delivering enterprise platforms, business automation and digital transformation for organisations across Kuwait and the northern Gulf.',
   },
   {
     id: 'geneva',
@@ -252,10 +263,10 @@ export const STATS: Stat[] = [
     note: 'Across nine industries and three regions',
   },
   {
-    value: 3,
+    value: 4,
     suffix: '',
     label: 'Global offices',
-    note: 'Karachi, Riyadh and Geneva',
+    note: 'Karachi, Riyadh, Kuwait City and Geneva',
   },
 ];
 

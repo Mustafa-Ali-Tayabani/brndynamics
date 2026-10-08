@@ -63,7 +63,7 @@ export class Console {
           kind: 'in',
           text: 'Hello. I am the BrnDynamics assistant. Here is who you would be working with.',
         },
-        { kind: 'out', text: 'Founded in Karachi in 2019. Offices in Karachi, Riyadh and Geneva.' },
+        { kind: 'out', text: 'Founded in Karachi in 2019. Offices in Karachi, Riyadh, Kuwait City and Geneva.' },
         {
           kind: 'out',
           text: 'UI/UX, SaaS, CRM and ERP, AI, web and mobile, engineering, security.',
@@ -115,6 +115,7 @@ export class Console {
         { kind: 'out', text: '+92 324 923 5848' },
         { kind: 'stat', text: 'Karachi, Pakistan', value: 'HQ' },
         { kind: 'stat', text: 'Riyadh, Saudi Arabia', value: 'GCC' },
+        { kind: 'stat', text: 'Kuwait City, Kuwait', value: 'GCC' },
         { kind: 'stat', text: 'Geneva, Switzerland', value: 'EU' },
         { kind: 'in', text: 'Tell us what you are building and we will send a scope and a price.' },
       ],

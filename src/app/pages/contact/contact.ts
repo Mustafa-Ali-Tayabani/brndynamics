@@ -88,7 +88,7 @@ export class Contact {
     inject(SeoService).apply({
       title: 'Contact',
       description:
-        'Talk to the BrnDynamics team about your product. Offices in Karachi, Riyadh and Geneva. Start with the estimator or call +92 324 923 5848.',
+        'Talk to the BrnDynamics team about your product. Offices in Karachi, Riyadh, Kuwait City and Geneva. Start with the estimator or call +92 324 923 5848.',
       path: '/contact',
     });
   }

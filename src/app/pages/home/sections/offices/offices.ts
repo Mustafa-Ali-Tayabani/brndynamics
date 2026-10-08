@@ -15,8 +15,8 @@ import { LocalTime } from '../../../../ui/local-time/local-time';
       <app-section-head
         index="11"
         label="Where we are"
-        title="Three offices, one working day."
-        lede="Karachi opens, Riyadh overlaps through the morning, Geneva through the afternoon. That handover is why someone answers at 03:00."
+        title="Four offices, one working day."
+        lede="Karachi opens, Riyadh and Kuwait City overlap through the morning, Geneva through the afternoon. That handover is why someone answers at 03:00."
       />
 
       <ul class="grid">
@@ -56,11 +56,17 @@ import { LocalTime } from '../../../../ui/local-time/local-time';
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: clamp(1rem, 2vw, 1.5rem);
     }
 
-    @media (width < 62rem) {
+    @media (width < 82rem) {
+      .grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (width < 48rem) {
       .grid {
         grid-template-columns: 1fr;
       }

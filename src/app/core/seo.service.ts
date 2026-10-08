@@ -82,7 +82,7 @@ export const ORGANIZATION_JSON_LD = {
   slogan: COMPANY.tagline,
   foundingDate: COMPANY.founded,
   description:
-    'BrnDynamics is a technology company specialising in UI/UX design, software development, AI-powered solutions, SaaS products, CRM and ERP systems, and digital transformation. Offices in Karachi, Riyadh and Geneva.',
+    'BrnDynamics is a technology company specialising in UI/UX design, software development, AI-powered solutions, SaaS products, CRM and ERP systems, and digital transformation. Offices in Karachi, Riyadh, Kuwait City and Geneva.',
   address: {
     '@type': 'PostalAddress',
     addressLocality: COMPANY.hq.city,

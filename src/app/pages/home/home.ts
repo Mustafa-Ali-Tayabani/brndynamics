@@ -59,7 +59,7 @@ export class Home {
     inject(SeoService).apply({
       title: 'Managed IT, Cloud & Security Engineering',
       description:
-        'BrnDynamics builds digital products: UI/UX design, SaaS platforms, CRM and ERP systems, AI-powered solutions, and web and mobile applications. Offices in Karachi, Riyadh and Geneva.',
+        'BrnDynamics builds digital products: UI/UX design, SaaS platforms, CRM and ERP systems, AI-powered solutions, and web and mobile applications. Offices in Karachi, Riyadh, Kuwait City and Geneva.',
       path: '/',
     });
   }

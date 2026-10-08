@@ -82,7 +82,7 @@ const DOCS: Record<string, LegalDoc> = {
       {
         heading: 'Governing law',
         body: [
-          'These terms are governed by the laws of Switzerland, and the courts of Geneva have exclusive jurisdiction over any dispute arising from them. Engagements contracted through our Pakistan or Saudi Arabia entities may specify a different governing law in the signed agreement, which takes precedence over this page.',
+          'These terms are governed by the laws of Switzerland, and the courts of Geneva have exclusive jurisdiction over any dispute arising from them. Engagements contracted through our Pakistan, Saudi Arabia or Kuwait entities may specify a different governing law in the signed agreement, which takes precedence over this page.',
         ],
       },
     ],
