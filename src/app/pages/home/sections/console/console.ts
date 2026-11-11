@@ -112,7 +112,7 @@ export class Console {
       lines: [
         { kind: 'cmd', text: 'brn contact --all' },
         { kind: 'out', text: 'hello@brndynamics.com' },
-        { kind: 'out', text: '+92 324 923 5848' },
+        { kind: 'out', text: '+92 333 297 3038' },
         { kind: 'stat', text: 'Karachi, Pakistan', value: 'HQ' },
         { kind: 'stat', text: 'Riyadh, Saudi Arabia', value: 'GCC' },
         { kind: 'stat', text: 'Kuwait City, Kuwait', value: 'GCC' },

@@ -1,0 +1,370 @@
+<app-page-hero
+  index="//"
+  label="Fixify"
+  heading="WordPress maintenance, on subscription."
+  lede="Fixify watches the performance, security, SEO and uptime of your WordPress site, and our team fixes what it finds. Start a 14-day free trial and your login arrives by email."
+>
+  <div class="hero__actions">
+    <a [routerLink]="[]" fragment="start" class="btn btn--primary btn--lg">Start free trial</a>
+    <a [routerLink]="[]" fragment="plans" class="btn btn--lg">See plans</a>
+    @if (product.appUrl) {
+      <a [href]="product.appUrl" class="link hero__signin" rel="noopener">Sign in</a>
+    }
+  </div>
+</app-page-hero>
+
+<!-- Product shot -->
+<figure class="shot">
+  <img [src]="product.shot.src" [alt]="product.shot.alt" width="1672" height="941" />
+</figure>
+
+<!-- How it works -->
+<section class="how">
+  <div class="container">
+    <app-section-head
+      index="01"
+      label="How it works"
+      title="From sign-up to dashboard in four steps."
+      lede="No sales call and no card up front. You sign up here and the login comes to your inbox."
+      titleClass="display-2"
+    />
+
+    <ol class="steps">
+      @for (step of steps; track step.title; let i = $index) {
+        <li class="step" appReveal [revealDelay]="i * 70">
+          <span class="mono step__num tnum">{{ (i + 1).toString().padStart(2, '0') }}</span>
+          <h3 class="display-4">{{ step.title }}</h3>
+          <p class="body-dim">{{ step.body }}</p>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Dashboard -->
+<section class="dash">
+  <div class="container">
+    <app-section-head
+      index="02"
+      label="The product"
+      title="What you get when you sign in."
+      lede="One place to see the state of every site you run, and to ask our team to fix what needs fixing."
+      titleClass="display-2"
+    />
+
+    <ul class="tiles">
+      @for (item of dashboard; track item.title; let i = $index) {
+        <li class="tile card" appReveal [revealDelay]="(i % 3) * 70">
+          <h3 class="display-4">{{ item.title }}</h3>
+          <p class="body-dim">{{ item.body }}</p>
+        </li>
+      }
+    </ul>
+  </div>
+</section>
+
+<!-- Plans -->
+<section class="plans" id="plans">
+  <div class="container">
+    <app-section-head
+      index="03"
+      label="Plans"
+      title="Three plans. Every one starts with a free trial."
+      lede="14 days on Pro, no card required. Choose a plan whenever you are ready."
+      titleClass="display-2"
+    />
+
+    <div class="cycle" role="group" aria-label="Billing cycle">
+      <button
+        type="button"
+        class="cycle__btn mono"
+        [class.is-on]="cycle() === 'monthly'"
+        [attr.aria-pressed]="cycle() === 'monthly'"
+        (click)="cycle.set('monthly')"
+      >
+        Monthly
+      </button>
+      <button
+        type="button"
+        class="cycle__btn mono"
+        [class.is-on]="cycle() === 'annual'"
+        [attr.aria-pressed]="cycle() === 'annual'"
+        (click)="cycle.set('annual')"
+      >
+        Yearly · 2 months free
+      </button>
+    </div>
+
+    <ul class="plans__grid">
+      @for (plan of plans; track plan.id; let i = $index) {
+        <li
+          class="plan card"
+          [class.plan--featured]="plan.featured"
+          [class.is-selected]="planId() === plan.id"
+          appReveal
+          [revealDelay]="i * 70"
+        >
+          <div class="plan__head">
+            <h3 class="display-3">{{ plan.name }}</h3>
+            @if (plan.featured) {
+              <span class="chip chip--signal mono-sm">Most popular</span>
+            }
+          </div>
+          <p class="body-dim plan__audience">{{ plan.audience }}</p>
+
+          <p class="plan__price">
+            <span class="display-2 tnum">{{ price(plan) }}</span>
+            <span class="mono-sm plan__per">
+              {{ cycle() === 'annual' ? 'per year' : 'per month' }}
+            </span>
+          </p>
+
+          <button
+            type="button"
+            class="btn btn--lg plan__cta"
+            [class.btn--primary]="plan.featured"
+            (click)="choose(plan)"
+          >
+            Start free trial
+          </button>
+
+          <ul class="plan__list">
+            @for (f of plan.features; track f) {
+              <li>
+                <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                  <path d="M2 8.5 6 12.5 14 4" stroke="currentColor" stroke-width="1.7" fill="none" />
+                </svg>
+                {{ f }}
+              </li>
+            }
+          </ul>
+        </li>
+      }
+    </ul>
+
+    <p class="plans__note mono-sm">Prices in USD. Taxes may apply.</p>
+  </div>
+</section>
+
+<!-- Sign-up -->
+<section class="start" id="start">
+  <div class="container start__grid">
+    <div class="start__intro">
+      <p class="sec-head__index mono"><b>04</b><span>Start free trial</span></p>
+      <h2 class="display-2">Your login goes to your inbox.</h2>
+      <p class="body-dim">
+        Use the email address you want the account under. You get {{ product.trialDays }} days on
+        the Pro plan, with no card required.
+      </p>
+
+      <dl class="summary">
+        <div>
+          <dt class="mono-sm">Trial</dt>
+          <dd>{{ product.trialDays }} days on Pro, free</dd>
+        </div>
+        <div>
+          <dt class="mono-sm">Plan after trial</dt>
+          <dd>{{ selected().name }}</dd>
+        </div>
+        <div>
+          <dt class="mono-sm">Price after trial</dt>
+          <dd>{{ price(selected()) }} {{ cycle() === 'annual' ? 'per year' : 'per month' }}</dd>
+        </div>
+      </dl>
+      <p class="body-dim start__small">
+        You confirm the plan and pay inside Fixify. Nothing is charged during the trial.
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="form card" appReveal>
+      <div class="field">
+        <label for="fx-email" class="mono-sm">Account email <span aria-hidden="true">*</span></label>
+        <input id="fx-email" type="email" formControlName="email" autocomplete="email" />
+        @if (invalid('email')) {
+          <p class="err mono-sm">We need a valid address to send your login to.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="fx-site" class="mono-sm">
+          WordPress site address <span aria-hidden="true">*</span>
+        </label>
+        <input
+          id="fx-site"
+          type="url"
+          inputmode="url"
+          formControlName="site"
+          placeholder="yoursite.com"
+          autocomplete="url"
+        />
+        @if (invalid('site')) {
+          <p class="err mono-sm">Enter the address of the site, for example yoursite.com.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="fx-name" class="mono-sm">Name</label>
+        <input id="fx-name" type="text" formControlName="name" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="fx-plan" class="mono-sm">Plan you are considering</label>
+        <div class="select">
+          <select id="fx-plan" (change)="planId.set($any($event.target).value)">
+            @for (plan of plans; track plan.id) {
+              <option [value]="plan.id" [selected]="plan.id === planId()">
+                {{ plan.name }}, {{ price(plan) }} {{ cycle() === 'annual' ? 'a year' : 'a month' }}
+              </option>
+            }
+          </select>
+          <span class="select__chev" aria-hidden="true">▾</span>
+        </div>
+      </div>
+
+      <div class="submit">
+        <button type="submit" class="btn btn--primary btn--lg">
+          Start {{ product.trialDays }}-day free trial
+          <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+            <path
+              d="M3 13 13 3M6 3h7v7"
+              stroke="currentColor"
+              stroke-width="1.5"
+              fill="none"
+              stroke-linecap="square"
+            />
+          </svg>
+        </button>
+        <p class="mono-sm submit__note">
+          @if (product.signupUrl) {
+            No card required. Your login is sent to this email address.
+          } @else {
+            No card required. Opens in your mail client, addressed to {{ company.email }}. We set
+            up your account and email your login.
+          }
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- Comparison -->
+<section class="cover">
+  <div class="container">
+    <app-section-head
+      index="05"
+      label="Compare"
+      title="Every limit, side by side."
+      lede="What each plan includes, so there is nothing to find out after you have paid."
+      titleClass="display-2"
+    />
+
+    <div class="cmp" tabindex="0" role="region" aria-label="Plan comparison">
+      <table class="cmp__table">
+        <colgroup>
+          <col class="cmp__col-label" />
+          <col />
+          <col />
+          <col />
+        </colgroup>
+        <thead>
+          <tr>
+            <th scope="col" class="cmp__corner">
+              <span class="mono-sm">Billed {{ cycle() === 'annual' ? 'yearly' : 'monthly' }}</span>
+            </th>
+            @for (plan of plans; track plan.id) {
+              <th scope="col" class="cmp__plan" [class.is-featured]="plan.featured">
+                @if (plan.featured) {
+                  <span class="cmp__tag mono-sm">Most popular</span>
+                }
+                <span class="display-4 cmp__name">{{ plan.name }}</span>
+                <span class="cmp__price">
+                  <b class="tnum">{{ price(plan) }}</b>
+                  <span class="mono-sm">{{ cycle() === 'annual' ? '/ year' : '/ month' }}</span>
+                </span>
+                <button
+                  type="button"
+                  class="btn cmp__cta"
+                  [class.btn--primary]="plan.featured"
+                  (click)="choose(plan)"
+                >
+                  Start trial
+                </button>
+              </th>
+            }
+          </tr>
+        </thead>
+
+        @for (group of compare; track group.label) {
+          <tbody>
+            <tr class="cmp__group">
+              <th scope="rowgroup" class="mono-sm">{{ group.label }}</th>
+              @for (plan of plans; track plan.id) {
+                <td [class.is-featured]="plan.featured"></td>
+              }
+            </tr>
+            @for (row of group.rows; track row.label) {
+              <tr class="cmp__row">
+                <th scope="row">{{ row.label }}</th>
+                @for (v of row.values; track $index) {
+                  <td [class.is-featured]="plans[$index].featured">
+                    @if (v === true) {
+                      <svg class="cmp__yes" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+                        <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <span class="visually-hidden">Included</span>
+                    } @else if (v === false) {
+                      <span class="cmp__no" aria-hidden="true"></span>
+                      <span class="visually-hidden">Not included</span>
+                    } @else {
+                      <span class="tnum">{{ v }}</span>
+                    }
+                  </td>
+                }
+              </tr>
+            }
+          </tbody>
+        }
+
+        <tfoot>
+          <tr>
+            <th></th>
+            @for (plan of plans; track plan.id) {
+              <td [class.is-featured]="plan.featured"></td>
+            }
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <p class="cover__more">
+      <a class="link" [routerLink]="['/work', product.caseSlug]">Read the Fixify case study →</a>
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container faq__grid">
+    <div class="faq__rail">
+      <p class="sec-head__index mono"><b>//</b><span>FAQ</span></p>
+      <h2 class="display-2">Before you start.</h2>
+      <app-case-logo class="faq__logo" [image]="product.logo" />
+    </div>
+
+    <div class="faq__list">
+      @for (item of faq; track item.q) {
+        <details class="qa">
+          <summary class="qa__q">
+            <span>{{ item.q }}</span>
+            <span class="qa__icon" aria-hidden="true">+</span>
+          </summary>
+          <p class="qa__a body-dim">{{ item.a }}</p>
+        </details>
+      }
+      <p class="faq__contact body-dim">
+        Something else?
+        <a class="link" [href]="'mailto:' + company.email + '?subject=Fixify'">{{ company.email }}</a>
+      </p>
+    </div>
+  </div>
+</section>

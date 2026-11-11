@@ -1,15 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  DOCUMENT,
   DestroyRef,
   afterNextRender,
   computed,
+  effect,
   inject,
   signal,
 } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs';
 import { NAV, COMPANY, OFFICES } from '../../data/site.data';
+import { FIXIFY, FIXIFY_PLANS } from '../../data/fixify.data';
 import { MagneticDirective } from '../../core/magnetic.directive';
 import { BrandLogo } from '../../ui/brand-logo/brand-logo';
 import { SmoothScrollService } from '../../core/smooth-scroll.service';
@@ -39,6 +42,19 @@ export class Header {
   protected readonly menuOpen = signal(false);
   protected readonly megaOpen = signal(false);
 
+  /** Promo strip above the nav. Hidden once dismissed, and on the page it
+      advertises. */
+  protected readonly promo = {
+    currency: FIXIFY.currency,
+    from: Math.min(...FIXIFY_PLANS.map((p) => p.monthly)),
+    trialDays: FIXIFY.trialDays,
+  };
+  private readonly promoDismissed = signal(false);
+  private readonly path = signal('');
+  protected readonly promoVisible = computed(
+    () => !this.promoDismissed() && !this.path().startsWith('/fixify'),
+  );
+
   /** Hover intent: a small delay stops the panel flickering on a fast pass. */
   private megaTimer?: ReturnType<typeof setTimeout>;
 
@@ -54,12 +70,28 @@ export class Header {
     const sub = this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
+        this.path.set(this.router.url);
         this.closeMenu();
         this.closeMega();
       });
     destroyRef.onDestroy(() => sub.unsubscribe());
 
+    // The strip's height is part of --header-h, so collapsing the variable
+    // moves the page, the drawer and every sticky offset up with it. Runs on
+    // the server too, so the prerendered page already has the right offset.
+    const docRoot = inject(DOCUMENT).documentElement;
+    effect(() => {
+      if (this.promoVisible()) docRoot.style.removeProperty('--promo-h');
+      else docRoot.style.setProperty('--promo-h', '0px');
+    });
+
     afterNextRender(() => {
+      try {
+        if (localStorage.getItem(Header.PROMO_KEY) === '1') this.promoDismissed.set(true);
+      } catch {
+        /* Storage blocked: the strip simply shows again next visit. */
+      }
+
       let last = window.scrollY;
 
       const root = document.documentElement;
@@ -99,6 +131,17 @@ export class Header {
         root.style.removeProperty('--sticky-top');
       });
     });
+  }
+
+  private static readonly PROMO_KEY = 'promo-fixify-dismissed';
+
+  protected dismissPromo(): void {
+    this.promoDismissed.set(true);
+    try {
+      localStorage.setItem(Header.PROMO_KEY, '1');
+    } catch {
+      /* Storage blocked: dismissal lasts for this page view only. */
+    }
   }
 
   protected openMega(): void {

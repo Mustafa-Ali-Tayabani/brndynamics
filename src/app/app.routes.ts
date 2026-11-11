@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/case-detail/case-detail').then((m) => m.CaseDetail),
   },
   {
+    path: 'fixify',
+    loadComponent: () => import('./pages/fixify/fixify').then((m) => m.Fixify),
+  },
+  {
     path: 'estimate',
     loadComponent: () => import('./pages/estimate/estimate').then((m) => m.Estimate),
   },

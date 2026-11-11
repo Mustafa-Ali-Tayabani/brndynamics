@@ -14,6 +14,7 @@ import { Industries } from './sections/industries/industries';
 import { Offices } from './sections/offices/offices';
 import { Drive } from './sections/drive/drive';
 import { Testimonials } from './sections/testimonials/testimonials';
+import { FixifyPromo } from '../../ui/fixify-promo/fixify-promo';
 import { CtaBand } from '../../ui/cta-band/cta-band';
 
 @Component({
@@ -33,6 +34,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
     Offices,
     Drive,
     Testimonials,
+    FixifyPromo,
     CtaBand,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +46,7 @@ import { CtaBand } from '../../ui/cta-band/cta-band';
     <app-capabilities />
     <app-differentiators />
     <app-work-preview />
+    <app-fixify-promo />
     <app-success />
     <app-process />
     <app-toolchain />

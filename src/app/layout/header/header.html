@@ -1,3 +1,23 @@
+@if (promoVisible()) {
+  <div class="promo">
+    <a class="promo__link" routerLink="/fixify" (click)="closeMenu()">
+      <span class="promo__tag mono-sm">New</span>
+      <span class="promo__text">
+        <b>Fixify:</b> WordPress care<span class="promo__price"> from {{ promo.currency }}{{ promo.from }} a month</span><span
+          class="promo__extra"
+          >. {{ promo.trialDays }}-day free trial, no card required</span
+        >
+      </span>
+      <span class="promo__cta">Start free trial →</span>
+    </a>
+    <button type="button" class="promo__close" (click)="dismissPromo()" aria-label="Dismiss">
+      <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true">
+        <path d="M3 3l10 10M13 3 3 13" stroke="currentColor" stroke-width="1.6" fill="none" />
+      </svg>
+    </button>
+  </div>
+}
+
 <div class="bar">
   <div class="bar__inner container">
     <a routerLink="/" class="brand" aria-label="BrnDynamics, home">

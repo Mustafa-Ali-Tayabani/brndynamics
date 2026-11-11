@@ -154,8 +154,8 @@ export const OFFICES: Office[] = [
     line1: 'Karachi, Pakistan',
     timezone: 'PKT',
     utcOffset: 5,
-    phone: '+92 324 923 5848',
-    phoneHref: '+923249235848',
+    phone: '+92 333 297 3038',
+    phoneHref: '+923332973038',
     note: 'Serving startups, SMEs and enterprise organisations with innovative digital solutions and technology consulting.',
   },
   {
@@ -201,8 +201,8 @@ export const COMPANY = {
   founded: '2019',
   email: 'hello@brndynamics.com',
   careersEmail: 'jobs@brndynamics.com',
-  phone: '+92 324 923 5848',
-  phoneHref: '+923249235848',
+  phone: '+92 333 297 3038',
+  phoneHref: '+923332973038',
   hq: OFFICES[0],
   ratings: [
     { source: 'Clutch', value: '5.0', note: '31 reviews' },
@@ -210,9 +210,6 @@ export const COMPANY = {
   ],
   socials: [
     { label: 'LinkedIn', short: 'LI', url: 'https://www.linkedin.com/company/brndynamics' },
-    { label: 'GitHub', short: 'GH', url: 'https://github.com/brndynamics' },
-    { label: 'X', short: 'X', url: 'https://x.com/brndynamics' },
-    { label: 'YouTube', short: 'YT', url: 'https://www.youtube.com/@brndynamics' },
   ],
 } as const;
 
@@ -223,6 +220,7 @@ export const COMPANY = {
 export const NAV: NavLink[] = [
   { label: 'Services', path: '/services' },
   { label: 'Work', path: '/work' },
+  { label: 'Fixify', path: '/fixify' },
   { label: 'Estimate', path: '/estimate' },
   { label: 'Company', path: '/company' },
   { label: 'Contact', path: '/contact' },

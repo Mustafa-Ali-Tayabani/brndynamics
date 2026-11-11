@@ -134,7 +134,12 @@
   --d-mid: 380ms;
   --d-slow: 720ms;
 
-  --header-h: 68px;
+  /* The header is the nav bar plus the promo strip above it. Everything that
+     offsets against the header uses --header-h, so it follows automatically
+     when the strip is dismissed and --promo-h drops to 0. */
+  --header-bar-h: 68px;
+  --promo-h: 36px;
+  --header-h: calc(var(--header-bar-h) + var(--promo-h));
 }
 
 /* =============================================================================

@@ -4,6 +4,8 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { CAPABILITIES, CASE_STUDIES } from '../../data/site.data';
 import { SeoService } from '../../core/seo.service';
+import { FixifyPromo } from '../../ui/fixify-promo/fixify-promo';
+import { FIXIFY } from '../../data/fixify.data';
 import { CtaBand } from '../../ui/cta-band/cta-band';
 import { ScrollRevealDirective } from '../../core/scroll-reveal.directive';
 import { SplitTextDirective } from '../../core/split-text.directive';
@@ -20,6 +22,7 @@ import { LeadGuide } from '../../ui/lead-guide/lead-guide';
   imports: [
     RouterLink,
     CtaBand,
+    FixifyPromo,
     ScrollRevealDirective,
     SplitTextDirective,
     SpotlightDirective,
@@ -35,6 +38,7 @@ import { LeadGuide } from '../../ui/lead-guide/lead-guide';
   styleUrl: './case-detail.scss',
 })
 export class CaseDetail {
+  protected readonly fixifySlug = FIXIFY.caseSlug;
   private readonly slug = toSignal(
     inject(ActivatedRoute).paramMap.pipe(map((p) => p.get('slug') ?? '')),
     { initialValue: '' },

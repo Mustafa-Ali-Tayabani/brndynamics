@@ -174,6 +174,10 @@
 
   <app-lead-guide [topic]="s.title" />
 
+  @if (s.slug === fixifySlug) {
+    <app-fixify-promo />
+  }
+
   <app-cta-band
     heading="Your project is the next entry."
     body="Bring us the constraint that has stalled the work, whether that is budget, compliance or a vendor that will not cooperate, and we will tell you how we would sequence it."
