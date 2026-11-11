@@ -254,8 +254,9 @@
         </button>
         @if (state() === 'error') {
           <p class="err mono-sm" role="alert">
-            That did not send. Try again, or
-            <a class="link" [href]="fallbackHref()">email us the details</a> at {{ company.email }}.
+            We could not send this automatically. Please
+            <a class="link" [href]="fallbackHref()">email your details</a> to {{ company.email }}
+            and we will set up your trial.
           </p>
         } @else {
           <p class="mono-sm submit__note">

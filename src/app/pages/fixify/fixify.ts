@@ -134,6 +134,10 @@ export class Fixify {
     });
     this.sentTo.set(v.email);
     this.state.set(ok ? 'sent' : 'error');
+
+    // No delivery service yet: at least try the visitor's own mail app. The
+    // error message on the page covers the case where nothing opens.
+    if (!ok && !this.mail.configured) window.location.href = this.fallbackHref();
   }
 
   constructor() {
