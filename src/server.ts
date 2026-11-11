@@ -6,6 +6,7 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
+import { sendTrialMail } from './server/trial-mail';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
@@ -23,6 +24,12 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
+
+/** Fixify trial sign-ups, emailed to the team over SMTP. */
+app.post('/api/trial', express.json({ limit: '10kb' }), async (req, res) => {
+  const result = await sendTrialMail(req.body);
+  res.status(result.status).json({ ok: result.ok, error: result.error });
+});
 
 /**
  * Serve static files from /browser

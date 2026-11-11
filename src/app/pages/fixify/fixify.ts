@@ -105,12 +105,6 @@ export class Fixify {
       return;
     }
 
-    // Honeypot: a real visitor never sees or fills this field.
-    if (v.company) {
-      this.state.set('sent');
-      return;
-    }
-
     const planLine = `${plan.name} (${cycle})`;
     this.fallbackHref.set(
       `mailto:${COMPANY.email}` +
@@ -126,18 +120,15 @@ export class Fixify {
     );
 
     this.state.set('sending');
-    const ok = await this.mail.send(`Fixify free trial: ${v.site}`, {
+    const ok = await this.mail.sendTrial({
       email: v.email,
-      Website: v.site,
-      Name: v.name || 'Not given',
-      'Plan after trial': planLine,
+      site: v.site,
+      name: v.name,
+      plan: planLine,
+      company: v.company,
     });
     this.sentTo.set(v.email);
     this.state.set(ok ? 'sent' : 'error');
-
-    // No delivery service yet: at least try the visitor's own mail app. The
-    // error message on the page covers the case where nothing opens.
-    if (!ok && !this.mail.configured) window.location.href = this.fallbackHref();
   }
 
   constructor() {
