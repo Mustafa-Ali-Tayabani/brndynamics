@@ -13,6 +13,7 @@ import {
   FixifyPlan,
 } from '../../data/fixify.data';
 import { SeoService, SITE_URL } from '../../core/seo.service';
+import { FormMailService } from '../../core/form-mail.service';
 import { PageHero } from '../../ui/page-hero/page-hero';
 import { SectionHead } from '../../ui/section-head/section-head';
 import { CaseLogo } from '../../ui/case-logo/case-logo';
@@ -40,17 +41,23 @@ export class Fixify {
     FIXIFY_PLANS.find((p) => p.featured)?.id ?? FIXIFY_PLANS[0].id,
   );
   protected readonly submitted = signal(false);
+  protected readonly state = signal<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  protected readonly sentTo = signal('');
+  /** Prefilled email for the visitor to send themselves if delivery fails. */
+  protected readonly fallbackHref = signal('');
 
   protected readonly selected = computed<FixifyPlan>(
     () => this.plans.find((p) => p.id === this.planId()) ?? this.plans[0],
   );
 
   private readonly fb = inject(FormBuilder);
+  private readonly mail = inject(FormMailService);
 
   protected readonly form = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
     site: ['', [Validators.required, Validators.pattern(/^(https?:\/\/)?[^\s/.]+(\.[^\s/.]+)+(\/\S*)?$/i)]],
     name: [''],
+    company: [''],
   });
 
   protected price(plan: FixifyPlan): string {
@@ -72,16 +79,16 @@ export class Fixify {
   /**
    * With a sign-up address configured the visitor goes straight to the Fixify
    * app, which creates the account, starts the trial and emails the login.
-   * Until then there is no backend here, so the request is composed as a
-   * message to the team inbox, the same way the contact form works.
+   * Until then the request is delivered to the team inbox by FormMailService
+   * and the team sets the account up by hand.
    */
-  protected submit(): void {
+  protected async submit(): Promise<void> {
     this.submitted.set(true);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || this.state() === 'sending') return;
 
     const v = this.form.getRawValue();
     const plan = this.selected();
@@ -98,17 +105,35 @@ export class Fixify {
       return;
     }
 
-    const body = [
-      `Account email: ${v.email}`,
-      `Website: ${v.site}`,
-      `Name: ${v.name || 'Not given'}`,
-      `Plan after trial: ${plan.name} (${cycle})`,
-    ].join('\n');
+    // Honeypot: a real visitor never sees or fills this field.
+    if (v.company) {
+      this.state.set('sent');
+      return;
+    }
 
-    window.location.href =
+    const planLine = `${plan.name} (${cycle})`;
+    this.fallbackHref.set(
       `mailto:${COMPANY.email}` +
-      `?subject=${encodeURIComponent(`Fixify free trial: ${v.site}`)}` +
-      `&body=${encodeURIComponent(body)}`;
+        `?subject=${encodeURIComponent(`Fixify free trial: ${v.site}`)}` +
+        `&body=${encodeURIComponent(
+          [
+            `Account email: ${v.email}`,
+            `Website: ${v.site}`,
+            `Name: ${v.name || 'Not given'}`,
+            `Plan after trial: ${planLine}`,
+          ].join('\n'),
+        )}`,
+    );
+
+    this.state.set('sending');
+    const ok = await this.mail.send(`Fixify free trial: ${v.site}`, {
+      email: v.email,
+      Website: v.site,
+      Name: v.name || 'Not given',
+      'Plan after trial': planLine,
+    });
+    this.sentTo.set(v.email);
+    this.state.set(ok ? 'sent' : 'error');
   }
 
   constructor() {

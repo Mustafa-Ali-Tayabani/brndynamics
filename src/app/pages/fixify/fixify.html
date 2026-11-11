@@ -176,7 +176,25 @@
       </p>
     </div>
 
+    @if (state() === 'sent') {
+      <div class="form card done" role="status">
+        <svg class="done__icon" viewBox="0 0 16 16" width="28" height="28" aria-hidden="true">
+          <path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <h3 class="display-3">Request received.</h3>
+        <p class="body-dim">
+          We are setting up your Fixify account and will email your login to
+          <b>{{ sentTo() }}</b>. Your {{ product.trialDays }}-day trial starts when the account is
+          created, not now.
+        </p>
+      </div>
+    } @else {
     <form [formGroup]="form" (ngSubmit)="submit()" novalidate class="form card" appReveal>
+      <div class="hp" aria-hidden="true">
+        <label for="fx-company">Company</label>
+        <input id="fx-company" type="text" formControlName="company" tabindex="-1" autocomplete="off" />
+      </div>
+
       <div class="field">
         <label for="fx-email" class="mono-sm">Account email <span aria-hidden="true">*</span></label>
         <input id="fx-email" type="email" formControlName="email" autocomplete="email" />
@@ -222,8 +240,8 @@
       </div>
 
       <div class="submit">
-        <button type="submit" class="btn btn--primary btn--lg">
-          Start {{ product.trialDays }}-day free trial
+        <button type="submit" class="btn btn--primary btn--lg" [disabled]="state() === 'sending'">
+          {{ state() === 'sending' ? 'Sending…' : 'Start ' + product.trialDays + '-day free trial' }}
           <svg class="btn__arrow" width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
             <path
               d="M3 13 13 3M6 3h7v7"
@@ -234,16 +252,23 @@
             />
           </svg>
         </button>
-        <p class="mono-sm submit__note">
-          @if (product.signupUrl) {
-            No card required. Your login is sent to this email address.
-          } @else {
-            No card required. Opens in your mail client, addressed to {{ company.email }}. We set
-            up your account and email your login.
-          }
-        </p>
+        @if (state() === 'error') {
+          <p class="err mono-sm" role="alert">
+            That did not send. Try again, or
+            <a class="link" [href]="fallbackHref()">email us the details</a> at {{ company.email }}.
+          </p>
+        } @else {
+          <p class="mono-sm submit__note">
+            @if (product.signupUrl) {
+              No card required. Your login is sent to this email address.
+            } @else {
+              No card required. We set up your account and email your login to this address.
+            }
+          </p>
+        }
       </div>
     </form>
+    }
   </div>
 </section>
 

@@ -285,6 +285,35 @@
   background: var(--ink-800);
 }
 
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.done {
+  align-content: center;
+  justify-items: start;
+  min-height: 22rem;
+}
+
+.done__icon {
+  color: var(--live);
+}
+
+.done b {
+  color: var(--text);
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.submit .btn[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
 .field {
   display: grid;
   gap: 0.5rem;
