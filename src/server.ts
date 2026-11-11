@@ -6,7 +6,7 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { join } from 'node:path';
-import { sendTrialMail } from './server/trial-mail';
+import { sendTrialMail } from '../api/trial.mjs';
 
 const browserDistFolder = join(import.meta.dirname, '../browser');
 

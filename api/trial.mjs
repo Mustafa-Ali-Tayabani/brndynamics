@@ -3,8 +3,10 @@ import nodemailer from 'nodemailer';
 /**
  * Sends a Fixify trial request to the team inbox over SMTP.
  *
- * Shared by the Express server (src/server.ts, used by `ng serve` and the SSR
- * build) and the Vercel function (api/trial.ts), so both behave the same.
+ * This file is plain JavaScript on purpose: Vercel runs it directly as the
+ * serverless function for POST /api/trial, with no TypeScript compile step to
+ * get wrong. The Express server (src/server.ts, used by `ng serve` and the
+ * SSR build) imports `sendTrialMail` from here, so both behave the same.
  *
  * Configuration comes from environment variables, never from code:
  *
@@ -16,45 +18,43 @@ import nodemailer from 'nodemailer';
  *   MAIL_TO     optional  default hello@brndynamics.com
  */
 
-export interface TrialMailResult {
-  status: number;
-  ok: boolean;
-  error?: string;
-}
-
 const DEFAULT_TO = 'hello@brndynamics.com';
 const EMAIL = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/;
 
 /** One line, trimmed and capped: nothing a visitor types can add mail headers. */
-function clean(value: unknown, max: number): string {
+function clean(value, max) {
   return typeof value === 'string'
     ? value.replace(/[\r\n\t]+/g, ' ').trim().slice(0, max)
     : '';
 }
 
-export async function sendTrialMail(input: unknown): Promise<TrialMailResult> {
-  const body = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
+/**
+ * @param {unknown} input  Parsed JSON body: email, site, name, plan, company.
+ * @returns {Promise<{ status: number, ok: boolean, error?: string }>}
+ */
+export async function sendTrialMail(input) {
+  const body = input && typeof input === 'object' ? input : {};
 
   // Honeypot: real visitors never fill this. Pretend it worked.
-  if (clean(body['company'], 200)) return { status: 200, ok: true };
+  if (clean(body.company, 200)) return { status: 200, ok: true };
 
-  const email = clean(body['email'], 254);
-  const site = clean(body['site'], 300);
-  const name = clean(body['name'], 120);
-  const plan = clean(body['plan'], 60);
+  const email = clean(body.email, 254);
+  const site = clean(body.site, 300);
+  const name = clean(body.name, 120);
+  const plan = clean(body.plan, 60);
 
   if (!EMAIL.test(email) || !site) {
     return { status: 400, ok: false, error: 'invalid' };
   }
 
-  const host = process.env['SMTP_HOST'];
-  const user = process.env['SMTP_USER'];
-  const pass = process.env['SMTP_PASS'];
+  const host = process.env.SMTP_HOST;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
   if (!host || !user || !pass) {
     return { status: 503, ok: false, error: 'not_configured' };
   }
 
-  const port = Number(process.env['SMTP_PORT']) || 587;
+  const port = Number(process.env.SMTP_PORT) || 587;
 
   try {
     const transport = nodemailer.createTransport({
@@ -68,8 +68,8 @@ export async function sendTrialMail(input: unknown): Promise<TrialMailResult> {
     });
 
     await transport.sendMail({
-      from: process.env['MAIL_FROM'] || user,
-      to: process.env['MAIL_TO'] || DEFAULT_TO,
+      from: process.env.MAIL_FROM || user,
+      to: process.env.MAIL_TO || DEFAULT_TO,
       replyTo: email,
       subject: `Fixify free trial: ${site}`,
       text: [
@@ -89,4 +89,20 @@ export async function sendTrialMail(input: unknown): Promise<TrialMailResult> {
     console.error('Trial mail failed:', err instanceof Error ? err.message : err);
     return { status: 502, ok: false, error: 'send_failed' };
   }
+}
+
+/** Vercel serverless function. Vercel parses a JSON body onto `req.body`. */
+export default async function handler(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+
+  if (req.method !== 'POST') {
+    res.statusCode = 405;
+    res.setHeader('Allow', 'POST');
+    res.end(JSON.stringify({ ok: false, error: 'method_not_allowed' }));
+    return;
+  }
+
+  const result = await sendTrialMail(req.body);
+  res.statusCode = result.status;
+  res.end(JSON.stringify({ ok: result.ok, error: result.error }));
 }
